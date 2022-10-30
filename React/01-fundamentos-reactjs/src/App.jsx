@@ -1,8 +1,9 @@
-import './global.css';
-import styles from './App.module.css'
 import { Header } from './Components/Header'
 import { Post } from './Components/Post';
 import { Sidebar } from './Components/SideBar';
+
+import './global.css';
+import styles from './App.module.css'
 
 export function App() {
   return (
