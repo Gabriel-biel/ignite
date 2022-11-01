@@ -24,3 +24,5 @@
   - 14:58 - Desestruturação de propiedades.
 
 ## Aplicando Responsividade
+
+- 01:16 -> Aplicando a regra @media e suas propiedades
