@@ -1,46 +1,107 @@
+import { format, formatDistanceToNow } from 'date-fns'
+import ptBr from 'date-fns/locale/pt-Br'
+import { useState } from 'react'
+
 import { Avatar } from './Avatar'
 import { Comment } from './comment'
 import styles from './Post.module.css'
 
-export function Post(props) {
+// author: { avatar_url: "", name: "", role: "" }
+// publishAt: Date
+// Content: string
+
+export function Post({ author, publishedAt, content } ) {
+  const [comments, setComments] = useState(["Post bacana Cara!!"]);
+
+  const [newCommentText, setNewCommentText] = useState('');
+
+  const publishedDateFormat = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+    locale: ptBr
+  })
+
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBr,
+    addSuffix: true,
+  })
+
+  function handleCreateNewComent() {
+    event.preventDefault();
+
+    setComments([...comments, newCommentText])
+    setNewCommentText('');
+  }
+
+  function hendleNewCommentChange() {
+    event.target.setCustomValidity('')
+    setNewCommentText(event.target.value);
+  }
+
+  function deleteComment(commentToDelete) {
+    const commentsWithoutDeletedOne = comments.filter(comment => {
+      return comment !== commentToDelete
+    })
+
+    setComments(commentsWithoutDeletedOne);
+  }
+
+  function handleNewCommentInvalid() {
+    event.target.setCustomValidity('Esse campo e obrigatório')
+  }
+
+  const isInputCommentEmpty = newCommentText.length === 0
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-            <Avatar src='https://github.com/Gabriel-biel.png'/>
+            <Avatar src={author.avatarUrl}/>
           <div className={styles.authorInfo}>
-            <strong>Gabriel Lima</strong>
-            <span>Web Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title="30 de Outubro às 14:19" dateTime='2022-30-10 14:19:00'>Públicado há 1h</time>
+        <time title={publishedDateFormat} dateTime={publishedAt.toISOString()}>
+          {publishedDateRelativeToNow}
+        </time>
       </header>
       <div className={styles.content}>
-        <p>Fala Galera 👋🏼</p>
-        <p>Acabei de subir mais um projeto no meu portifolio. E um projeto que fiz durante</p>
-        <p>as aulas do React no ignite</p>
-        <p><a href='#'>👉🏼{' '}Gabriel-biel/feed-</a></p>
-        <p>
-          <a href='#'>#novoprojeto</a>{' '}
-          <a href='#'>#nlw </a>{' '}
-          <a href='#'>#rockeseat</a>
-        </p>
+        {content.map(line => {
+          if(line.type === 'paragraph'){
+            return <p key={line.content}>{line.content}</p>
+          } else if (line.type === 'link') {
+            return <p key={line.content}><a href='#'>{line.content}</a></p>
+          }
+        })}
+        <a href='#'>#novoprojeto</a>{' '}
+        <a href='#'>#nlw </a>{' '}
+        <a href='#'>#rockeseat</a>
       </div>
 
-      <form className={styles.commentForm}>
+      <form onSubmit={handleCreateNewComent} className={styles.commentForm}>
         <strong>Deixe seu FeedBack</strong>
-        <textarea 
+        <textarea
+          name='comment' 
           placeholder='Deixe um comentário'
+          value={newCommentText}
+          onChange={hendleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
         <footer>
-          <button type='submit'>Publicar</button>
+          <button disabled={isInputCommentEmpty} type='submit'>Publicar</button>
         </footer>
       </form>
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map(GuestComment => {
+          return (
+            <Comment 
+              key={GuestComment} 
+              content={GuestComment} 
+              onDeleteComment={deleteComment}
+            />
+          )
+        })}
       </div>
     </article>
   )
