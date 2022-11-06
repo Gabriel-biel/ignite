@@ -1,0 +1,24 @@
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.inputTodos {
+  display: flex;
+  flex-direction: row;
+
+  margin-top: calc(0px - 1.5rem - 6px);
+  padding: 16px;
+  gap: 8px;
+
+  width: 39.875rem;
+  height: 3.375rem;
+
+  background: var(--gray-5001);
+  border: 1px solid var(--gray-700);
+  border-radius: 8px;
+}
+
+.buttonAddTodos {
+  margin-top: calc(0px - 1.5rem - 6px);
+}
