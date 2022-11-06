@@ -1,0 +1,46 @@
+.content {
+  width: 100%;
+  padding: 64px 0 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  font-size: 87.5%;
+  
+  width: 46rem;
+}
+
+.createdTask {
+  display: flex;
+  gap: 8px;
+}
+
+.createdTask span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 24px;
+  height: 19px; 
+  background: #333333;
+  border-radius: 999px;
+}
+
+.taskComplete {
+  display: flex;
+  gap: 8px;
+}
+
+.taskComplete span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 24px;
+  height: 19px; 
+  background: #333333;
+  border-radius: 999px;
+}

@@ -1,0 +1,39 @@
+.addTodos {
+  display: flex;
+  flex-direction: row;
+  
+  align-items: center;
+  gap: 8px;
+  margin-top: calc(0px - 1.5rem - 6px);
+  width: 46rem;
+  height: 3.375rem;
+}
+
+.inputTodos {
+  width: 100%;
+  padding: 16px;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-700);
+  border-radius: 8px;
+}
+
+.buttonAdTodos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 5.625rem;
+  height: 100%;
+  gap: 8px;
+
+  background: var(--blue-dark);
+  color: var(--gray-100);
+
+  font-size: 87.5%;
+  line-height: 140%;
+  font-weight: 700;
+
+  border: 0;
+  border-radius: 8px;
+
+}
