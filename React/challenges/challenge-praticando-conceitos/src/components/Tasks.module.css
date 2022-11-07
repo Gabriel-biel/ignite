@@ -1,6 +1,6 @@
 .content {
   width: 100%;
-  padding: 64px 0 24px;
+  padding-top: 4rem;
 }
 
 .header {
@@ -13,12 +13,12 @@
   width: 46rem;
 }
 
-.createdTask {
+.header div {
   display: flex;
   gap: 8px;
 }
 
-.createdTask span {
+.header div span {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,18 +29,31 @@
   border-radius: 999px;
 }
 
-.taskComplete {
-  display: flex;
-  gap: 8px;
+.header .createdTask {
+  color: var(--blue);
 }
 
-.taskComplete span {
+.header .taskComplete {
+  color: var(--purple);
+}
+
+main .notTask {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 24px;
-  height: 19px; 
-  background: #333333;
-  border-radius: 999px;
+  justify-content: center;
+
+  width: 100%;
+  
+  color: var(--gray-300);
+  line-height: 140%;
+
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--gray-300);
+  border-radius: 8px;
+}
+
+main .notTask > img {
+  margin: 4rem 0 1rem;
+  object-fit: contain;
 }
