@@ -6,27 +6,31 @@ interface TodoProps {
   id: string,
   completed: boolean;
   content: string,
-  onChecked: () => void;
+  onChecked: (id: string) => void;
   onDeleteTask: (id: string) => void;
 }
 
-export function Todo({ onDeleteTask, id, content, completed }: TodoProps) {
+export function Todo({ onDeleteTask, id, content, completed, onChecked }: TodoProps) {
 
   function handleDeleteTodo() {
-    onDeleteTask(id)
+    onDeleteTask(id);
+  }
+
+  function handleCheckTodo() {
+    onChecked(id);
   }
 
   return (
     <div className={styles.content}>
       <header className={styles.header}>
-        <div>
-          <button className={styles.checkButton}>
-            <Check size={17} weight='bold'/>
+        <div className={completed ? styles.checkButtonCompleted : styles.checkButton}>
+          <button onClick={handleCheckTodo}>
+            <Check weight='bold'/>
           </button>
         </div>
         <strong>{content}</strong>
-        <button onClick={handleDeleteTodo}>
-          <Trash size={24} weight='bold'/>
+        <button className={styles.deleteTodo} onClick={handleDeleteTodo}>
+          <Trash weight='bold'/>
         </button>
       </header>
     </div>

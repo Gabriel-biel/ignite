@@ -5,8 +5,17 @@
 
   width: 100%;
   height: 4.5rem;
+  padding: 1rem;
   
-  background: var(--gray-400);
+  background: var(--gray-500);
+  border: 1px solid var(--gray-400);
+  border-radius: 8px;
+  
+  margin-top: 12px;
+}
+
+.content:first-child {
+  margin-top: 24px;
 }
 
 .header {
@@ -17,6 +26,12 @@
 }
 
 .header strong {
+  display: flex;
+  width: 632px;
+  height: 40px;
+  word-break: break-word;
+  justify-content: center;
+
   font-size: 87.5%;
   font-weight: 400;
   line-height: 140%;
@@ -25,14 +40,64 @@
 .checkButton {
   border-radius: 50%;
   border: 2px solid var(--blue);
+  height: 20px;
+  width: 20px;
+}
+
+.checkButton:hover {
+  background: var(--blue-dark);
+  opacity: 0.5;
+}
+
+.checkButton svg {
+  width: 20px;
+  height: 14px;
+  margin-top: 4px;
+  color: transparent;
+}
+
+.checkButtonCompleted {
+  border-radius: 50%;
+  background: var(--purple-dark);
+}
+
+.checkButtonCompleted:hover {
+  background: var(--purple);
+  
+}
+
+.checkButtonCompleted svg {
+  width: 20px;
+  height: 14px;
+  margin-top: 4px;
+  color: var(--gray-100);
+}
+
+.checkButtonCompleted + strong {
+  text-decoration: 2px line-through;
+  color: var(--gray-300);
 }
 
 button {
   background-color: transparent;
   border: none;
-  color: var(--gray-300)
+  color: var(--gray-300);
+  cursor: pointer;
 }
 
-.checkButton svg {
-  /* color: transparent; */
+.deleteTodo {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.deleteTodo:hover {
+  background: var(--gray-400);
+}
+
+.deleteTodo button svg:hover {
+  color: var(--danger);
 }

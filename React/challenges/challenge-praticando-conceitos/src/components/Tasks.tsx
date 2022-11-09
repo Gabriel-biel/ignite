@@ -18,12 +18,10 @@ interface TodoProps {
 export function Tasks() {
   const [Tasks, setNewTasks] = useState<TodoProps[]>([])
   const [newTodoText, setNewTodoText] = useState('');
-
   const [totalTasks, setTotalTasks] = useState(0);
 
   function handleCreateNewTodoText(event: FormEvent) {
     event.preventDefault();
-    
     setNewTasks((state) => {
       setTotalTasks(state.length + 1)
 
@@ -32,7 +30,9 @@ export function Tasks() {
         content: newTodoText,
         completed: false,
       }, ...state]
-    }), setNewTodoText('')
+    })
+
+    setNewTodoText('')
   }
 
   function handleChangeNewTodoText(event: ChangeEvent<HTMLInputElement>) {
@@ -55,9 +55,24 @@ export function Tasks() {
     });
   }
 
-  function checkedTask() {
+  function toggleTask(id: string) {
+    const tasksWithoutCheck = Tasks.map(task => {
+      if(task.id === id){
+        task.completed = !task.completed
+      }
+      return task
+    })
 
+    setNewTasks(tasksWithoutCheck)
   }
+
+  const totalCompletedTasks = Tasks.reduce((acumulador, taskAtual) => {
+    if (taskAtual.completed){
+      return acumulador + 1
+    } else {
+      return acumulador
+    }
+  }, 0)
 
   const isInputTodoTextEmpty = newTodoText.length === 0;
 
@@ -71,8 +86,9 @@ export function Tasks() {
           onChange={handleChangeNewTodoText}
           onInvalid={handleNewTodoTextInvalid}
           placeholder="Adicione uma nova tarefa"
+          required
         />
-        <button disabled={isInputTodoTextEmpty} className={styles.buttonAdTodos} type='submit'>
+        <button className={styles.buttonAdTodos} type='submit'>
           <span>Criar</span>
           <PlusCircle size={16}/>  
         </button>
@@ -80,11 +96,11 @@ export function Tasks() {
       <header className={styles.header}>
         <div className={styles.createdTask}>
           <strong>Tarefas Criadas</strong>
-          <span>0</span>
+          <span>{totalTasks}</span>
         </div>
         <div className={styles.taskComplete}>
           <strong>Concluídas</strong>
-          <span>0</span>
+          <span>{totalCompletedTasks} de {totalTasks}</span>
         </div>
       </header>
       <main>
@@ -95,16 +111,14 @@ export function Tasks() {
           <p>Crie tarefas e organize seus itens a fazer</p>
         </div> : 
           Tasks.map(task =>
-            <div className={styles.todos}>
-              <Todo 
-                key={task.id}
-                id={task.id}
-                content={task.content}
-                completed={false}
-                onChecked={checkedTask}
-                onDeleteTask={deleteTask}
-                />
-            </div>
+            <Todo 
+              key={task.id}
+              id={task.id}
+              content={task.content}
+              completed={task.completed}
+              onChecked={toggleTask}
+              onDeleteTask={deleteTask}
+            />
           )
         }
       </main>

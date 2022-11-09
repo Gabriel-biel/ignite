@@ -74,19 +74,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 10px;
   width: 24px;
-  height: 19px; 
+  height: 19px;
+
   background: #333333;
   border-radius: 999px;
+
+  color: var(--gray-200);
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 15px;
 }
 
-.header .createdTask {
+.header .createdTask strong{
   color: var(--blue);
 }
 
-.header .taskComplete {
+.header .taskComplete strong{
   color: var(--purple);
+}
+
+.header .taskComplete span {
+  width: 100%;
+  padding: 8px;
 }
 
 main {
@@ -113,13 +125,4 @@ main .notTask {
 main .notTask > img {
   margin: 4rem 0 1rem;
   object-fit: contain;
-}
-
-.todos {
-  width: 100%;
-  margin-top: 12px;
-}
-
-.todos:first-child {
-  margin-top: 24px;
 }
