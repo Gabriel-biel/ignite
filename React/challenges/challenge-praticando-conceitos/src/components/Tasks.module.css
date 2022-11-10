@@ -1,0 +1,128 @@
+.content {
+  width: 100%;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: calc(0px - 1.5rem - 6px);
+  width: 46rem;
+  height: 3.375rem;
+}
+
+.inputTodos {
+  width: 39.875rem;
+  height: 100%;
+  padding: 1rem;
+  background: var(--gray-500);
+
+  color: var(--gray-100);
+
+  border: 1px solid var(--gray-700);
+  border-radius: 8px;
+}
+
+ .buttonAdTodos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 5.625rem;
+  height: 100%;
+  gap: 8px;
+
+  background: var(--blue-dark);
+  color: var(--gray-100);
+
+  font-size: 87.5%;
+  line-height: 140%;
+  font-weight: 700;
+
+  border: 0;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form .buttonAdTodos:hover {
+  background: var(--blue);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  font-size: 87.5%;
+  
+  width: 46rem;
+  padding-top: 4rem;
+}
+
+.header div {
+  display: flex;
+  gap: 8px;
+}
+
+.header div span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+  width: 24px;
+  height: 19px;
+
+  background: #333333;
+  border-radius: 999px;
+
+  color: var(--gray-200);
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 15px;
+}
+
+.header .createdTask strong{
+  color: var(--blue);
+}
+
+.header .taskComplete strong{
+  color: var(--purple);
+}
+
+.header .taskComplete span {
+  width: 100%;
+  padding: 8px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+main .notTask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  
+  color: var(--gray-300);
+  line-height: 140%;
+
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--gray-300);
+  border-radius: 8px;
+}
+
+main .notTask > img {
+  margin: 4rem 0 1rem;
+  object-fit: contain;
+}
