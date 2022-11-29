@@ -12,6 +12,7 @@ import {
   TaskInput,
   MinutesAmountInput,
 } from './styles'
+import { useState } from 'react'
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
@@ -23,9 +24,18 @@ const newCycleFormValidationSchema = zod.object({
 
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 // Linha Acima, infer (função expecifica do typescript), typeof fazendo a tipagem do
-// constante javascritp para typescript.
+// constante javascript para typescript.
+
+interface Cycle {
+  id: string
+  task: string
+  minutesAmount: number
+}
 
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+
   const { register, handleSubmit, watch, reset /* formState */ } =
     useForm<NewCycleFormData>({
       resolver: zodResolver(newCycleFormValidationSchema),
@@ -35,13 +45,24 @@ export function Home() {
       },
     })
 
-  function handleCreateNewCycle(data: any) {
-    console.log(data)
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    const id = String(new Date().getTime())
+
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    }
+
+    setCycles((state) => [...state, newCycle])
+    setActiveCycleId(id)
     reset()
   }
 
   // console.log(formState.errors) //Dessa maneira e possivel capturar o erros
   // de validação pelo atravez do useForm
+
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   const task = watch('task')
   const isSubmitDisabled = !task
