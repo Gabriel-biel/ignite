@@ -75,7 +75,7 @@ const STATUS_COLOR = {
 // Pois sem isso acontece o erro informando que STATUS_COLOR, pode ser qualquer String
 
 interface StatusProps {
-  statusColor: 'yellow' | 'red' | 'green'
+  statusColor: keyof typeof STATUS_COLOR
 }
 
 export const Status = styled.span<StatusProps>`
