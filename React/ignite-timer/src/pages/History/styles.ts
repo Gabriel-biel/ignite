@@ -14,11 +14,8 @@ export const HistoryContainer = styled.main`
   }
 `
 export const HistoryList = styled.div`
-  display: flex;
   flex: 1;
-
   overflow: auto;
-
   margin-top: 2rem;
 
   table {
