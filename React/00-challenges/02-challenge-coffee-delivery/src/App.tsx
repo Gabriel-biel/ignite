@@ -1,5 +1,16 @@
-function App() {
-  return <h1>Hello Coffee!</h1>
-}
+import { ThemeProvider } from 'styled-components'
+import { defaultTheme } from './styles/theme/default'
+import { GlobalStyle } from './styles/global'
+import { BrowserRouter } from 'react-router-dom'
+import { Router } from './Router'
 
-export default App
+export function App() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <GlobalStyle />
+    </ThemeProvider>
+  )
+}
