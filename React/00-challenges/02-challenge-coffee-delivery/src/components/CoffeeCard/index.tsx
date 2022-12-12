@@ -2,13 +2,13 @@ import { NavLink } from 'react-router-dom'
 import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
 
 import { CoffeeContainer, ButtonIncrementNewCoffee } from './styles'
-import tradicional from '../../assets/coffeeImages/tradicional.svg'
 
 interface CoffeeCardProps {
   title: string
   type: string
   description: string
-  price: number
+  price: string
+  image: string
 }
 
 export function CoffeeCard({
@@ -16,17 +16,16 @@ export function CoffeeCard({
   type,
   description,
   price,
+  image,
 }: CoffeeCardProps) {
   return (
     <CoffeeContainer>
-      <img src={tradicional} alt="" />
-      <span>TRADICIONAL</span>
-      <strong>Expresso Tradicional</strong>
-      <p>
-        O tradicional café feito com água <br /> quente e grãos moídos
-      </p>
+      <img src={image} alt="" />
+      <span>{type}</span>
+      <strong>{title}</strong>
+      <p>{description}</p>
       <ButtonIncrementNewCoffee>
-        <span>9,99 </span>
+        <span>{price}</span>
         <div>
           <button>
             <Minus size={14} weight="bold" />

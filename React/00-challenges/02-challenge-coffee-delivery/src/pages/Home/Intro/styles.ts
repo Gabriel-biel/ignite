@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const IntroContainer = styled.div`
   display: flex;
   flex: 1;
-  padding: 5.75rem 10rem 5.625rem;
+  padding: 5.875rem 0;
 
   gap: 3.5rem;
 `

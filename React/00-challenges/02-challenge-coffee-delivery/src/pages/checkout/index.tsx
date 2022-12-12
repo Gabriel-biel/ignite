@@ -1,3 +1,9 @@
+import { CardCoffeeCheckout, CheckoutContainer } from './styles'
+
 export function Checkout() {
-  return <h1>Page of checkout</h1>
+  return (
+    <CheckoutContainer>
+      <CardCoffeeCheckout></CardCoffeeCheckout>
+    </CheckoutContainer>
+  )
 }

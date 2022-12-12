@@ -4,7 +4,8 @@ export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 90rem;
-  height: 100vh;
+  height: 100%;
+  padding: 2rem 10rem 10rem;
 
   background: ${(props) => props.theme['background-app']};
 

@@ -5,7 +5,6 @@ export const HomeContainer = styled.div`
   flex-direction: column;
 
   h2 {
-    padding-left: 10rem;
     font-family: 'Baloo 2';
     font-size: 2rem;
     line-height: 130%;
@@ -20,6 +19,5 @@ export const CoffeeList = styled.div`
   grid-gap: 2rem;
   list-style: none;
 
-  padding: 0 10rem 0;
   color: ${(props) => props.theme['base-SubTitle']};
 `
