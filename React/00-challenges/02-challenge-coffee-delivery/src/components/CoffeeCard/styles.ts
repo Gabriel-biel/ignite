@@ -46,6 +46,7 @@ export const CoffeeContainer = styled.div`
     margin-bottom: 2rem;
     text-align: center;
     color: ${(props) => props.theme['base-Label']};
+    padding: 0 20px;
   }
 `
 
