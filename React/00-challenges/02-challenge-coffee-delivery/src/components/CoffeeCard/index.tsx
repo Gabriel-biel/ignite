@@ -5,7 +5,7 @@ import { CoffeeContainer, ButtonIncrementNewCoffee } from './styles'
 
 interface CoffeeCardProps {
   title: string
-  type: string
+  tags: string[]
   description: string
   price: string
   image: string
@@ -13,7 +13,7 @@ interface CoffeeCardProps {
 
 export function CoffeeCard({
   title,
-  type,
+  tags,
   description,
   price,
   image,
@@ -21,7 +21,9 @@ export function CoffeeCard({
   return (
     <CoffeeContainer>
       <img src={image} alt="" />
-      <span>{type}</span>
+      {tags.map((tag) => {
+        return <span key={title}>{tag}</span>
+      })}
       <strong>{title}</strong>
       <p>{description}</p>
       <ButtonIncrementNewCoffee>

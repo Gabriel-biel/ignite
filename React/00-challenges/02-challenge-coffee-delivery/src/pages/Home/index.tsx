@@ -1,11 +1,22 @@
-import { useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { CoffeeCard } from '../../components/CoffeeCard'
-import { CoffeeContext } from '../../Contexts/CoffeeConext'
+import { Coffee } from '../../Reducers/Coffee/reducer'
+import { api } from '../../services/api'
 import { Intro } from './Intro/Index'
 import { HomeContainer, CoffeeList } from './styles'
 
 export function Home() {
-  const { cafes } = useContext(CoffeeContext)
+  const [cafes, setCafes] = useState<Coffee[]>([])
+
+  useEffect(() => {
+    async function loadCafes() {
+      const response = await api.get<Coffee[]>('/cafes')
+      setCafes(response.data)
+    }
+
+    loadCafes()
+  }, [])
+
   return (
     <HomeContainer>
       <Intro />
@@ -16,7 +27,7 @@ export function Home() {
             <CoffeeCard
               key={cafe.id}
               title={cafe.title}
-              type={cafe.type}
+              tags={cafe.tags}
               description={cafe.description}
               price={cafe.price}
               image={cafe.image}
