@@ -32,7 +32,26 @@ export const HeaderContainer = styled.header`
     a + a {
       max-width: 2.375rem;
       background: ${(props) => props.theme['yellow-300']};
-      color: ${(props) => props.theme['yellow-500']};
+      color: ${(props) => props.theme['yellow-800']};
+
+      span {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        position: absolute;
+        margin-left: 2rem;
+        margin-bottom: 2rem;
+
+        width: 1.25rem;
+        height: 1.25rem;
+
+        border-radius: 50%;
+
+        background: ${(props) => props.theme['yellow-800']};
+        color: ${(props) => props.theme.white};
+      }
     }
   }
 `

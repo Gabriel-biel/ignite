@@ -6,7 +6,7 @@ import { Intro } from './Intro/Index'
 import { HomeContainer, CoffeeList } from './styles'
 
 export function Home() {
-  const [cafes, setCafes] = useState<Coffee[]>([])
+  const [coffees, setCafes] = useState<Coffee[]>([])
 
   useEffect(() => {
     async function loadCafes() {
@@ -22,17 +22,8 @@ export function Home() {
       <Intro />
       <h2>Nossos cafés</h2>
       <CoffeeList>
-        {cafes.map((cafe) => {
-          return (
-            <CoffeeCard
-              key={cafe.id}
-              title={cafe.title}
-              tags={cafe.tags}
-              description={cafe.description}
-              price={cafe.price}
-              image={cafe.image}
-            />
-          )
+        {coffees.map((cafe) => {
+          return <CoffeeCard key={cafe.id} coffee={cafe} />
         })}
       </CoffeeList>
     </HomeContainer>

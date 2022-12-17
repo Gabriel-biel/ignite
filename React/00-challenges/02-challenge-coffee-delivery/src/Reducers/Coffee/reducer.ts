@@ -6,7 +6,7 @@ export interface Coffee {
   title: string
   tags: string[]
   description: string
-  price: string
+  price: number
   image: string
 }
 
@@ -20,15 +20,6 @@ export function CoffeeReducer(state: CoffeeState, action: any) {
     case ActionTypes.ADD_NEW_COFFEE:
       return produce(state, (draft) => {
         draft.coffeesInCartId = action.payload.AddCoffee.id
-      })
-
-    case ActionTypes.REMOVE_COFFEE:
-      const currentCoffeInCart = state.cafes.findIndex((coffee) => {
-        return coffee.id === state.coffeesInCartId
-      })
-
-      return produce(state, (draft) => {
-        draft.coffeesInCartId = action.payload.RemoveCoffee.id
       })
   }
 }
