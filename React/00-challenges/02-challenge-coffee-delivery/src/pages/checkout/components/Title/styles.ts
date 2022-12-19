@@ -13,8 +13,4 @@ export const TitleContainer = styled.div`
     color: ${(props) => props.theme['base-Text']};
     line-height: 160%;
   }
-
-  svg {
-    color: ${(props) => props.theme['yellow-800']};
-  }
 `

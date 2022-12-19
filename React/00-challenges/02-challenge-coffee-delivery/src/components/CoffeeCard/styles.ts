@@ -39,6 +39,12 @@ export const CoffeeCardCatolog = styled.div`
 
 export const CoffeeCardCart = styled.div`
   display: flex;
+  background: red;
+
+  img {
+    width: 4rem;
+    height: 4rem;
+  }
 `
 
 export const Tag = styled.div`

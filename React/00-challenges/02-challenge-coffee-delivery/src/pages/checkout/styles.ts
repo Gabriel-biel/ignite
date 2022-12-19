@@ -1,53 +1,58 @@
 import styled from 'styled-components'
 
-export const CheckoutContainer = styled.div``
+export const CheckoutContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+`
 export const AddressContainer = styled.div`
-  width: 640px;
-  height: 372px;
+  width: 40rem;
 
   h1 {
-    margin-top: 40px;
+    margin-top: 2.5rem;
     font-family: 'Baloo 2';
     font-weight: 700;
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   > div {
     border-radius: 6px;
-    margin-top: 15px;
-    padding: 40px;
+    margin-top: 1rem;
+    padding: 2.5rem;
     background: ${(props) => props.theme['base-Card']};
   }
 `
 
-const baseInput = styled.input`
+export const Input = styled.input`
   display: flex;
   width: 100%;
-  height: 42px;
-  padding: 12px;
+  height: 2.625rem;
+  padding: 0.75rem;
   background: ${(props) => props.theme['base-Input']};
 
   border: 1px solid ${(props) => props.theme['base-Button']};
   border-radius: 4px;
 
+  &:focus {
+    outline: 1px solid ${(props) => props.theme['yellow-800']};
+  }
+
   ::placeholder {
     display: flex;
-    font-size: 14px;
+    font-size: 87.5%;
     justify-content: space-between;
     color: ${(props) => props.theme['base-Label']};
   }
 `
 
-export const Input = styled(baseInput)``
-
 export const FormAddrees = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
   margin-top: 2rem;
 
   input {
-    width: 200px;
+    width: 12.5rem;
   }
 
   input + input {
@@ -57,21 +62,13 @@ export const FormAddrees = styled.form`
   div {
     display: flex;
     flex-direction: row;
-    gap: 12px;
-
-    input {
-      width: 200px;
-    }
-
-    .complemento {
-      width: 100%;
-    }
+    gap: 0.75rem;
 
     .cidade {
-      width: 276px;
+      width: 17.25rem;
     }
     .uf {
-      width: 60px;
+      width: 3.75rem;
     }
   }
 
@@ -82,4 +79,73 @@ export const FormAddrees = styled.form`
   }
 `
 
-export const CoffesSelectedCheckout = styled.div``
+export const PaymentMethod = styled.div`
+  width: 40rem;
+  background: ${(props) => props.theme['base-Card']};
+
+  div + div {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+`
+
+export const CoffesSelectedCheckout = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin-top: 2.5rem;
+    font-family: 'Baloo 2';
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    padding: 2.5rem;
+    background: ${(props) => props.theme['base-Card']};
+    border-radius: 6px 44px;
+    gap: 0.75rem;
+  }
+
+  hr {
+    margin: 24px 0;
+    border: 1px solid ${(props) => props.theme['base-Button']};
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  strong {
+    font-size: 1.25rem;
+    color: ${(props) => props.theme['base-SubTitle']};
+    font-weight: 700;
+  }
+`
+
+const baseMethodPayment = styled.button`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background: ${(props) => props.theme['base-Button']};
+  border: none;
+  border-radius: 6px;
+  padding: 1rem;
+  gap: 0.75rem;
+  font-size: 75%;
+  line-height: 160%;
+
+  svg {
+    color: ${(props) => props.theme['purple-800']};
+  }
+`
+
+export const CardCreditMethod = styled(baseMethodPayment)``
+export const CardDebitMethod = styled(baseMethodPayment)``
+export const MoneyMethod = styled(baseMethodPayment)``

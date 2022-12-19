@@ -85,7 +85,7 @@ export function CoffeeCard({
     </CoffeeCardCatolog>
   ) : (
     <CoffeeCardCart>
-      <img src={coffee.image} alt="" />
+      {/* <img src={coffee.image} alt="" />
       <Tag>
         {coffee.tags.map((tag) => {
           return <span key={`${coffee.id} ${tag}`}>{tag}</span>
@@ -101,7 +101,7 @@ export function CoffeeCard({
         <button onClick={handleIncrease}>
           <Plus size={14} weight="bold" />
         </button>
-      </ButtonsIncreaseDecrease>
+      </ButtonsIncreaseDecrease> */}
     </CoffeeCardCart>
   )
 }
