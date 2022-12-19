@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CoffeeContainer = styled.div`
+export const CoffeeCardCatolog = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,6 +35,10 @@ export const CoffeeContainer = styled.div`
     color: ${(props) => props.theme['base-Label']};
     padding: 0 20px;
   }
+`
+
+export const CoffeeCardCart = styled.div`
+  display: flex;
 `
 
 export const Tag = styled.div`

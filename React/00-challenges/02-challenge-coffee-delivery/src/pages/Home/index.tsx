@@ -23,7 +23,13 @@ export function Home() {
       <h2>Nossos cafés</h2>
       <CoffeeList>
         {coffees.map((cafe) => {
-          return <CoffeeCard key={cafe.id} coffee={cafe} />
+          return (
+            <CoffeeCard
+              key={cafe.id}
+              coffee={cafe}
+              typeCardCoffeeCatalog={true}
+            />
+          )
         })}
       </CoffeeList>
     </HomeContainer>
