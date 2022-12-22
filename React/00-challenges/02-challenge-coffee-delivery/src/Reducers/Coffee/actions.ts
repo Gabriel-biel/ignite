@@ -16,5 +16,8 @@ export function addNewCoffeToCartAction(AddCoffee: Coffee) {
 export function removeCoffeeToCartAction(RemoveCoffee: Coffee) {
   return {
     type: ActionTypes.REMOVE_COFFEE,
+    payload: {
+      RemoveCoffee,
+    },
   }
 }

@@ -51,19 +51,44 @@ export const CoffeeCardCart = styled.div`
   p {
     color: ${(props) => props.theme['base-SubTitle']};
   }
+
+  span {
+    display: flex;
+    flex: 1;
+
+    font-weight: 700;
+
+    align-items: flex-start;
+    justify-content: end;
+  }
 `
 
 export const ButtonsQuantityRemove = styled.div`
   display: flex;
   gap: 8px;
+  margin-top: 0.5rem;
 `
 
 export const ButtonRemove = styled.button`
   display: flex;
+  width: 92px;
+
   gap: 4px;
 
+  align-items: center;
+  justify-content: center;
+
   border: none;
+  border-radius: 6px;
   background: ${(props) => props.theme['base-Button']};
+
+  p {
+    font-size: 75%;
+  }
+
+  svg {
+    color: ${(props) => props.theme['purple-500']};
+  }
 `
 
 export const Tag = styled.div`
@@ -99,8 +124,7 @@ export const ButtonIncrementNewCoffee = styled.div`
   }
 
   span {
-    background: none;
-    margin-bottom: 0;
+    margin-right: 1.5rem;
     font-family: 'Baloo 2';
     font-size: 1.5rem;
     font-weight: 800;

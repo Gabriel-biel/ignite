@@ -5,8 +5,10 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+import { useContext } from 'react'
 import { useTheme } from 'styled-components'
 import { CoffeeCard } from '../../components/CoffeeCard'
+import { CartContext } from '../../Contexts/CartConext'
 
 import { Title } from './components/Title'
 import {
@@ -21,27 +23,10 @@ import {
   Input,
 } from './styles'
 
-const cartItems = [
-  {
-    id: 1,
-    tags: ['TRADICIONAL'],
-    title: 'Expresso Tradicional',
-    description: 'Tradicional café, feito com água quente e grãos moidos',
-    price: 9.99,
-    image: 'http://127.0.0.1:5173/src/assets/coffeeImages/tradicional.svg',
-  },
-  {
-    id: 2,
-    tags: ['TRADICIONAL'],
-    title: 'Expresso Tradicional',
-    description: 'Tradicional café, feito com água quente e grãos moidos',
-    price: 9.99,
-    image: 'http://127.0.0.1:5173/src/assets/coffeeImages/tradicional.svg',
-  },
-]
-
 export function Checkout() {
   const colors = useTheme()
+  const { cafes } = useContext(CartContext)
+
   return (
     <CheckoutContainer>
       <AddressContainer>
@@ -107,12 +92,12 @@ export function Checkout() {
       <CoffesSelectedCheckout>
         <h1>Cafés Selecionados</h1>
         <div>
-          {cartItems.map((cartItem) => {
+          {cafes.map((cafe) => {
             return (
               <>
                 <CoffeeCard
-                  key={cartItem.id}
-                  coffee={cartItem}
+                  key={cafe.id}
+                  coffee={cafe}
                   typeCardCoffeeCatalog={false}
                 />
                 <hr />

@@ -4,14 +4,12 @@ export const ButtonsIncreaseDecrease = styled.div`
   display: flex;
   width: 72px;
 
-  margin-left: 1.5rem;
-
   button {
     width: 100%;
     height: 2.375rem;
     border: none;
     background: ${(props) => props.theme['base-Button']};
-    color: ${(props) => props.theme['purple-800']};
+    color: ${(props) => props.theme['purple-500']};
     cursor: pointer;
   }
 

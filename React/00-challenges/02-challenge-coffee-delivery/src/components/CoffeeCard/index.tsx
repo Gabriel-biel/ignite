@@ -88,10 +88,11 @@ export function CoffeeCard({
           />
           <ButtonRemove>
             <Trash size={16} weight="regular" />
-            <p>Remover</p>
+            <p>REMOVER</p>
           </ButtonRemove>
         </ButtonsQuantityRemove>
       </div>
+      <span>R$ {coffee.price}</span>
     </CoffeeCardCart>
   )
 }

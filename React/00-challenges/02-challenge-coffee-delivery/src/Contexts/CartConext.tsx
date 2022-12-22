@@ -1,16 +1,16 @@
-import produce from 'immer'
-import { createContext, ReactNode, useState } from 'react'
-import { Coffee } from '../Reducers/Coffee/reducer'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { addNewCoffeToCartAction } from '../Reducers/Coffee/actions'
+import { Coffee, CoffeeReducer } from '../Reducers/Coffee/reducer'
 
 interface CartItem extends Coffee {
   quantity: number
 }
 
 interface CartContextType {
-  cartItems: CartItem[]
-  addCoffeeToCart: (coffee: CartItem) => void
+  cafes: CartItem[]
+  addCoffeeToCart: (data: CartItem) => void
   cartQuantity: number
-  cartItemTotalPrice: number
+  // cartItemTotalPrice: number
 }
 
 interface CoffeeProviderProps {
@@ -20,36 +20,66 @@ interface CoffeeProviderProps {
 export const CartContext = createContext({} as CartContextType)
 
 export function CartContextProvider({ children }: CoffeeProviderProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const storagedCart = localStorage.getItem('@ignite-coffee-1.0.0')
+  // const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+  //   const storagedCart = localStorage.getItem('@ignite-coffee-1.0.0')
 
-    if (storagedCart) {
-      return JSON.parse(storagedCart)
+  //   if (storagedCart) {
+  //     return JSON.parse(storagedCart)
+  //   }
+
+  //   return []
+  // })
+
+  const [CoffeeState, dispatch] = useReducer(
+    CoffeeReducer,
+    {
+      coffees: [],
+      coffeesInCart: [],
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@ignite-coffee:coffees-state-1.0.0',
+      )
+
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+
+      return {
+        coffees: [],
+        coffeesInCart: [],
+      }
+    },
+  )
+
+  const { cafes, coffeesInCart } = CoffeeState
+
+  // const cartQuantity = cartItems.length
+  const cartQuantity = coffeesInCart.length
+  console.log(coffeesInCart)
+
+  // const cartItemTotalPrice = coffeesInCart.reduce((total, coffeesInCart) => {
+  //   return total + coffeesInCart.price * coffeesInCart.quantity
+  // }, 0)
+
+  // Add item no Storage
+  // useEffect(() => {
+  //   const stateJSON = JSON.stringify(CoffeeState)
+  //   localStorage.setItem('@ignite-coffee:coffee-state-1.0.0', stateJSON)
+  // }, [CoffeeState])
+
+  function addCoffeeToCart(data: CartItem) {
+    const newCoffeeCart: CartItem = {
+      id: data.id,
+      image: data.image,
+      description: data.description,
+      title: data.title,
+      tags: data.tags,
+      price: data.price,
+      quantity: data.quantity + 1,
     }
 
-    return []
-  })
-
-  const cartQuantity = cartItems.length
-
-  const cartItemTotalPrice = cartItems.reduce((total, cartItem) => {
-    return total + cartItem.price * cartItem.quantity
-  }, 0)
-
-  function addCoffeeToCart(coffee: CartItem) {
-    const coffeeAlreadyExistsInCart = cartItems.findIndex(
-      (cartItem) => cartItem.id === coffee.id,
-    )
-
-    const newCart = produce(cartItems, (draft) => {
-      if (coffeeAlreadyExistsInCart < 0) {
-        draft.push(coffee)
-      } else {
-        draft[coffeeAlreadyExistsInCart].quantity += coffee.quantity
-      }
-    })
-
-    setCartItems(newCart)
+    dispatch(addNewCoffeToCartAction(newCoffeeCart))
   }
 
   return (
@@ -57,8 +87,8 @@ export function CartContextProvider({ children }: CoffeeProviderProps) {
       value={{
         addCoffeeToCart,
         cartQuantity,
-        cartItems,
-        cartItemTotalPrice,
+        cafes,
+        // cartItemTotalPrice,
       }}
     >
       {children}
