@@ -101,7 +101,7 @@ export const CoffesSelectedCheckout = styled.div`
     font-size: 1.125rem;
   }
 
-  div {
+  > div {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;

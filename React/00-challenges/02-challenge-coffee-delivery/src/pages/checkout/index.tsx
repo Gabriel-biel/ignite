@@ -108,9 +108,17 @@ export function Checkout() {
         <h1>Cafés Selecionados</h1>
         <div>
           {cartItems.map((cartItem) => {
-            return <CoffeeCard key={cartItem.id} coffee={cartItem} />
+            return (
+              <>
+                <CoffeeCard
+                  key={cartItem.id}
+                  coffee={cartItem}
+                  typeCardCoffeeCatalog={false}
+                />
+                <hr />
+              </>
+            )
           })}
-          <hr />
           <span>
             <p>Total de intens</p>
             <p>9.99</p>

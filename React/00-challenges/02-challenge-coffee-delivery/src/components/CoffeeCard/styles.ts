@@ -33,18 +33,37 @@ export const CoffeeCardCatolog = styled.div`
     margin-bottom: 2rem;
     text-align: center;
     color: ${(props) => props.theme['base-Label']};
-    padding: 0 20px;
+    padding: 0 1.25rem;
   }
 `
 
 export const CoffeeCardCart = styled.div`
   display: flex;
-  background: red;
+  gap: 1.25rem;
+  padding: 4px 8px;
+  height: 5rem;
 
   img {
     width: 4rem;
     height: 4rem;
   }
+
+  p {
+    color: ${(props) => props.theme['base-SubTitle']};
+  }
+`
+
+export const ButtonsQuantityRemove = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
+export const ButtonRemove = styled.button`
+  display: flex;
+  gap: 4px;
+
+  border: none;
+  background: ${(props) => props.theme['base-Button']};
 `
 
 export const Tag = styled.div`
@@ -103,47 +122,5 @@ export const ButtonIncrementNewCoffee = styled.div`
     background: ${(props) => props.theme['purple-800']};
     color: ${(props) => props.theme.white};
     cursor: pointer;
-  }
-`
-
-export const ButtonsIncreaseDecrease = styled.div`
-  display: flex;
-  width: 72px;
-
-  margin-left: 1.5rem;
-
-  button {
-    width: 100%;
-    height: 2.375rem;
-    border: none;
-    background: ${(props) => props.theme['base-Button']};
-    color: ${(props) => props.theme['purple-800']};
-    cursor: pointer;
-  }
-
-  button:first-child {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-  }
-  button:last-child {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-  }
-
-  input {
-    width: 1.25rem;
-    text-align: center;
-    border: none;
-    background: ${(props) => props.theme['base-Button']};
-
-    &:focus {
-      box-shadow: none;
-    }
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
   }
 `

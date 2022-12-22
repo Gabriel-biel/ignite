@@ -1,15 +1,17 @@
-import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { ShoppingCartSimple, Trash } from 'phosphor-react'
 
 import {
   CoffeeCardCatolog,
-  Tag,
-  ButtonsIncreaseDecrease,
-  ButtonIncrementNewCoffee,
   CoffeeCardCart,
+  Tag,
+  ButtonsQuantityRemove,
+  ButtonIncrementNewCoffee,
+  ButtonRemove,
 } from './styles'
 import { useContext, useState } from 'react'
 import { formatPrice } from '../../util/format'
 import { CartContext } from '../../Contexts/CartConext'
+import { QuantitySelector } from '../QuantitySelector'
 
 interface CoffeeCardProps {
   id: string
@@ -63,21 +65,11 @@ export function CoffeeCard({
       <ButtonIncrementNewCoffee>
         <p>R$ </p>
         <span>{formatedPrice}</span>
-        <ButtonsIncreaseDecrease>
-          <button disabled={quantity <= 1} onClick={handleDecrease}>
-            <Minus size={14} weight="bold" />
-          </button>
-          <input
-            type="number"
-            value={quantity}
-            readOnly={true}
-            min={1}
-            max={10}
-          />
-          <button onClick={handleIncrease}>
-            <Plus size={14} weight="bold" />
-          </button>
-        </ButtonsIncreaseDecrease>
+        <QuantitySelector
+          quantity={quantity}
+          handleIncrease={handleIncrease}
+          handleDecrease={handleDecrease}
+        />
         <button onClick={addToCart}>
           <ShoppingCartSimple size={22} weight="fill" />
         </button>
@@ -85,23 +77,21 @@ export function CoffeeCard({
     </CoffeeCardCatolog>
   ) : (
     <CoffeeCardCart>
-      {/* <img src={coffee.image} alt="" />
-      <Tag>
-        {coffee.tags.map((tag) => {
-          return <span key={`${coffee.id} ${tag}`}>{tag}</span>
-        })}
-      </Tag>
-      <strong>{coffee.title}</strong>
-      <p>{coffee.description}</p>
-      <ButtonsIncreaseDecrease>
-        <button disabled={quantity <= 1} onClick={handleDecrease}>
-          <Minus size={14} weight="bold" />
-        </button>
-        <input type="number" value={quantity} readOnly={true} max={10} />
-        <button onClick={handleIncrease}>
-          <Plus size={14} weight="bold" />
-        </button>
-      </ButtonsIncreaseDecrease> */}
+      <img src={coffee.image} alt="" />
+      <div>
+        <p>{coffee.title}</p>
+        <ButtonsQuantityRemove>
+          <QuantitySelector
+            quantity={quantity}
+            handleIncrease={handleIncrease}
+            handleDecrease={handleDecrease}
+          />
+          <ButtonRemove>
+            <Trash size={16} weight="regular" />
+            <p>Remover</p>
+          </ButtonRemove>
+        </ButtonsQuantityRemove>
+      </div>
     </CoffeeCardCart>
   )
 }
