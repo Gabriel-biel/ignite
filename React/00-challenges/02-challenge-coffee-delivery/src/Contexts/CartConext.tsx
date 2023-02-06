@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { createContext, ReactNode, useReducer } from 'react'
 import { addNewCoffeToCartAction } from '../Reducers/Coffee/actions'
 import { Coffee, CoffeeReducer } from '../Reducers/Coffee/reducer'
 
@@ -10,7 +10,6 @@ interface CartContextType {
   cafes: CartItem[]
   addCoffeeToCart: (data: CartItem) => void
   cartQuantity: number
-  // cartItemTotalPrice: number
 }
 
 interface CoffeeProviderProps {
@@ -20,20 +19,10 @@ interface CoffeeProviderProps {
 export const CartContext = createContext({} as CartContextType)
 
 export function CartContextProvider({ children }: CoffeeProviderProps) {
-  // const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-  //   const storagedCart = localStorage.getItem('@ignite-coffee-1.0.0')
-
-  //   if (storagedCart) {
-  //     return JSON.parse(storagedCart)
-  //   }
-
-  //   return []
-  // })
-
   const [CoffeeState, dispatch] = useReducer(
     CoffeeReducer,
     {
-      coffees: [],
+      cafes: [],
       coffeesInCart: [],
     },
     () => {
@@ -46,37 +35,27 @@ export function CartContextProvider({ children }: CoffeeProviderProps) {
       }
 
       return {
-        coffees: [],
+        cafes: [],
         coffeesInCart: [],
       }
     },
   )
 
   const { cafes, coffeesInCart } = CoffeeState
-
-  // const cartQuantity = cartItems.length
   const cartQuantity = coffeesInCart.length
-  console.log(coffeesInCart)
 
-  // const cartItemTotalPrice = coffeesInCart.reduce((total, coffeesInCart) => {
-  //   return total + coffeesInCart.price * coffeesInCart.quantity
-  // }, 0)
-
-  // Add item no Storage
-  // useEffect(() => {
-  //   const stateJSON = JSON.stringify(CoffeeState)
-  //   localStorage.setItem('@ignite-coffee:coffee-state-1.0.0', stateJSON)
-  // }, [CoffeeState])
+  console.log(cafes)
+  // console.log(coffeesInCart)
 
   function addCoffeeToCart(data: CartItem) {
-    const newCoffeeCart: CartItem = {
+    const newCoffeeCart = {
       id: data.id,
       image: data.image,
       description: data.description,
       title: data.title,
       tags: data.tags,
       price: data.price,
-      quantity: data.quantity + 1,
+      quantity: data.quantity,
     }
 
     dispatch(addNewCoffeToCartAction(newCoffeeCart))
@@ -88,7 +67,6 @@ export function CartContextProvider({ children }: CoffeeProviderProps) {
         addCoffeeToCart,
         cartQuantity,
         cafes,
-        // cartItemTotalPrice,
       }}
     >
       {children}

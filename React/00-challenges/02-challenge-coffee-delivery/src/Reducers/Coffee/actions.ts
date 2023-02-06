@@ -1,7 +1,7 @@
 import { Coffee } from './reducer'
 
 export enum ActionTypes {
-  ADD_NEW_COFFEE = 'ADD_NEW_COFEE',
+  ADD_NEW_COFFEE = 'ADD_NEW_COFFEE',
   REMOVE_COFFEE = 'REMOVE_COFEE',
 }
 

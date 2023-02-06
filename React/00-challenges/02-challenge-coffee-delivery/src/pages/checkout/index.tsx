@@ -9,6 +9,7 @@ import { useContext } from 'react'
 import { useTheme } from 'styled-components'
 import { CoffeeCard } from '../../components/CoffeeCard'
 import { CartContext } from '../../Contexts/CartConext'
+import { formatPrice } from '../../util/format'
 
 import { Title } from './components/Title'
 import {
@@ -101,21 +102,21 @@ export function Checkout() {
                   typeCardCoffeeCatalog={false}
                 />
                 <hr />
+                <span>
+                  <p>Total de intens</p>
+                  <p>{formatPrice(cafe.price * cafe.quantity)}</p>
+                </span>
+                <span>
+                  <p>Entrega</p>
+                  <p>0.00</p>
+                </span>
+                <span>
+                  <strong>Total</strong>
+                  <strong>{formatPrice(cafe.price * cafe.quantity)}</strong>
+                </span>
               </>
             )
           })}
-          <span>
-            <p>Total de intens</p>
-            <p>9.99</p>
-          </span>
-          <span>
-            <p>Entrega</p>
-            <p>9.99</p>
-          </span>
-          <span>
-            <strong>Total</strong>
-            <strong>9.99</strong>
-          </span>
         </div>
       </CoffesSelectedCheckout>
     </CheckoutContainer>

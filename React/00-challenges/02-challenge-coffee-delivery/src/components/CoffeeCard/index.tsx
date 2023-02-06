@@ -32,7 +32,6 @@ export function CoffeeCard({
   typeCardCoffeeCatalog = true,
 }: CoffeeProps) {
   const [quantity, setQuantity] = useState(1)
-
   const { addCoffeeToCart } = useContext(CartContext)
 
   function handleIncrease() {
@@ -47,6 +46,7 @@ export function CoffeeCard({
       ...coffee,
       quantity,
     }
+
     addCoffeeToCart(coffeeToAdd)
   }
 
