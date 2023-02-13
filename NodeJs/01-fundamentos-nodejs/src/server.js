@@ -1,5 +1,6 @@
 import http from 'node:http'
-import {json} from './middlewares/json.js'
+import { randomUUID } from 'node:crypto'
+import { json } from './middlewares/json.js'
 import { Database } from "./database.js"
 
 const database = new Database() 
@@ -19,14 +20,14 @@ if (method === 'POST' && url === '/users') {
   const { nome, email} = request.body
 
   const user = ({
-    id: 1,
+    id: randomUUID(),
     nome: nome,
     email: email,
   })
 
   database.insert('users', user)
   
-  return response.end('Usuário criado')
+  return response.end('Usuário-criado')
 }
 
 })
