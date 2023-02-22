@@ -9,8 +9,12 @@ export const routes = [
     method: 'GET',
     path: buildRoutePath( '/users'),
     handler: (request, response) => {
-      const users = database.select('users')
-
+      const { search } = request.query
+      
+      const users = database.select('users', search ? {
+        nome: search,
+        email: search,
+      }: null)
       return response.end(JSON.stringify(users))
     }
   },
@@ -30,6 +34,21 @@ export const routes = [
   
     return response.end()
 }
+  },
+  {
+    method: 'PUT',
+    path: buildRoutePath('/users/:id'),
+    handler: (request, response) => {
+      const { id } = request.params
+      const { nome, email } = request.body
+
+      database.update('users', id, {
+        nome, 
+        email
+      })
+
+      return response.writeHead(204).end()
+    }
   },
   {
     method: 'DELETE',
