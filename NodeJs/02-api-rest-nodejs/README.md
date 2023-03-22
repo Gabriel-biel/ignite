@@ -8,8 +8,8 @@
 # Regra de Negocio
 
 - [x] A transação pode ser do tipo crédito que somará ao valor total, ou débito que subtrairá
-- [] Deve ser possível indentificar o usuário entre as transações
-- [] O usuário só pode visualizar transações o qual ele participou;
+- [x] Deve ser possível indentificar o usuário entre as transações
+- [x] O usuário só pode visualizar transações o qual ele participou;
 
 # Requisitos não Funcionais
 
