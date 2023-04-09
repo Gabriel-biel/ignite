@@ -21,7 +21,24 @@ export async function refeicoesRoutes(app: FastifyInstance) {
         .where('session_id', sessionId)
         .select()
 
-      return reply.status(200).send(meals)
+      const mealsData = meals.reduce(
+        (acumulador, valorAtual) => {
+          if (valorAtual.inDiet) {
+            acumulador.totalMealsInDiet++
+          } else {
+            acumulador.totalMealsOutDiet++
+          }
+          acumulador.totalMeals++
+          return acumulador
+        },
+        {
+          totalMealsInDiet: 0,
+          totalMealsOutDiet: 0,
+          totalMeals: 0,
+        },
+      )
+
+      return reply.status(200).send(mealsData)
     },
   )
 
