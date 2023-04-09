@@ -38,7 +38,28 @@ export async function refeicoesRoutes(app: FastifyInstance) {
         },
       )
 
-      return reply.status(200).send(mealsData)
+      let bestSequence = 0
+      let currentSequence = 0
+
+      meals.forEach((meal) => {
+        if (!meal.inDiet) {
+          currentSequence = 0
+          return
+        }
+
+        currentSequence++
+
+        if (currentSequence >= bestSequence) {
+          bestSequence = currentSequence
+        }
+      })
+
+      return reply.status(200).send({
+        metrics: {
+          ...mealsData,
+          bestSequence,
+        },
+      })
     },
   )
 
@@ -119,7 +140,7 @@ export async function refeicoesRoutes(app: FastifyInstance) {
       const { name, description, data, hora, inDiet } =
         alterRefeicaoBodySchema.parse(request.body)
 
-      await knex('refeicoes')
+      const mealExists = await knex('refeicoes')
         .where({
           session_id: sessionId,
           id,
@@ -131,6 +152,10 @@ export async function refeicoesRoutes(app: FastifyInstance) {
           hora,
           inDiet,
         })
+
+      if (!mealExists) {
+        throw new Error('Food Not Found!')
+      }
 
       return reply.status(200).send({ message: 'Updated successfully' })
     },
