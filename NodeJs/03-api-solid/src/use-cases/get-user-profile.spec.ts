@@ -8,12 +8,12 @@ import { ResourceNotFoundError } from './errors/resource-not-found-error'
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: GetUserProfileUseCase
 
-describe('Get suer profile Use Case', () => {
+describe('Get user profile Use Case', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
     sut = new GetUserProfileUseCase(inMemoryUsersRepository)
   })
-  it('should be able to get profile', async () => {
+  it('should be able to get user profile', async () => {
     const createdUser = await inMemoryUsersRepository.create({
       name: 'Jhon Doe',
       email: 'jhondoe@gmail.com',
