@@ -34,7 +34,7 @@ describe('Create check-ins (e2e)', () => {
       },
     })
 
-    // // // // //
+    //
 
     const response = await request(app.server)
       .patch(`/check-ins/${checkIn.id}/validate`)
