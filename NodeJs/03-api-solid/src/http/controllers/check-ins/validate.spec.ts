@@ -13,7 +13,7 @@ describe('Create check-ins (e2e)', () => {
     await app.close()
   })
   it('shuld be able to create a check-in', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
     // Normalment evitamos esse tipo de criação por ser mais sucetivel a erros
     // mas farei assim para demonstrar que e totoalmente possivel criar uma gym diretamente
