@@ -1,0 +1,36 @@
+import { InMemoryPetsRepository } from '@/repositories/in-memory/in-Memory-pets-repository'
+import { describe, beforeEach, it, expect } from 'vitest'
+import { GetPetsDescriptionUseCase } from './get-pets-description'
+
+let inMemoryPetsRepository: InMemoryPetsRepository
+let sut: GetPetsDescriptionUseCase
+
+describe('Get pets by description', () => {
+  beforeEach(() => {
+    inMemoryPetsRepository = new InMemoryPetsRepository()
+    sut = new GetPetsDescriptionUseCase(inMemoryPetsRepository)
+  })
+  it('should be able to list pets by characteristics', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await inMemoryPetsRepository.create({
+        id: 'Pet for test',
+        type: 'Cat',
+        race: 'Viralata',
+        city: 'Lábrea',
+        description: `Gato resgatado das ruas ${i}`,
+        org_id: `org-id ${i}`,
+      })
+    }
+
+    const { pets } = await sut.execute({
+      query: 'Gato resgatado das ruas',
+      page: 3,
+    })
+
+    expect(pets).toHaveLength(2)
+    expect(pets).toEqual([
+      expect.objectContaining({ description: 'Gato resgatado das ruas 21' }),
+      expect.objectContaining({ description: 'Gato resgatado das ruas 22' }),
+    ])
+  })
+})
