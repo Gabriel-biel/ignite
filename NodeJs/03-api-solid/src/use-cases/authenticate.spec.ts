@@ -38,7 +38,7 @@ describe('Authenticate Use Case', () => {
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
-  it('should not be able to authenticate with not wrong email', async () => {
+  it('should not be able to authenticate with not wrong password', async () => {
     const inMemoryUsersRepository = new InMemoryUsersRepository()
     const sut = new AuthenticateUseCase(inMemoryUsersRepository)
 
