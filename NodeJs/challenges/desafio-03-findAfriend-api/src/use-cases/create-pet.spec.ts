@@ -22,12 +22,16 @@ describe('Create pets Use Case ', () => {
       email: 'org@gmail.com',
       password_hash: '123456',
       role: 'ADMIN',
+      addresses: {
+        city: 'Lábrea',
+        street: 'Rua São Lazaro',
+        phone: '98989898',
+      },
     })
 
     const { pet } = await sut.execute({
       type: 'Cat',
       race: 'Viralata',
-      city: 'Lábrea',
       description: 'Gato resgatado das ruas',
       org_id: 'org-id',
     })

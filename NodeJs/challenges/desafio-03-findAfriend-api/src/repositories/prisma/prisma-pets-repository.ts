@@ -22,13 +22,7 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async searchByCity(city: string) {
-    const pets = await prisma.pet.findMany({
-      where: {
-        city,
-      },
-    })
-
-    return pets
+    // todo: fix-me
   }
 
   async searchMany(query: string, page: number) {

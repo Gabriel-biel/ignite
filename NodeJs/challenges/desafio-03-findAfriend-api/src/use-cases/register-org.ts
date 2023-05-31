@@ -1,16 +1,18 @@
-import { ContactRepository } from '@/repositories/contact-repository'
+import { AddressesRepository } from '@/repositories/addresses-repository'
 import { OrgsRepository } from '@/repositories/orgs-repository'
 import { Org } from '@prisma/client'
 import { hash } from 'bcryptjs'
+import { ResourceNotFoundError } from './errors/resource-not-found'
 
-interface RegisterOrgUseCaseRequest {
+export interface RegisterOrgUseCaseRequest {
   title: string
   description: string
   email: string
   password: string
-  contact: {
+  addresses: {
+    city: string
     phone: string
-    address: string
+    street: string
   }
 }
 
@@ -21,7 +23,7 @@ interface RegisterOrgUseCaseResponse {
 export class RegisterOrgUseCase {
   constructor(
     private orgRepository: OrgsRepository,
-    private contactRepository: ContactRepository,
+    private addressesRepository: AddressesRepository,
   ) {}
 
   async execute({
@@ -29,7 +31,7 @@ export class RegisterOrgUseCase {
     description,
     email,
     password,
-    contact: { address, phone },
+    addresses,
   }: RegisterOrgUseCaseRequest): Promise<RegisterOrgUseCaseResponse> {
     const password_hash = await hash(password, 6)
     const org = await this.orgRepository.create({
@@ -37,13 +39,15 @@ export class RegisterOrgUseCase {
       description,
       email,
       password_hash,
+      addresses,
     })
 
-    await this.contactRepository.create({
-      address,
-      phone,
-      org_id: org.id,
-    })
+    // await this.addressesRepository.create({
+    //   city: addresses.city,
+    //   street: addresses.street,
+    //   phone: addresses.phone,
+    //   org_id: org.id,
+    // })
 
     return { org }
   }

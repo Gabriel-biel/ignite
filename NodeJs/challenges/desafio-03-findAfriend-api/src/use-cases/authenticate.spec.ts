@@ -18,6 +18,11 @@ describe('Authenticate Use Case', () => {
       title: 'Org for cats',
       email: 'org@gmail.com',
       password_hash: await hash('123456', 6),
+      addresses: {
+        city: 'Lábrea',
+        street: 'Rua São Lazaro',
+        phone: '98989898',
+      },
     })
 
     const { org } = await sut.execute({
@@ -35,6 +40,11 @@ describe('Authenticate Use Case', () => {
       title: 'org jhon Doe',
       email: 'org@gmail.com',
       password_hash: '123456',
+      addresses: {
+        city: 'Lábrea',
+        street: 'Rua São Lazaro',
+        phone: '98989898',
+      },
     })
 
     await expect(() =>
@@ -52,6 +62,11 @@ describe('Authenticate Use Case', () => {
       title: 'org jhon Doe',
       email: 'org@gmail.com',
       password_hash: '123456',
+      addresses: {
+        city: 'Lábrea',
+        street: 'Rua São Lazaro',
+        phone: '98989898',
+      },
     })
 
     await expect(() =>

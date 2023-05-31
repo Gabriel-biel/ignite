@@ -16,7 +16,6 @@ describe('Get pet profile use case', () => {
       id: 'Pet for test',
       type: 'Cat',
       race: 'Viralata',
-      city: 'Lábrea',
       description: 'Gato resgatado das ruas',
       org_id: 'org-id',
     })
@@ -25,7 +24,6 @@ describe('Get pet profile use case', () => {
       id: 'Pet for tests TDD',
       type: 'Cat',
       race: 'Viralata',
-      city: 'Lábrea',
       description: 'Gato resgatado das ruas',
       org_id: 'org-id',
     })

@@ -31,7 +31,6 @@ model Pet {
   type        String
   race        String
   description String
-  city        String
   available   DateTime?
   created_at  DateTime  @default(now())
 
@@ -49,15 +48,16 @@ model Org {
   password_hash String
   role          Role      @default(MEMBER)
   pets          Pet[]
-  Contact       Contact[]
+  addresses     Address[]
 
   @@map("orgs")
 }
 
-model Contact {
-  id      String @unique() @default(uuid())
-  phone   String
-  address String
+model Address {
+  id     String @unique() @default(uuid())
+  phone  String
+  street String
+  city   String
 
   org    Org    @relation(fields: [org_id], references: [id])
   org_id String

@@ -6,7 +6,6 @@ import { ResourceNotFoundError } from './errors/resource-not-found'
 interface CreatePetUseCaseRequest {
   type: string
   race: string
-  city: string
   description: string
   org_id: string
 }
@@ -25,7 +24,6 @@ export class CreatePetUseCase {
     description,
     type,
     race,
-    city,
     org_id,
   }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
     const org = await this.orgRepository.findById(org_id)
@@ -38,7 +36,6 @@ export class CreatePetUseCase {
       type,
       race,
       description,
-      city,
       org_id,
     })
 

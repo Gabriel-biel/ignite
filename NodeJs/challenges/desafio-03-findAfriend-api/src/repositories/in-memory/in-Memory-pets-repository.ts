@@ -11,7 +11,6 @@ export class InMemoryPetsRepository implements PetsRepository {
       org_id: data.org_id,
       type: data.type,
       race: data.race,
-      city: data.city,
       description: data.description,
       available: data.available ? new Date(data.available) : null,
       created_at: new Date(),
@@ -32,7 +31,7 @@ export class InMemoryPetsRepository implements PetsRepository {
   }
 
   async searchByCity(city: string): Promise<Pet[]> {
-    return this.items.filter((item) => item.city === city)
+    // todo: fix-me
   }
 
   async searchMany(query: string, page: number) {

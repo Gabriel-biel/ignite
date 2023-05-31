@@ -16,7 +16,6 @@ describe('Get pets by description', () => {
         id: 'Pet for test',
         type: 'Cat',
         race: 'Viralata',
-        city: 'Lábrea',
         description: `Gato resgatado das ruas ${i}`,
         org_id: `org-id ${i}`,
       })
