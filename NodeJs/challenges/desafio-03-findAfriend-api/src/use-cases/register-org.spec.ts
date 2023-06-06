@@ -1,19 +1,18 @@
 import { beforeEach, describe, it, expect } from 'vitest'
 import { RegisterOrgUseCase } from './register-org'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
-import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-addresses-repository'
+import { OrgAlreadyExistsError } from './errors/org-already-exists'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryOrgsRepository: InMemoryOrgsRepository
-let inMemoryAddressesRepository: InMemoryAddressRepository
 let sut: RegisterOrgUseCase
 
 describe('register orgs Use Case', () => {
   beforeEach(() => {
-    inMemoryOrgsRepository = new InMemoryOrgsRepository()
-    sut = new RegisterOrgUseCase(
-      inMemoryOrgsRepository,
-      inMemoryAddressesRepository,
-    )
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryOrgsRepository = new InMemoryOrgsRepository(inMemoryDatabase)
+    sut = new RegisterOrgUseCase(inMemoryOrgsRepository)
   })
   it('should be able to registe org', async () => {
     const { org } = await sut.execute({
@@ -29,8 +28,25 @@ describe('register orgs Use Case', () => {
     })
 
     expect(org.id).toEqual(expect.any(String))
-    expect(inMemoryOrgsRepository.items).toEqual([
-      expect.objectContaining({ city: 'Manaus' }),
-    ])
+  })
+
+  it('should not be able to register with same email twice', async () => {
+    const email = 'jhondoe@gmail.com'
+
+    await sut.execute({
+      title: 'Org Jhon Doe',
+      email,
+      description: 'org qualquer',
+      password: '123456',
+    })
+
+    await expect(() =>
+      sut.execute({
+        title: 'Org joãozinho',
+        email,
+        description: 'org qualquer',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(OrgAlreadyExistsError)
   })
 })

@@ -1,15 +1,14 @@
-import { AddressesRepository } from '@/repositories/addresses-repository'
 import { OrgsRepository } from '@/repositories/orgs-repository'
-import { Org } from '@prisma/client'
 import { hash } from 'bcryptjs'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { OrgAlreadyExistsError } from './errors/org-already-exists'
+import { Org } from '@prisma/client'
 
 export interface RegisterOrgUseCaseRequest {
   title: string
   description: string
   email: string
   password: string
-  addresses: {
+  addresses?: {
     city: string
     phone: string
     street: string
@@ -21,10 +20,7 @@ interface RegisterOrgUseCaseResponse {
 }
 
 export class RegisterOrgUseCase {
-  constructor(
-    private orgRepository: OrgsRepository,
-    private addressesRepository: AddressesRepository,
-  ) {}
+  constructor(private orgRepository: OrgsRepository) {}
 
   async execute({
     title,
@@ -34,6 +30,13 @@ export class RegisterOrgUseCase {
     addresses,
   }: RegisterOrgUseCaseRequest): Promise<RegisterOrgUseCaseResponse> {
     const password_hash = await hash(password, 6)
+
+    const orgWithSameEmail = await this.orgRepository.findByEmail(email)
+
+    if (orgWithSameEmail) {
+      throw new OrgAlreadyExistsError()
+    }
+
     const org = await this.orgRepository.create({
       title,
       description,
@@ -41,13 +44,6 @@ export class RegisterOrgUseCase {
       password_hash,
       addresses,
     })
-
-    // await this.addressesRepository.create({
-    //   city: addresses.city,
-    //   street: addresses.street,
-    //   phone: addresses.phone,
-    //   org_id: org.id,
-    // })
 
     return { org }
   }

@@ -2,13 +2,16 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { beforeEach, describe, expect, it } from 'vitest'
 import { RegisterUseCase } from './register'
 import { UserAlreadyExistsError } from './errors/user-already-exists'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryDatabase: DataBaseInMemory
 let sut: RegisterUseCase
 
 describe('Register Use Case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryUsersRepository = new InMemoryUsersRepository(inMemoryDatabase)
     sut = new RegisterUseCase(inMemoryUsersRepository)
   })
 

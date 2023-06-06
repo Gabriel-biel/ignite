@@ -15,6 +15,36 @@ enum Role {
   MEMBER
 }
 
+enum Age {
+  FILHOTE
+  ADOLESCENTE
+  ADULTO
+}
+
+enum Porte {
+  PEQUENINO
+  MEDIO
+  GRANDE
+}
+
+enum Energy {
+  BAIXA
+  MEDIA
+  ALTO
+}
+
+enum Independence {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum Environment {
+  PEQUENO
+  GRANDE
+  AMPLO
+}
+
 model User {
   id            String   @id @default(uuid())
   name          String
@@ -27,15 +57,22 @@ model User {
 }
 
 model Pet {
-  id          String    @id @default(uuid())
-  type        String
-  race        String
-  description String
-  available   DateTime?
-  created_at  DateTime  @default(now())
+  id                 String       @id @default(uuid())
+  name               String
+  description        String
+  age                Age
+  porte              Porte
+  energy_level       Energy
+  independence_level Independence
+  environment        Environment
 
-  org    Org    @relation(fields: [org_id], references: [id])
-  org_id String
+  available  DateTime?
+  created_at DateTime  @default(now())
+
+  org          Org            @relation(fields: [org_id], references: [id], onDelete: Cascade)
+  org_id       String
+  pictures     Picture[]
+  requirements Requirements[]
 
   @@map("pets")
 }
@@ -59,6 +96,24 @@ model Address {
   street String
   city   String
 
-  org    Org    @relation(fields: [org_id], references: [id])
+  org    Org    @relation(fields: [org_id], references: [id], onDelete: Cascade)
   org_id String
+}
+
+model Picture {
+  id   String @unique() @default(uuid())
+  name String
+
+  pets   Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
+  pet_id String
+
+  @@map("pictures")
+}
+
+model Requirements {
+  id          String @unique() @default(uuid())
+  description String
+
+  pets   Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
 }

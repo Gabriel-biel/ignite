@@ -1,6 +1,6 @@
 import { Address } from '@prisma/client'
 
-export interface AddressCreateInput {
+export interface IAddress {
   city: string
   phone: string
   street: string
@@ -8,6 +8,6 @@ export interface AddressCreateInput {
 }
 
 export interface AddressesRepository {
-  create(data: AddressCreateInput): Promise<Address>
+  create(data: IAddress): Promise<Address>
   findById(id: string): Promise<Address | null>
 }

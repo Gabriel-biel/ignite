@@ -2,15 +2,18 @@ import { InMemoryPetsRepository } from '@/repositories/in-memory/in-Memory-pets-
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { CreatePetUseCase } from './create-pet'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryPetsRepository: InMemoryPetsRepository
 let inMemoryOrgsRepository: InMemoryOrgsRepository
 let sut: CreatePetUseCase
 
 describe('Create pets Use Case ', () => {
   beforeEach(() => {
-    inMemoryOrgsRepository = new InMemoryOrgsRepository()
-    inMemoryPetsRepository = new InMemoryPetsRepository()
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryOrgsRepository = new InMemoryOrgsRepository(inMemoryDatabase)
+    inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
     sut = new CreatePetUseCase(inMemoryPetsRepository, inMemoryOrgsRepository)
   })
 
@@ -30,10 +33,18 @@ describe('Create pets Use Case ', () => {
     })
 
     const { pet } = await sut.execute({
-      type: 'Cat',
-      race: 'Viralata',
-      description: 'Gato resgatado das ruas',
+      name: 'Theodoro',
+      age: 'FILHOTE',
+      porte: 'PEQUENINO',
+      energy_level: 'ALTO',
+      independence_level: 'BAIXA',
+      environment: 'PEQUENO',
+      requirements: {
+        description: 'Necessita Atenção',
+      },
+      available: new Date(),
       org_id: 'org-id',
+      description: 'Gato resgatado das ruas',
     })
 
     expect(pet.id).toEqual(expect.any(String))

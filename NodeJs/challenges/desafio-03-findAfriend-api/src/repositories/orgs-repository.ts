@@ -1,14 +1,13 @@
 import { Org } from '@prisma/client'
 
-export interface OrgCreateInput {
+export interface IOrg {
   id?: string
   title: string
-  description?: string
+  description: string
   email: string
   password_hash: string
   role?: 'ADMIN' | 'MEMBER'
-  pets?: string
-  addresses: {
+  addresses?: {
     city: string
     phone: string
     street: string
@@ -16,8 +15,8 @@ export interface OrgCreateInput {
 }
 
 export interface OrgsRepository {
+  create(data: IOrg): Promise<Org>
   findById(id: string): Promise<Org | null>
   findByEmail(email: string): Promise<Org | null>
   searchMany(query: string, page: number): Promise<Org[]>
-  create(data: OrgCreateInput): Promise<Org>
 }

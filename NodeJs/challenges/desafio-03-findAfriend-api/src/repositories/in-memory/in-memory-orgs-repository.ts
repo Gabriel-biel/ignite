@@ -1,12 +1,37 @@
-import { OrgCreateInput, OrgsRepository } from '../orgs-repository'
+import { IOrg, OrgsRepository } from '../orgs-repository'
 import { randomUUID } from 'node:crypto'
-import { Org } from '@prisma/client'
+import { DataBaseInMemory } from './database-in-memory'
 
 export class InMemoryOrgsRepository implements OrgsRepository {
-  public items: Org[] = []
+  constructor(private inMemoryDatabase: DataBaseInMemory) {}
+
+  async create(data: IOrg) {
+    const org = {
+      id: data.id ?? randomUUID(),
+      title: data.title,
+      description: data.description ?? null,
+      email: data.email,
+      password_hash: data.password_hash,
+      role: data.role ?? 'MEMBER',
+    }
+
+    if (data.addresses) {
+      const address = {
+        id: randomUUID(),
+        org_id: org.id,
+        city: data.addresses.city,
+        street: data.addresses.street,
+        phone: data.addresses.phone,
+      }
+      this.inMemoryDatabase.addresses.push(address)
+    }
+
+    this.inMemoryDatabase.orgs.push(org)
+    return org
+  }
 
   async findById(id: string) {
-    const org = this.items.find((item) => item.id === id)
+    const org = this.inMemoryDatabase.orgs.find((item) => item.id === id)
 
     if (!org) {
       return null
@@ -16,7 +41,7 @@ export class InMemoryOrgsRepository implements OrgsRepository {
   }
 
   async findByEmail(email: string) {
-    const org = this.items.find((item) => item.email === email)
+    const org = this.inMemoryDatabase.orgs.find((item) => item.email === email)
 
     if (!org) {
       return null
@@ -26,23 +51,8 @@ export class InMemoryOrgsRepository implements OrgsRepository {
   }
 
   async searchMany(query: string, page: number) {
-    return this.items
+    return this.inMemoryDatabase.orgs
       .filter((item) => item.title.includes(query))
       .slice((page - 1) * 20, page * 20)
-  }
-
-  async create(data: OrgCreateInput) {
-    const org = {
-      id: data.id ?? randomUUID(),
-      title: data.title,
-      description: data.description ?? null,
-      email: data.email,
-      password_hash: data.password_hash,
-      role: data.role ?? 'MEMBER',
-      addresses: data.addresses,
-    }
-
-    this.items.push(org)
-    return org
   }
 }

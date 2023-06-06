@@ -1,13 +1,16 @@
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-Memory-pets-repository'
 import { describe, beforeEach, it, expect } from 'vitest'
 import { GetPetsDescriptionUseCase } from './get-pets-description'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryPetsRepository: InMemoryPetsRepository
 let sut: GetPetsDescriptionUseCase
 
 describe('Get pets by description', () => {
   beforeEach(() => {
-    inMemoryPetsRepository = new InMemoryPetsRepository()
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
     sut = new GetPetsDescriptionUseCase(inMemoryPetsRepository)
   })
   it('should be able to list pets by characteristics', async () => {

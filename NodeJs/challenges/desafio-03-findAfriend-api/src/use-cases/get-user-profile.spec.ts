@@ -2,13 +2,16 @@ import { it, describe, expect, beforeEach } from 'vitest'
 import { ResourceNotFoundError } from './errors/resource-not-found'
 import { GetUserProfileUseCase } from './get-user-profile'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: GetUserProfileUseCase
 
-describe('Get pet profile use case', () => {
+describe('Get user profile use case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryUsersRepository = new InMemoryUsersRepository(inMemoryDatabase)
     sut = new GetUserProfileUseCase(inMemoryUsersRepository)
   })
   it('should be able to get user profile', async () => {
@@ -26,7 +29,10 @@ describe('Get pet profile use case', () => {
   })
 
   it('should be able to get user profile with wrong id', async () => {
-    const inMemoryUsersRepository = new InMemoryUsersRepository()
+    const inMemoryDatabase = new DataBaseInMemory()
+    const inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDatabase,
+    )
     const sut = new GetUserProfileUseCase(inMemoryUsersRepository)
 
     expect(() =>

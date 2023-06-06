@@ -2,42 +2,61 @@ import { InMemoryPetsRepository } from '@/repositories/in-memory/in-Memory-pets-
 import { it, describe, expect, beforeEach } from 'vitest'
 import { ResourceNotFoundError } from './errors/resource-not-found'
 import { GetPetProfileUseCase } from './get-pet-profile'
+import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryPetsRepository: InMemoryPetsRepository
 let sut: GetPetProfileUseCase
 
 describe('Get pet profile use case', () => {
   beforeEach(() => {
-    inMemoryPetsRepository = new InMemoryPetsRepository()
+    inMemoryDatabase = new DataBaseInMemory()
+    inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
     sut = new GetPetProfileUseCase(inMemoryPetsRepository)
   })
   it('should be able to get pet profile', async () => {
     await inMemoryPetsRepository.create({
-      id: 'Pet for test',
-      type: 'Cat',
-      race: 'Viralata',
-      description: 'Gato resgatado das ruas',
+      name: 'Elliot',
+      age: 'FILHOTE',
+      porte: 'PEQUENINO',
+      energy_level: 'ALTO',
+      independence_level: 'BAIXA',
+      environment: 'PEQUENO',
+      requirements: {
+        description: 'Necessita Atenção',
+      },
+      available: new Date(),
       org_id: 'org-id',
+      description: 'Gato Adotado',
     })
 
     const createdPet = await inMemoryPetsRepository.create({
       id: 'Pet for tests TDD',
-      type: 'Cat',
-      race: 'Viralata',
-      description: 'Gato resgatado das ruas',
+      name: 'Theodoro',
+      age: 'FILHOTE',
+      porte: 'PEQUENINO',
+      energy_level: 'ALTO',
+      independence_level: 'BAIXA',
+      environment: 'PEQUENO',
+      requirements: {
+        description: 'Necessita Atenção',
+      },
+      available: new Date(),
       org_id: 'org-id',
+      description: 'Gato resgatado das ruas',
     })
 
     const { pet } = await sut.execute({
       id: createdPet.id,
     })
 
-    expect(inMemoryPetsRepository.items).toHaveLength(2)
+    expect(inMemoryDatabase.pets).toHaveLength(2)
     expect(pet.id).toEqual('Pet for tests TDD')
   })
 
   it('should be able to get pet profile with wrong id', async () => {
-    const inMemoryPetsRepository = new InMemoryPetsRepository()
+    const inMemoryDatabase = new DataBaseInMemory()
+    const inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
     const sut = new GetPetProfileUseCase(inMemoryPetsRepository)
 
     expect(() => sut.execute({ id: 'non-existing-id' })).rejects.toBeInstanceOf(

@@ -1,11 +1,30 @@
-import { Prisma, Pet } from '@prisma/client'
-import { PetsRepository } from '../pets-repository'
+import { Pet } from '@prisma/client'
+import { IPets, PetsRepository } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPetsRepository implements PetsRepository {
-  async create(data: Prisma.PetUncheckedCreateInput) {
+  async create(data: IPets) {
     const pet = await prisma.pet.create({
-      data,
+      data: {
+        name: data.name,
+        age: data.age,
+        description: data.description,
+        porte: data.porte,
+        environment: data.environment,
+        independence_level: data.independence_level,
+        energy_level: data.energy_level,
+        pictures: {
+          create: {
+            name: data.name,
+          },
+        },
+        org_id: data.org_id,
+        requirements: {
+          create: {
+            description: data.requirements.description,
+          },
+        },
+      },
     })
 
     return pet
@@ -22,7 +41,18 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async searchByCity(city: string) {
-    // todo: fix-me
+    const pets = await prisma.pet.findMany({
+      where: {
+        org: {
+          addresses: {
+            every: {
+              city,
+            },
+          },
+        },
+      },
+    })
+    return pets
   }
 
   async searchMany(query: string, page: number) {

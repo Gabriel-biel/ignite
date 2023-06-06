@@ -1,14 +1,11 @@
-import { Address } from '@prisma/client'
-import {
-  AddressCreateInput,
-  AddressesRepository,
-} from '../addresses-repository'
+import { AddressesRepository, IAddress } from '../addresses-repository'
 import { randomUUID } from 'node:crypto'
+import { DataBaseInMemory } from './database-in-memory'
 
 export class InMemoryAddressRepository implements AddressesRepository {
-  public items: Address[] = []
+  constructor(private inMemoryDatabase: DataBaseInMemory) {}
 
-  async create(data: AddressCreateInput) {
+  async create(data: IAddress) {
     const address = {
       id: randomUUID(),
       phone: data.phone,
@@ -17,12 +14,14 @@ export class InMemoryAddressRepository implements AddressesRepository {
       org_id: data.org_id,
     }
 
-    this.items.push(address)
+    this.inMemoryDatabase.addresses.push(address)
     return address
   }
 
   async findById(id: string) {
-    const address = this.items.find((item) => item.id === id)
+    const address = this.inMemoryDatabase.addresses.find(
+      (item) => item.id === id,
+    )
 
     if (!address) {
       return null

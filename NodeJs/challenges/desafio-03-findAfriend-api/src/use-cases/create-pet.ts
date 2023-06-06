@@ -4,9 +4,17 @@ import { Pet } from '@prisma/client'
 import { ResourceNotFoundError } from './errors/resource-not-found'
 
 interface CreatePetUseCaseRequest {
-  type: string
-  race: string
+  name: string
   description: string
+  age: 'FILHOTE' | 'ADOLESCENTE' | 'ADULTO'
+  porte: 'PEQUENINO' | 'MEDIO' | 'GRANDE'
+  energy_level: 'BAIXA' | 'MEDIA' | 'ALTO'
+  independence_level: 'BAIXA' | 'MEDIA' | 'ALTA'
+  environment: 'PEQUENO' | 'GRANDE' | 'AMPLO'
+  requirements: {
+    description: string
+  }
+  available: Date | null
   org_id: string
 }
 
@@ -21,9 +29,15 @@ export class CreatePetUseCase {
   ) {}
 
   async execute({
+    name,
+    age,
+    porte,
+    environment,
+    energy_level,
+    independence_level,
+    available,
+    requirements,
     description,
-    type,
-    race,
     org_id,
   }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
     const org = await this.orgRepository.findById(org_id)
@@ -33,8 +47,14 @@ export class CreatePetUseCase {
     }
 
     const pet = await this.petsRepository.create({
-      type,
-      race,
+      name,
+      age,
+      porte,
+      environment,
+      energy_level,
+      independence_level,
+      available,
+      requirements,
       description,
       org_id,
     })
