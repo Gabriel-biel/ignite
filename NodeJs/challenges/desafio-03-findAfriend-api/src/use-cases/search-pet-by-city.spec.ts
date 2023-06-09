@@ -1,25 +1,23 @@
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-Memory-pets-repository'
+import { describe, it, beforeEach, expect } from 'vitest'
+import { SearchPetByCityUseCase } from './search-pet-by-city'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { CreatePetUseCase } from './create-pet'
 import { DataBaseInMemory } from '@/repositories/in-memory/database-in-memory'
 
-let inMemoryDatabase: DataBaseInMemory
 let inMemoryPetsRepository: InMemoryPetsRepository
+let inMemoryDatabase: DataBaseInMemory
 let inMemoryOrgsRepository: InMemoryOrgsRepository
-let sut: CreatePetUseCase
+let sut: SearchPetByCityUseCase
 
-describe('Create pets Use Case ', () => {
+describe('Search pet by city use case', () => {
   beforeEach(() => {
     inMemoryDatabase = new DataBaseInMemory()
-    inMemoryOrgsRepository = new InMemoryOrgsRepository(inMemoryDatabase)
     inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
-    sut = new CreatePetUseCase(inMemoryPetsRepository, inMemoryOrgsRepository)
+    inMemoryOrgsRepository = new InMemoryOrgsRepository(inMemoryDatabase)
+    sut = new SearchPetByCityUseCase(inMemoryPetsRepository)
   })
-
-  it('should be able to register pet', async () => {
-    await inMemoryOrgsRepository.create({
-      id: 'org-id',
+  it('should be able to get list the pets for city', async () => {
+    const org = await inMemoryOrgsRepository.create({
       title: 'Cats Org',
       description: 'Org for cats',
       email: 'org@gmail.com',
@@ -32,8 +30,9 @@ describe('Create pets Use Case ', () => {
       },
     })
 
-    const { pet } = await sut.execute({
-      name: 'Theodoro',
+    await inMemoryPetsRepository.create({
+      id: 'Pet one for test',
+      name: 'Gabs',
       age: 'FILHOTE',
       porte: 'PEQUENINO',
       energy_level: 'ALTO',
@@ -43,11 +42,15 @@ describe('Create pets Use Case ', () => {
         description: 'Necessita Atenção',
       },
       available: new Date(),
-      org_id: 'org-id',
+      org_id: org.id,
       description: 'Gato resgatado das ruas',
     })
 
-    expect(pet.id).toEqual(expect.any(String))
-    expect(pet.org_id).toEqual(expect.any(String))
+    const { pets } = await sut.execute({
+      city: 'Lábrea',
+    })
+
+    expect(inMemoryDatabase.pets).toHaveLength(1)
+    expect(pets).toEqual([expect.objectContaining({ name: 'Gabs' })])
   })
 })

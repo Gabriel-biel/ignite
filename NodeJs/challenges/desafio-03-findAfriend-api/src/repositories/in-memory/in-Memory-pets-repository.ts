@@ -1,5 +1,5 @@
 import { Pet } from '@prisma/client'
-import { IPets, PetsRepository } from '../pets-repository'
+import { IPets, PetsRepository, searchPetsQuery } from '../pets-repository'
 import { randomUUID } from 'node:crypto'
 import { DataBaseInMemory } from './database-in-memory'
 
@@ -54,9 +54,42 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pets
   }
 
-  async searchMany(query: string, page: number) {
-    return this.inMemoryDatabase.pets
-      .filter((item) => item.description.includes(query))
-      .slice((page - 1) * 10, page * 10)
+  async searchMany(query: searchPetsQuery, page: number) {
+    let pets: Pet[] = []
+
+    // filtro por cidade
+    const orgAddress = this.inMemoryDatabase.addresses.filter(
+      (address) => address.city === query.city,
+    )
+    orgAddress.forEach((org) => {
+      const petsInOrg = this.inMemoryDatabase.pets.filter(
+        (pet) => pet.org_id === org.org_id,
+      )
+
+      pets.push(...petsInOrg)
+    })
+    //
+
+    // filtrando por opcionais
+    if (query.age) {
+      pets = pets.filter((pet) => pet.age === query.age)
+    }
+    if (query.energy_level) {
+      pets = pets.filter((pet) => pet.energy_level === query.energy_level)
+    }
+    if (query.independence_level) {
+      pets = pets.filter(
+        (pet) => pet.independence_level === query.independence_level,
+      )
+    }
+    if (query.environment) {
+      pets = pets.filter((pet) => pet.environment === query.environment)
+    }
+    if (query.porte) {
+      pets = pets.filter((pet) => pet.porte === query.porte)
+    }
+    //
+
+    return pets.slice((page - 1) * 20, page * 20)
   }
 }
