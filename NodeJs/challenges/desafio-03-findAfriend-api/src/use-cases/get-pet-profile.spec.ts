@@ -47,7 +47,7 @@ describe('Get pet profile use case', () => {
     })
 
     const { pet } = await sut.execute({
-      id: createdPet.id,
+      petId: createdPet.id,
     })
 
     expect(inMemoryDatabase.pets).toHaveLength(2)
@@ -59,8 +59,8 @@ describe('Get pet profile use case', () => {
     const inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
     const sut = new GetPetProfileUseCase(inMemoryPetsRepository)
 
-    expect(() => sut.execute({ id: 'non-existing-id' })).rejects.toBeInstanceOf(
-      ResourceNotFoundError,
-    )
+    expect(() =>
+      sut.execute({ petId: 'non-existing-id' }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

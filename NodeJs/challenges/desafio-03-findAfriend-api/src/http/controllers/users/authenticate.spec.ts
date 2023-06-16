@@ -18,7 +18,7 @@ describe('Atuhenticate test e2e', async () => {
       password: '123456',
     })
 
-    const response = await request(app.server).post('/sessions').send({
+    const response = await request(app.server).post('/sessions/users').send({
       email: 'gabriel@gmail.com',
       password: '123456',
     })

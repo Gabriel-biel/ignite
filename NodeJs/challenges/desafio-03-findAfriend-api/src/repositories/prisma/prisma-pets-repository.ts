@@ -1,5 +1,5 @@
 import { Pet } from '@prisma/client'
-import { IPets, PetsRepository } from '../pets-repository'
+import { IPets, PetsRepository, searchPetsQuery } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPetsRepository implements PetsRepository {
@@ -13,6 +13,7 @@ export class PrismaPetsRepository implements PetsRepository {
         environment: data.environment,
         independence_level: data.independence_level,
         energy_level: data.energy_level,
+        available: data.available,
         pictures: {
           create: {
             name: data.name,
@@ -55,15 +56,32 @@ export class PrismaPetsRepository implements PetsRepository {
     return pets
   }
 
-  async searchMany(query: string, page: number) {
+  async searchMany(query: searchPetsQuery, page: number) {
     const pets = await prisma.pet.findMany({
-      where: {
-        description: {
-          contains: query,
+      include: {
+        org: {
+          include: {
+            addresses: {
+              where: {
+                city: query.city,
+              },
+            },
+          },
+          select: {
+            pets: {
+              where: {
+                age: query.age,
+                energy_level: query.energy_level,
+                independence_level: query.independence_level,
+                environment: query.environment,
+                porte: query.porte,
+              },
+            },
+          },
         },
       },
-      take: 10,
-      skip: (page - 1) * 10,
+      take: 20,
+      skip: (page - 1) * 20,
     })
 
     return pets

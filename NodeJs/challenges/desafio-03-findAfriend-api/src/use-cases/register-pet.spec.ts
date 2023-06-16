@@ -14,7 +14,7 @@ describe('Register pets Use Case ', () => {
     inMemoryDatabase = new DataBaseInMemory()
     inMemoryOrgsRepository = new InMemoryOrgsRepository(inMemoryDatabase)
     inMemoryPetsRepository = new InMemoryPetsRepository(inMemoryDatabase)
-    sut = new RegisterPetUseCase(inMemoryPetsRepository, inMemoryOrgsRepository)
+    sut = new RegisterPetUseCase(inMemoryOrgsRepository, inMemoryPetsRepository)
   })
 
   it('should be able to register pet', async () => {

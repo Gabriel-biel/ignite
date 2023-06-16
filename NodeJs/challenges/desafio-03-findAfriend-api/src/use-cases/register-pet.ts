@@ -24,8 +24,8 @@ interface RegisterPetUseCaseResponse {
 
 export class RegisterPetUseCase {
   constructor(
-    private petsRepository: PetsRepository,
     private orgRepository: OrgsRepository,
+    private petsRepository: PetsRepository,
   ) {}
 
   async execute({
@@ -54,9 +54,9 @@ export class RegisterPetUseCase {
       energy_level,
       independence_level,
       available,
+      org_id,
       requirements,
       description,
-      org_id,
     })
 
     return { pet }
