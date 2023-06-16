@@ -27,6 +27,9 @@ export class PrismaOrgsRepository implements OrgsRepository {
       where: {
         id,
       },
+      include: {
+        addresses: true,
+      },
     })
 
     return org

@@ -101,8 +101,8 @@ model Address {
 }
 
 model Picture {
-  id   String @unique() @default(uuid())
-  name String
+  id            String @unique() @default(uuid())
+  image_address String
 
   pets   Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
   pet_id String
@@ -114,6 +114,6 @@ model Requirements {
   id          String @unique() @default(uuid())
   description String
 
-  pets   Pet    @relation(fields: [pet_id], references: [id])
+  pets   Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
   pet_id String
 }

@@ -16,7 +16,7 @@ export class PrismaPetsRepository implements PetsRepository {
         available: data.available,
         pictures: {
           create: {
-            name: data.name,
+            image_address: data.name,
           },
         },
         org_id: data.org_id,
@@ -35,6 +35,10 @@ export class PrismaPetsRepository implements PetsRepository {
     const pet = await prisma.pet.findUnique({
       where: {
         id,
+      },
+      include: {
+        requirements: true,
+        pictures: true,
       },
     })
 
@@ -58,26 +62,20 @@ export class PrismaPetsRepository implements PetsRepository {
 
   async searchMany(query: searchPetsQuery, page: number) {
     const pets = await prisma.pet.findMany({
-      include: {
+      where: {
         org: {
-          include: {
-            addresses: {
-              where: {
-                city: query.city,
-              },
+          addresses: {
+            every: {
+              city: query.city,
             },
           },
-          select: {
-            pets: {
-              where: {
-                age: query.age,
-                energy_level: query.energy_level,
-                independence_level: query.independence_level,
-                environment: query.environment,
-                porte: query.porte,
-              },
-            },
-          },
+        },
+        AND: {
+          age: query.age,
+          porte: query.porte,
+          energy_level: query.energy_level,
+          independence_level: query.independence_level,
+          environment: query.environment,
         },
       },
       take: 20,
