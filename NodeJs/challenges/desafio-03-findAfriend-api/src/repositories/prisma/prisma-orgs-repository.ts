@@ -9,6 +9,7 @@ export class PrismaOrgsRepository implements OrgsRepository {
         email: data.email,
         password_hash: data.password_hash,
         description: data.description,
+        role: data.role,
         addresses: {
           create: {
             city: data.addresses?.city!,

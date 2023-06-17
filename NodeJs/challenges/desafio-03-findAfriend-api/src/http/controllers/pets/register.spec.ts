@@ -12,7 +12,7 @@ describe('Register Pet e2e', () => {
     await app.close()
   })
   it('should be able to register pet', async () => {
-    const { token } = await createAndAuthenticateOrg(app)
+    const { token } = await createAndAuthenticateOrg(app, true)
 
     const registerPetResponse = await request(app.server)
       .post('/org/pets')

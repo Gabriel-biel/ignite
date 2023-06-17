@@ -8,6 +8,7 @@ export interface RegisterOrgUseCaseRequest {
   description: string
   email: string
   password: string
+  role?: 'ADMIN' | 'MEMBER'
   addresses?: {
     city: string
     phone: string
@@ -27,6 +28,7 @@ export class RegisterOrgUseCase {
     description,
     email,
     password,
+    role,
     addresses,
   }: RegisterOrgUseCaseRequest): Promise<RegisterOrgUseCaseResponse> {
     const password_hash = await hash(password, 6)
@@ -42,6 +44,7 @@ export class RegisterOrgUseCase {
       description,
       email,
       password_hash,
+      role,
       addresses,
     })
 

@@ -9,8 +9,7 @@ import { VerifyUserRole } from '@/http/middlewares/verify-user-role'
 export async function petRoutes(app: FastifyInstance) {
   app.addHook('onRequest', VerifyJwt)
 
-  // { onRequest: [VerifyUserRole('ADMIN')] }, Todo: fix-me, estudar sobre rbca
-  app.post('/org/pets', register)
+  app.post('/org/pets', { onRequest: [VerifyUserRole('ADMIN')] }, register)
   app.get('/pets/:petId', petProfile)
   app.get('/pets/city', searchByCity)
   app.get('/pets', fetchByFilter)

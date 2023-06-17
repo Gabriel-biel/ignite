@@ -13,7 +13,6 @@ export async function createAndAuthenticateUser(
       password: '123456',
       role: isAdmin ? 'ADMIN' : 'MEMBER',
     })
-
   const authReponse = await request(app.server).post('/sessions/users').send({
     email: 'gabriel@gmail.com',
     password: '123456',

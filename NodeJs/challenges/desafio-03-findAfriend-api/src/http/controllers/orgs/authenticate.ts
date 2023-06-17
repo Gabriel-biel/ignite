@@ -19,13 +19,35 @@ export async function authenticate(
     const { authUser } = await authenticateUseCase.execute({ email, password })
 
     const token = await reply.jwtSign(
-      {},
       {
-        sub: authUser.id,
+        role: authUser.role,
+      },
+      {
+        sign: { sub: authUser.id },
       },
     )
 
-    return reply.status(200).send({ token })
+    const refreshToken = await reply.jwtSign(
+      {
+        role: authUser.role,
+      },
+      {
+        sign: {
+          sub: authUser.id,
+          expiresIn: '7d',
+        },
+      },
+    )
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true, // protegido por https, frontend não lê o valor bruto, como string
+        sameSite: true, // somente acessivel dentro do mesmo dominio
+        httpOnly: true, // somente pode ser acessado pelo backend da aplicação, ou seja, somente pelo contexto da requesição.
+      })
+      .status(200)
+      .send({ token })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: err.message })

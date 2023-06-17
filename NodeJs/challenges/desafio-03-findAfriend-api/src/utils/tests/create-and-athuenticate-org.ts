@@ -12,6 +12,7 @@ export async function createAndAuthenticateOrg(
       description: 'Orgs for cats',
       email: 'org@gmail.com',
       password: '123456',
+      role: isAdmin ? 'ADMIN' : 'MEMBER',
       addresses: {
         city: 'Manaus',
         street: 'Jorge Teixeira',

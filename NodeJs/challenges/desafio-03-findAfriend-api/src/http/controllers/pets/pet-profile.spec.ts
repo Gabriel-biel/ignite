@@ -13,7 +13,7 @@ describe('Get pet profile e2e', async () => {
   })
 
   it('should be able to get pet profile', async () => {
-    const { token } = await createAndAuthenticateOrg(app)
+    const { token } = await createAndAuthenticateOrg(app, true)
 
     const createdPetResponse = await request(app.server)
       .post('/org/pets')

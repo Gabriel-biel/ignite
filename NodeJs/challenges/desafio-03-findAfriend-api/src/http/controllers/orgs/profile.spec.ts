@@ -14,7 +14,7 @@ describe('Profile test (e2e)', () => {
   })
 
   it('should be able to get org profile', async () => {
-    const { token } = await createAndAuthenticateOrg(app)
+    const { token } = await createAndAuthenticateOrg(app, true)
 
     const profileResponse = await request(app.server)
       .get('/me')

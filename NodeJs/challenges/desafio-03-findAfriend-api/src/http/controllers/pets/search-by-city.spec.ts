@@ -13,7 +13,7 @@ describe('Search by city teste (e2e)', async () => {
   })
 
   it('should be able to get pet by city ', async () => {
-    const { token } = await createAndAuthenticateOrg(app)
+    const { token } = await createAndAuthenticateOrg(app, true)
 
     await request(app.server)
       .post('/org/pets')

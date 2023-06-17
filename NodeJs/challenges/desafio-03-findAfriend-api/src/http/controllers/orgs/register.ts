@@ -9,6 +9,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     description: z.string(),
     email: z.string().email(),
     password: z.string().min(6),
+    role: z.enum(['ADMIN', 'MEMBER']).optional(),
     addresses: z
       .object({
         city: z.string(),
@@ -18,7 +19,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       .optional(),
   })
 
-  const { title, email, password, description, addresses } =
+  const { title, email, password, description, addresses, role } =
     registerBodySchema.parse(request.body)
 
   try {
@@ -27,8 +28,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     await registerUseCase.execute({
       title,
       email,
-      password,
       description,
+      password,
+      role,
       addresses,
     })
   } catch (err) {

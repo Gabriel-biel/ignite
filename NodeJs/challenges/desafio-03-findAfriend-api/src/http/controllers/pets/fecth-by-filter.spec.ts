@@ -2,7 +2,6 @@ import { app } from '@/app'
 import { createAndAuthenticateOrg } from '@/utils/tests/create-and-athuenticate-org'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
-import { FastifyRequest } from 'fastify'
 
 describe('Fetch by fiter test e2e', () => {
   beforeAll(async () => {
@@ -13,8 +12,8 @@ describe('Fetch by fiter test e2e', () => {
     app.close()
   })
 
-  it('should be able to fetch pets by filter', async (req: FastifyRequest) => {
-    const { token } = await createAndAuthenticateOrg(app)
+  it('should be able to fetch pets by filter', async () => {
+    const { token } = await createAndAuthenticateOrg(app, true)
 
     await request(app.server)
       .post('/org/pets')
