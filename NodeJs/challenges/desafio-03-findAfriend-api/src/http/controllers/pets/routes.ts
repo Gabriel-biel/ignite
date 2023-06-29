@@ -1,16 +1,21 @@
 import { FastifyInstance } from 'fastify'
 import { register } from './register'
-import { petProfile } from './pet-profile'
-import { VerifyJwt } from '@/http/middlewares/verify-jwt'
-import { searchByCity } from './search-by-city'
-import { fetchByFilter } from './fetch-by-filter'
-import { VerifyUserRole } from '@/http/middlewares/verify-user-role'
+import { profile } from './profile'
+import { verifyRole } from '@/http/middleware/verify-role'
+import { VerifyJwt } from '@/http/middleware/verify-jwt'
+import { deletePet } from './delete-pet'
+import { searchPetByFilter } from './search-pet-by-filtering'
+import { searchPetByCity } from './search-pet-by-city'
 
-export async function petRoutes(app: FastifyInstance) {
+export async function petsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', VerifyJwt)
-
-  app.post('/org/pets', { onRequest: [VerifyUserRole('ADMIN')] }, register)
-  app.get('/pets/:petId', petProfile)
-  app.get('/pets/city', searchByCity)
-  app.get('/pets', fetchByFilter)
+  app.post('/pets', { onRequest: verifyRole('Admin') }, register)
+  app.get('/pet/profile/:petId', profile)
+  app.get('/pets/filter', searchPetByFilter)
+  app.get('/pets/city', searchPetByCity)
+  app.delete(
+    '/pet/delete/:petId',
+    { onRequest: verifyRole('Admin') },
+    deletePet,
+  )
 }

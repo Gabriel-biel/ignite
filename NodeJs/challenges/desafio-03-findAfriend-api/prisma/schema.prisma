@@ -11,38 +11,38 @@ datasource db {
 }
 
 enum Role {
-  ADMIN
-  MEMBER
+  Admin
+  Member
 }
 
 enum Age {
-  FILHOTE
-  ADOLESCENTE
-  ADULTO
+  Filhote
+  Adolescente
+  Adulto
 }
 
-enum Porte {
-  PEQUENINO
-  MEDIO
-  GRANDE
+enum Size {
+  Pequenino
+  Medio
+  Grande
 }
 
-enum Energy {
-  BAIXA
-  MEDIA
-  ALTO
+enum Energy_level {
+  Baixa
+  Medio
+  Alto
 }
 
-enum Independence {
-  BAIXA
-  MEDIA
-  ALTA
+enum Independence_level {
+  Baixo
+  Medio
+  Alto
 }
 
-enum Environment {
-  PEQUENO
-  GRANDE
-  AMPLO
+enum Ambience {
+  Pequeno
+  Amplo
+  Grande
 }
 
 model User {
@@ -50,70 +50,74 @@ model User {
   name          String
   email         String   @unique
   password_hash String
-  role          Role     @default(MEMBER)
+  role          Role     @default(Member)
   created_at    DateTime @default(now())
 
   @@map("users")
 }
 
-model Pet {
-  id                 String       @id @default(uuid())
-  name               String
-  description        String
-  age                Age
-  porte              Porte
-  energy_level       Energy
-  independence_level Independence
-  environment        Environment
-
-  available  DateTime?
-  created_at DateTime  @default(now())
-
-  org          Org            @relation(fields: [org_id], references: [id], onDelete: Cascade)
-  org_id       String
-  pictures     Picture[]
-  requirements Requirements[]
-
-  @@map("pets")
-}
-
 model Org {
-  id            String    @id @default(uuid())
-  title         String
-  description   String?
+  id            String   @id @default(uuid())
+  name          String
   email         String
   password_hash String
-  role          Role      @default(MEMBER)
-  pets          Pet[]
-  addresses     Address[]
+  role          Role     @default(Member)
+  created_at    DateTime @default(now())
+
+  Address Address[]
+  Pet     Pet[]
 
   @@map("orgs")
 }
 
+model Pet {
+  id                 String             @id @default(uuid())
+  name               String
+  description        String
+  age                Age
+  size               Size
+  energy_level       Energy_level
+  independence_level Independence_level
+  ambience           Ambience
+  available          DateTime?          @default(now())
+  created_at         DateTime           @default(now())
+
+  org         Org           @relation(fields: [org_id], references: [id], onDelete: Cascade)
+  org_id      String
+  Requirement Requirement[]
+  Picture     Picture[]
+
+  @@map("pets")
+}
+
 model Address {
-  id     String @unique() @default(uuid())
-  phone  String
+  id     String @id @default(uuid())
   street String
+  phone  String
   city   String
 
   org    Org    @relation(fields: [org_id], references: [id], onDelete: Cascade)
   org_id String
+
+  @@map("addresses")
+}
+
+model Requirement {
+  id          String @id @default(uuid())
+  description String
+
+  pet    Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
+  pet_id String
+
+  @@map("requirements")
 }
 
 model Picture {
-  id            String @unique() @default(uuid())
+  id            String @id @default(uuid())
   image_address String
 
-  pets   Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
+  pet    Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
   pet_id String
 
   @@map("pictures")
-}
-
-model Requirements {
-  id          String @unique() @default(uuid())
-  description String
-
-  pets   Pet    @relation(fields: [pet_id], references: [id], onDelete: Cascade)
-  pet_id String
 }

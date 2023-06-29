@@ -1,22 +1,34 @@
-import { Org } from '@prisma/client'
-
-export interface IOrg {
+export interface CreateOrg {
   id?: string
-  title: string
-  description: string
+  name: string
   email: string
   password_hash: string
-  role?: 'ADMIN' | 'MEMBER'
+  role?: 'Admin' | 'Member'
   addresses?: {
     city: string
-    phone: string
     street: string
+    phone: string
   }
+  created_at?: Date | string
+}
+
+export interface Org {
+  id: string
+  name: string
+  email: string
+  password_hash: string
+  role?: 'Admin' | 'Member'
+  addresses?: {
+    city: string
+    street: string
+    phone: string
+  }
+  created_at?: Date | string
 }
 
 export interface OrgsRepository {
-  create(data: IOrg): Promise<Org>
+  create(data: CreateOrg): Promise<Org>
   findById(id: string): Promise<Org | null>
   findByEmail(email: string): Promise<Org | null>
-  searchMany(query: string, page: number): Promise<Org[]>
+  delete(id: string): Promise<void>
 }

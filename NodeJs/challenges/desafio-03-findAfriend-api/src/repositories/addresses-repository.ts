@@ -1,13 +1,19 @@
-import { Address } from '@prisma/client'
-
-export interface IAddress {
+export interface CreatedAddress {
   city: string
-  phone: string
   street: string
+  phone: string
+  org_id: string
+}
+
+export interface Address {
+  id: string
+  city: string
+  street: string
+  phone: string
   org_id: string
 }
 
 export interface AddressesRepository {
-  create(data: IAddress): Promise<Address>
+  create(data: CreatedAddress): Promise<Address>
   findById(id: string): Promise<Address | null>
 }

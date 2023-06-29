@@ -1,17 +1,19 @@
 import { randomUUID } from 'node:crypto'
-import { execSync } from 'node:child_process'
 import { Environment } from 'vitest'
 import 'dotenv/config'
-import { PrismaClient } from '@prisma/client'
+import { execSync } from 'node:child_process'
+import { prisma } from '@/lib/prisma'
 
-const prisma = new PrismaClient()
+// DATABASE_URL="postgresql://login:password@localhost:5432/database-name?schema=public"
 
-function generateDatabaseULR(schema: string) {
+function generateDatabaseUrl(schema: string) {
   if (!process.env.DATABASE_URL) {
-    throw new Error('Please provider a DATABASE_URL environemt variable')
+    throw new Error('Please provide a DATABASE_URL environment variable')
   }
+
   const url = new URL(process.env.DATABASE_URL)
 
+  // Equivale ao schema=public ali do comentário acima
   url.searchParams.set('schema', schema)
 
   return url.toString()
@@ -21,8 +23,7 @@ export default <Environment>{
   name: 'prisma',
   async setup() {
     const schema = randomUUID()
-
-    const databaseURL = generateDatabaseULR(schema)
+    const databaseURL = generateDatabaseUrl(schema)
 
     process.env.DATABASE_URL = databaseURL
 

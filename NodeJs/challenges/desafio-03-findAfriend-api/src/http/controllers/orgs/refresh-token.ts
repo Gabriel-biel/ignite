@@ -1,4 +1,4 @@
-import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function refreshToken(
@@ -7,36 +7,37 @@ export async function refreshToken(
 ) {
   try {
     await request.jwtVerify({ onlyCookie: true })
-    const role = request.user.role
-
+    const payload_org_role = request.user.role
+    const payload_org_sub_id = request.user.sub
     const token = await reply.jwtSign(
       {
-        role,
+        role: payload_org_role,
       },
       {
-        sign: { sub: request.user.sub },
+        sign: {
+          sub: payload_org_sub_id,
+        },
       },
     )
+
     const refreshToken = await reply.jwtSign(
       {
-        role,
+        role: payload_org_role,
       },
-      {
-        sign: { sub: request.user.sub, expiresIn: '7d' },
-      },
+      { sign: { sub: payload_org_sub_id, expiresIn: '7d' } },
     )
 
     return reply
+      .status(200)
       .setCookie('refreshToken', refreshToken, {
         path: '/',
-        secure: true, // protegido por https, frontend não lê o valor bruto, como string
-        sameSite: true, // somente acessivel dentro do mesmo dominio
-        httpOnly: true, // somente pode ser acessado pelo backend da aplicação, ou seja, somente pelo contexto da requesição.
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
       })
-      .status(200)
       .send({ token })
   } catch (err) {
-    if (err instanceof InvalidCredentialsError) {
+    if (err instanceof ResourceNotFoundError) {
       return reply.status(400).send({ message: err.message })
     }
 

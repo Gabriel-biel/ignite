@@ -5,40 +5,38 @@ import { z } from 'zod'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6),
-    role: z.enum(['ADMIN', 'MEMBER']).optional(),
-    addresses: z
-      .object({
-        city: z.string(),
-        phone: z.string(),
-        street: z.string(),
-      })
-      .optional(),
+    id: z.string().optional(),
+    name: z.string(),
+    email: z.string(),
+    password: z.string(),
+    role: z.enum(['Admin', 'Member']).optional(),
+    addresses: z.object({
+      city: z.string(),
+      street: z.string(),
+      phone: z.string(),
+    }),
   })
 
-  const { title, email, password, description, addresses, role } =
+  const { id, name, email, password, role, addresses } =
     registerBodySchema.parse(request.body)
 
   try {
-    const registerUseCase = MakeRegisterOrgUseCase()
+    const registerOrgUseCase = MakeRegisterOrgUseCase()
 
-    await registerUseCase.execute({
-      title,
+    await registerOrgUseCase.execute({
+      id,
+      name,
       email,
-      description,
       password,
       role,
       addresses,
     })
+    return reply.status(201).send()
   } catch (err) {
     if (err instanceof UserAlreadyExistsError) {
       return reply.status(409).send({ message: err.message })
     }
-    return err
-  }
 
-  return reply.status(201).send()
+    throw err
+  }
 }

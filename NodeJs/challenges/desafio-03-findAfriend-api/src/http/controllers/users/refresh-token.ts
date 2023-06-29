@@ -1,4 +1,4 @@
-import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function refreshToken(
@@ -6,37 +6,44 @@ export async function refreshToken(
   reply: FastifyReply,
 ) {
   try {
+    // essa opão valida que o usuário está authenticated mas não olha na info do cabeçalho, ela vai olha para os cookies da nossa request
+    // pra ver se lá existe refresh
     await request.jwtVerify({ onlyCookie: true })
-    const role = request.user.role
+    const payload_user_role = request.user.role
+    const payload_sub_user_id = request.user.sub
 
     const token = await reply.jwtSign(
       {
-        role,
+        payload_user_role,
       },
       {
-        sign: { sub: request.user.sub },
+        sign: { sub: payload_sub_user_id },
       },
     )
+
     const refreshToken = await reply.jwtSign(
       {
-        role,
+        payload_user_role,
       },
       {
-        sign: { sub: request.user.sub, expiresIn: '7d' },
+        sign: {
+          sub: payload_sub_user_id,
+          expiresIn: '7d',
+        },
       },
     )
 
     return reply
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: true, // protegido por https, frontend não lê o valor bruto, como string
-        sameSite: true, // somente acessivel dentro do mesmo dominio
-        httpOnly: true, // somente pode ser acessado pelo backend da aplicação, ou seja, somente pelo contexto da requesição.
-      })
       .status(200)
+      .setCookie('refreshToken', refreshToken, {
+        path: '/', // quais rotas do backend vai ter acesso a esse cookie.
+        secure: true, // Define que nosso cookie vai ser encriptado pelo https.
+        sameSite: true, // Define que esse cookie só vai ser acessível dentro do mesmo dominío, dentro do mesmo site.
+        httpOnly: true, // esse cookie só vai poder acessado pela requesição e responsta, somente pelo contexto da requesição
+      })
       .send({ token })
   } catch (err) {
-    if (err instanceof InvalidCredentialsError) {
+    if (err instanceof ResourceNotFoundError) {
       return reply.status(400).send({ message: err.message })
     }
 

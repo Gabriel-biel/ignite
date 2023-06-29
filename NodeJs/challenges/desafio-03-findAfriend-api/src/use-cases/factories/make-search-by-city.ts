@@ -1,9 +1,11 @@
-import { PrismaPetsRepository } from '@/repositories/prisma/prisma-pets-repository'
+import { PrismaPetsRepository } from '@/repositories/prismaRepository/prismaPetsRepository'
 import { SearchPetByCityUseCase } from '../search-pet-by-city'
 
 export function MakeSearchByCity() {
   const prismaPetsRepository = new PrismaPetsRepository()
-  const searchByCityUseCase = new SearchPetByCityUseCase(prismaPetsRepository)
+  const searchPetByCityUseCase = new SearchPetByCityUseCase(
+    prismaPetsRepository,
+  )
 
-  return searchByCityUseCase
+  return searchPetByCityUseCase
 }
