@@ -1,10 +1,10 @@
 import { Optional } from '@/core/@types/optional'
-import { Slug } from './Value-objects.ts/Slug'
+import { Slug } from './Value-objects/Slug'
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-interface QuestionProps {
-  authoId: UniqueEntityID
+export interface QuestionProps {
+  authorId: UniqueEntityID
   bestAnswerId?: UniqueEntityID
   title: string
   content: string
@@ -15,7 +15,7 @@ interface QuestionProps {
 
 export class Question extends Entity<QuestionProps> {
   get authorId() {
-    return this.props.authoId
+    return this.props.authorId
   }
 
   get bestAnswerId() {
@@ -34,8 +34,16 @@ export class Question extends Entity<QuestionProps> {
     return this.props.updated_at
   }
 
+  get created_at() {
+    return this.props.created_at
+  }
+
   get excerpt() {
     return this.content.substring(0, 120).trimEnd().concat('...')
+  }
+
+  get slug() {
+    return this.props.slug
   }
 
   private touch() {
@@ -66,7 +74,7 @@ export class Question extends Entity<QuestionProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        created_at: new Date(),
+        created_at: props.created_at ?? new Date(),
       },
       id,
     )

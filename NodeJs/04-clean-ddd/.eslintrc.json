@@ -5,6 +5,7 @@
   ],
   "rules": {
     "no-useless-constructor": "off"
+    // "prettier/prettier": "off"
   },
   "env": {
     "vitest-globals/env": true

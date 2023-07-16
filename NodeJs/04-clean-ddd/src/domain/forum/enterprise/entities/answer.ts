@@ -3,7 +3,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import dayjs from 'dayjs'
 
-interface AnswerProps {
+export interface AnswerProps {
   content: string
   authorId: UniqueEntityID
   questionId: UniqueEntityID
@@ -56,7 +56,7 @@ export class Answer extends Entity<AnswerProps> {
     const answer = new Answer(
       {
         ...props,
-        created_at: new Date(),
+        created_at: props.created_at ?? new Date(),
       },
       id,
     )
