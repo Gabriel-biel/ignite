@@ -1,5 +1,5 @@
-import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { Question } from '../../enterprise/entities/question'
+import { QuestionsRepository } from '../repositories/questions-repository'
 
 export interface FetchRecentQuestionsRequest {
   page: number
@@ -10,14 +10,12 @@ export interface FetchRecentQuestionsResponse {
 }
 
 export class FetchRecentQuestions {
-  constructor(
-    private inMemoryQuestionsRepository: InMemoryQuestionsRepository,
-  ) {}
+  constructor(private questionsRepository: QuestionsRepository) {}
 
   async execute({
     page,
   }: FetchRecentQuestionsRequest): Promise<FetchRecentQuestionsResponse> {
-    const questions = await this.inMemoryQuestionsRepository.findManyRecent({
+    const questions = await this.questionsRepository.findManyRecent({
       page,
     })
 
