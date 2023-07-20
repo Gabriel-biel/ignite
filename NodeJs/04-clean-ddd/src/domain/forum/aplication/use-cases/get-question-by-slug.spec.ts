@@ -18,11 +18,12 @@ describe('Get question by slug', () => {
 
     await inMemoryQuestionsRepository.create(NewQuestion)
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       slug: 'example-question',
     })
 
-    expect(question.id).toBeTruthy()
-    expect(question.slug.value).toEqual('example-question')
+    // abaixo erros do typescript não consegui resolve-los, a melhor opção será ignora-los
+    expect(result.value?.question.id).toBeTruthy()
+    expect(result.value?.question.slug.value).toEqual('example-question')
   })
 })

@@ -10,13 +10,14 @@ describe('Create Question', () => {
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
   })
   it('should be able to create a question', async () => {
-    const { answer } = await sut.execute({
+    const result = await sut.execute({
       instructorId: '1',
       questionId: '1',
       content: 'Conteúdo da resposta',
     })
 
-    expect(answer.id).toBeTruthy()
-    expect(inMemoryAnswersRepository.items[0].id).toEqual(answer.id)
+    expect(result.isRight()).toBeTruthy()
+    // abaixo: erro do typescript, não consegui resolver, talvez ignorar seja uma boa opção
+    expect(inMemoryAnswersRepository.items[0]).toEqual(result.value?.answer)
   })
 })
