@@ -24,7 +24,7 @@ describe('Create Answer', () => {
       attachmentsIds: ['1', '2'],
     })
 
-    expect(result.isRight()).toBeTruthy()
+    expect(result.isRigth()).toBeTruthy()
     expect(inMemoryAnswersRepository.items[0]).toEqual(
       expect.objectContaining({ content: 'Conteúdo da resposta' }),
     )

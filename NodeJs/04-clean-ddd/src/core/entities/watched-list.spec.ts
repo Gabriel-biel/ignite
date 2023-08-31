@@ -28,6 +28,18 @@ describe('watched list', () => {
     expect(list.currentItems).toHaveLength(2)
     expect(list.getRemovedItems()).toEqual([2])
   })
+
+  it('should be able to add an item even if it was removed before', async () => {
+    const list = new NumberWatchedList([1, 2, 3])
+
+    list.remove(2)
+    list.add(2)
+
+    expect(list.currentItems).toHaveLength(3)
+    expect(list.getRemovedItems()).toEqual([])
+    expect(list.getNewItems()).toEqual([])
+  })
+
   it('should be able to remove item even if it was added before', () => {
     const list = new NumberWatchedList([1, 2, 3])
 
@@ -38,6 +50,7 @@ describe('watched list', () => {
     expect(list.getRemovedItems()).toEqual([])
     expect(list.getNewItems()).toEqual([])
   })
+
   it('should be able to update watched list items', () => {
     const list = new NumberWatchedList([1, 2, 3])
 
