@@ -32,7 +32,7 @@ describe('Domain events', () => {
   it('should be able to dispatch an listen to events', async () => {
     const callBackSpy = vi.fn()
 
-    // subscriber cadastrado (ouvindo evento de 'resposta criada
+    // subscriber cadastrado (ouvindo evento de 'resposta criada'
     DomainEvents.register(callBackSpy, CustomAggregateCreated.name)
 
     // estou criando uma resposta porém sem salvar no banco
