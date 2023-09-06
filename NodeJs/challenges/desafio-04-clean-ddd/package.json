@@ -1,0 +1,25 @@
+{
+  "name": "04-ddd-atividade",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@rocketseat/eslint-config": "^2.1.0",
+    "@types/node": "^20.4.9",
+    "eslint": "^8.46.0",
+    "eslint-plugin-vitest-globals": "^1.4.0",
+    "tsup": "^7.2.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.1"
+  }
+}
