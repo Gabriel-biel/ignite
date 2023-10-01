@@ -8,8 +8,8 @@ export class InMemoryStudentsRepository implements StudentRepository {
     this.items.push(student)
   }
 
-  async findByEmail(id: string) {
-    const student = this.items.find((item) => item.email === id)
+  async findByEmail(email: string) {
+    const student = this.items.find((item) => item.email === email)
 
     if (!student) {
       return null

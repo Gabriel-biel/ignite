@@ -38,17 +38,7 @@ describe('Authenticate Student', () => {
     expect(result.value).toEqual({
       accessToken: expect.any(String),
     })
+    // const { accessToken } = result.value
+    // console.log(accessToken)
   })
-
-  // it('should hash student password upon registration ', async () => {
-  //   const result = await sut.execute({
-  //     email: 'gabriel@gmail.com',
-  //     password: '123456',
-  //   })
-
-  //   const hashedPassword = await fakeHasher.hash('123456')
-
-  //   expect(result.isRigth()).toBeTruthy()
-  //   expect(inMemoryStudentsRepository.items[0].password).toEqual(hashedPassword)
-  // })
 })
