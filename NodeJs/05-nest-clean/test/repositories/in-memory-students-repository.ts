@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { StudentRepository } from '@/domain/forum/aplication/repositories/student-repository'
 import { Student } from '@/domain/forum/enterprise/entities/student'
 
@@ -6,6 +7,8 @@ export class InMemoryStudentsRepository implements StudentRepository {
 
   async create(student: Student) {
     this.items.push(student)
+
+    DomainEvents.dispatchEventsForAggregate(student.id)
   }
 
   async findByEmail(email: string) {

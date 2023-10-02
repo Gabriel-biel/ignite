@@ -25,8 +25,6 @@ export class FetchRecentQuestionsUseCase {
       page,
     })
 
-    return rigth({
-      questions,
-    })
+    return rigth({ questions })
   }
 }

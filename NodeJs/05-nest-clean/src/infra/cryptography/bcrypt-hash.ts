@@ -3,11 +3,13 @@ import { HashGenerator } from '@/domain/forum/aplication/cryptography/hash-gener
 import { hash, compare } from 'bcryptjs'
 
 export class BcryptHasher implements HashGenerator, HashCompare {
-  hash(plain: string): Promise<string> {
-    return hash(plain, 8)
+  private HASH_SALT_LENGTH = 8
+
+  async hash(plain: string): Promise<string> {
+    return hash(plain, this.HASH_SALT_LENGTH)
   }
 
-  compare(plain: string, hash: string): Promise<boolean> {
+  async compare(plain: string, hash: string): Promise<boolean> {
     return compare(plain, hash)
   }
 }

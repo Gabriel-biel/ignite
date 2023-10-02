@@ -19,7 +19,7 @@ describe('Register Student', () => {
       password: '123456',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRigth()).toBe(true)
     expect(result.value).toEqual({
       student: inMemoryStudentsRepository.items[0],
     })

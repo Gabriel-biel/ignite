@@ -38,7 +38,5 @@ describe('Authenticate Student', () => {
     expect(result.value).toEqual({
       accessToken: expect.any(String),
     })
-    // const { accessToken } = result.value
-    // console.log(accessToken)
   })
 })
