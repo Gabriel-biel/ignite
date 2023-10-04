@@ -4,11 +4,9 @@ import {
   Get,
   HttpCode,
   Query,
-  UseGuards,
 } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/aplication/use-cases/fetch-recents-questions'
 import { QuestionsPresenter } from '../presenters/question-presenter'
 
@@ -28,7 +26,6 @@ export class FetchRecentQuestionsController {
 
   @Get()
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async handle(
     @Query('page', queryValidationPipe)
     page: PageQueryParamSchema,
@@ -40,7 +37,8 @@ export class FetchRecentQuestionsController {
     }
 
     // not resolved
-    const questions = result.value.questions
+    const { questions } = result.value.questions
+    // const questions = result.value
 
     return { questions: questions.map(QuestionsPresenter.toHttp) }
   }
