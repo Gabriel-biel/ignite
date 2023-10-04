@@ -6,8 +6,8 @@ POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
-  "name": "Gabriel 01 hashed",
-  "email": "gabriel@gabel.gmail.com",
+  "name": "Gabriel",
+  "email": "gabriel@gab.gmail.com",
   "password": "123456"
 }
 
@@ -18,7 +18,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "gabriel@gabel.gmail.com",
+  "email": "gabriel@gab.gmail.com",
   "password": "123456"
 }
 
@@ -30,13 +30,13 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "my title",
-  "content": "content qualquer"
+  "title": "Nova pergunta 1",
+  "content": "content qualquer 3"
 }
 
 ###
 
 # @name fetch_recent_questions
-GET {{baseUrl}}/questions?page=2
+GET {{baseUrl}}/questions?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
