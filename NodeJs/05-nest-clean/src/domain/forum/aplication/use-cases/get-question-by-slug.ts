@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
@@ -26,6 +26,6 @@ export class GetQuestionBySlugUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    return rigth({ question })
+    return right({ question })
   }
 }

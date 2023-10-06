@@ -16,7 +16,7 @@ describe('Send notification', () => {
       title: 'fake-title',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isright()).toBeTruthy()
     expect(inMemoryNotificationsRepository.items[0]).toEqual(
       result.value?.notification,
     )
