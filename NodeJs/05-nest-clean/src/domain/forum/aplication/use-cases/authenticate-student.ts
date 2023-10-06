@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { StudentRepository } from '../repositories/student-repository'
 import { HashCompare } from '../cryptography/hash-compare'
@@ -48,6 +48,6 @@ export class AuthenticateStudentUseCase {
       sub: student.id.toString(),
     })
 
-    return rigth({ accessToken })
+    return right({ accessToken })
   }
 }
