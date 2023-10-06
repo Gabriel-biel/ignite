@@ -36,9 +36,7 @@ export class FetchRecentQuestionsController {
       throw new BadRequestException()
     }
 
-    // not resolved
-    const { questions } = result.value.questions
-    // const questions = result.value
+    const { questions } = result.value
 
     return { questions: questions.map(QuestionsPresenter.toHttp) }
   }
