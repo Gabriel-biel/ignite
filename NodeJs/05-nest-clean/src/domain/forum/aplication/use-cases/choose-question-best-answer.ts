@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Question } from '../../enterprise/entities/question'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { QuestionsRepository } from '../repositories/questions-repository'
@@ -49,7 +49,7 @@ export class ChooseQuestionBestAnswerUseCase {
 
     await this.questionsRepository.save(question)
 
-    return rigth({
+    return right({
       question,
     })
   }

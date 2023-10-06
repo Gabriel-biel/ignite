@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { AnswerCommentsRepository } from '../repositories/answer-comments-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
@@ -33,6 +33,6 @@ export class DeleteAnswerCommentUseCase {
 
     await this.answerCommentsRepository.delete(answerComment)
 
-    return rigth(null)
+    return right(null)
   }
 }
