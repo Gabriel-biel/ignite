@@ -1,14 +1,14 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-export interface DeliverymanProps {
+export interface AdminProps {
   name: string
   email: string
   cpf: string
   password: string
 }
 
-export class Deliveryman extends Entity<DeliverymanProps> {
+export class Admin extends Entity<AdminProps> {
   get name() {
     return this.props.name
   }
@@ -25,9 +25,9 @@ export class Deliveryman extends Entity<DeliverymanProps> {
     return this.props.password
   }
 
-  static create(props: DeliverymanProps, id?: UniqueEntityID) {
-    const deliveryman = new Deliveryman(props, id)
+  static create(props: AdminProps, id?: UniqueEntityID) {
+    const admin = new Admin(props, id)
 
-    return deliveryman
+    return admin
   }
 }
