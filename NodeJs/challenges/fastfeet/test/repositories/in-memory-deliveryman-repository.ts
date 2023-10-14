@@ -33,10 +33,14 @@ export class InMemoryDeliverymansRepository implements DeliverymanRepository {
   }
 
   async delete(deliveryman: Deliveryman) {
-    throw new Error('Method not implemented.')
+    const item = this.items.findIndex((item) => item.id === deliveryman.id)
+
+    this.items.splice(item, 1)
   }
 
   async save(deliveryman: Deliveryman) {
-    throw new Error('Method not implemented.')
+    const item = this.items.findIndex((item) => item.id === deliveryman.id)
+
+    this.items[item] = deliveryman
   }
 }

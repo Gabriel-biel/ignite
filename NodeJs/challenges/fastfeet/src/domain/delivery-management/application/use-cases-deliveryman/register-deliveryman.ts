@@ -4,21 +4,21 @@ import { DeliverymanAlreadyExists } from '../errors/deliverymanAlreadyExists'
 import { DeliverymanRepository } from '../repositories/deliveryman'
 import { Deliveryman } from '../../enterprise/entity/deliveryman'
 
-export interface RegisterStudentUseCaseRequest {
+export interface RegisterDeliverymanUseCaseRequest {
   name: string
   email: string
   cpf: string
   password: string
 }
 
-export type RegisterStudentUseCaseResponse = Either<
+export type RegisterDeliverymanUseCaseResponse = Either<
   DeliverymanAlreadyExists,
   {
     deliveryman: Deliveryman
   }
 >
 
-export class RegisterStudentUseCase {
+export class RegisterDeliverymanUseCase {
   constructor(
     private deiverymanRepository: DeliverymanRepository,
     private hashGenerator: HashGenerator,
@@ -29,7 +29,7 @@ export class RegisterStudentUseCase {
     email,
     cpf,
     password,
-  }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
+  }: RegisterDeliverymanUseCaseRequest): Promise<RegisterDeliverymanUseCaseResponse> {
     const studentWithSameEmail =
       await this.deiverymanRepository.findByEmail(email)
 
