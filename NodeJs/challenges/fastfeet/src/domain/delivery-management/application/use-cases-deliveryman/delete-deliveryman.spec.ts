@@ -6,7 +6,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 let inMemoryDeliverymansRepository: InMemoryDeliverymansRepository
 let deleteDeliverymanUseCase: DeleteDeliverymanUseCase
 
-describe('Get deliveryman (e2e)', () => {
+describe('Get deliveryman use case', () => {
   beforeEach(() => {
     inMemoryDeliverymansRepository = new InMemoryDeliverymansRepository()
     deleteDeliverymanUseCase = new DeleteDeliverymanUseCase(

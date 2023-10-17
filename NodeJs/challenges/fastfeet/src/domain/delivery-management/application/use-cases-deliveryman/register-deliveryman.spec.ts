@@ -6,7 +6,7 @@ let inMemoryDeliveryManRepository: InMemoryDeliverymansRepository
 let registerDelivermanUseCase: RegisterDeliverymanUseCase
 let fakeHasher: FakeHasher
 
-describe('Register deliveryman (e2e)', () => {
+describe('Register deliveryman use case', () => {
   beforeEach(() => {
     inMemoryDeliveryManRepository = new InMemoryDeliverymansRepository()
     fakeHasher = new FakeHasher()

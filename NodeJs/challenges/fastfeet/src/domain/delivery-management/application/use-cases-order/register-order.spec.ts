@@ -4,7 +4,7 @@ import { RegisterOrderUseCase } from './register-order'
 let inMemoryOrderRepository: InMemoryOrderRepository
 let registerOrderUseCase: RegisterOrderUseCase
 
-describe('Register order (e2e)', () => {
+describe('Register order use case', () => {
   beforeEach(() => {
     inMemoryOrderRepository = new InMemoryOrderRepository()
     registerOrderUseCase = new RegisterOrderUseCase(inMemoryOrderRepository)

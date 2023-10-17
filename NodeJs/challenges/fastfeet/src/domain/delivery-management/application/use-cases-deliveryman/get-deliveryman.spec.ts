@@ -5,7 +5,7 @@ import { GetDeliverymanUseCase } from './get-deliveryman'
 let inMemoryDeliverymansRepository: InMemoryDeliverymansRepository
 let getDeliverymanUseCase: GetDeliverymanUseCase
 
-describe('Get deliveryman (e2e)', () => {
+describe('Get deliveryman use case', () => {
   beforeEach(() => {
     inMemoryDeliverymansRepository = new InMemoryDeliverymansRepository()
     getDeliverymanUseCase = new GetDeliverymanUseCase(

@@ -1,6 +1,5 @@
 import { Either, rigth } from '@/core/either'
 import { Order } from '../../enterprise/entity/order'
-import { OrderAlreadyExists } from '../errors/order-already-exists'
 import { OrderRepository } from '../repositories/order-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
@@ -9,7 +8,7 @@ export interface RegisterOrderUseCaseRequest {
 }
 
 export type RegisterOrderUseCaseResponse = Either<
-  OrderAlreadyExists,
+  null,
   {
     order: Order
   }

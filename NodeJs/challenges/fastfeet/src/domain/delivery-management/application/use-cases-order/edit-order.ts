@@ -35,25 +35,21 @@ export class EditOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (orderId !== order.id.toString()) {
-      return left(new NotAllowedError())
-    }
+    // if (orderAvailable) {
+    order.order_available = orderAvailable
+    // }
 
-    if (orderAvailable) {
-      order.order_available = orderAvailable
-    }
+    // if (deliveredAt) {
+    order.delivered_at = deliveredAt
+    // }
 
-    if (deliveredAt) {
-      order.delivered_at = deliveredAt
-    }
+    // if (pickupAvailableOrder) {
+    order.pickup_available_order = pickupAvailableOrder
+    // }
 
-    if (pickupAvailableOrder) {
-      order.pickup_available_order = pickupAvailableOrder
-    }
-
-    if (returnedAt) {
-      order.returned_at = returnedAt
-    }
+    // if (returnedAt) {
+    order.returned_at = returnedAt
+    // }
 
     await this.orderRepository.save(order)
 

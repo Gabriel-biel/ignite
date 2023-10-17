@@ -5,7 +5,7 @@ import { MakeOrder } from 'test/factories/make-order'
 let inMemoryOrderRepository: InMemoryOrderRepository
 let deleteOrderUseCase: DeleteOrderUseCase
 
-describe('Delete order (e2e)', () => {
+describe('Delete order use case', () => {
   beforeEach(() => {
     inMemoryOrderRepository = new InMemoryOrderRepository()
     deleteOrderUseCase = new DeleteOrderUseCase(inMemoryOrderRepository)
