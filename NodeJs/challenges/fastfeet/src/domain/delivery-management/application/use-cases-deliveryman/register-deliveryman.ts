@@ -1,7 +1,7 @@
 import { Either, left, rigth } from '@/core/either'
 import { HashGenerator } from '../cryptography/hash-generator'
-import { DeliverymanAlreadyExists } from '../errors/deliverymanAlreadyExists'
-import { DeliverymanRepository } from '../repositories/deliveryman'
+import { DeliverymanAlreadyExists } from '../errors/deliveryman-already-exists'
+import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { Deliveryman } from '../../enterprise/entity/deliveryman'
 
 export interface RegisterDeliverymanUseCaseRequest {

@@ -13,8 +13,16 @@ export class Deliveryman extends Entity<DeliverymanProps> {
     return this.props.name
   }
 
+  set name(name: string) {
+    this.props.name = name
+  }
+
   get email() {
     return this.props.email
+  }
+
+  set email(email: string) {
+    this.props.email = email
   }
 
   get cpf() {
@@ -23,6 +31,10 @@ export class Deliveryman extends Entity<DeliverymanProps> {
 
   get password() {
     return this.props.password
+  }
+
+  set password(password: string) {
+    this.props.password = password
   }
 
   static create(props: DeliverymanProps, id?: UniqueEntityID) {

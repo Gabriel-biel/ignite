@@ -19,7 +19,7 @@ describe('Register Student', () => {
       password: '123456',
     })
 
-    expect(result.isright()).toBe(true)
+    expect(result.isRigth()).toBe(true)
     expect(result.value).toEqual({
       student: inMemoryStudentsRepository.items[0],
     })
@@ -34,7 +34,7 @@ describe('Register Student', () => {
 
     const hashedPassword = await fakeHasher.hash('123456')
 
-    expect(result.isright()).toBeTruthy()
+    expect(result.isRigth()).toBeTruthy()
     expect(inMemoryStudentsRepository.items[0].password).toEqual(hashedPassword)
   })
 })

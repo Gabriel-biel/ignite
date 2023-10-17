@@ -27,8 +27,5 @@ describe('Register deliveryman (e2e)', () => {
     expect(result.value).toEqual({
       deliveryman: inMemoryDeliveryManRepository.items[0],
     })
-
-    console.log(result.value)
-    console.log(inMemoryDeliveryManRepository.items[0])
   })
 })

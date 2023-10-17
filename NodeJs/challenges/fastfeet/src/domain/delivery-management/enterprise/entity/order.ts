@@ -5,7 +5,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 export interface OrderProps {
   recipientId: UniqueEntityID
   order_available?: Date
-  pick_up_order?: Date
+  pickup_available_order?: Date
   delivered_at?: Date
   returned_at?: Date
   created_at?: Date
@@ -16,23 +16,36 @@ export class Order extends Entity<OrderProps> {
     return this.props.order_available
   }
 
-  get pick_up_order() {
-    return this.props.pick_up_order
+  set order_available(orderAvailable: Date | undefined) {
+    this.props.order_available = orderAvailable
+  }
+
+  get pickup_available_order() {
+    return this.props.pickup_available_order
+  }
+
+  set pickup_available_order(pickupAvailableOrder: Date | undefined) {
+    this.props.pickup_available_order = pickupAvailableOrder
   }
 
   get delivered_at() {
     return this.props.delivered_at
   }
 
+  set delivered_at(deliveryAt: Date | undefined) {
+    this.props.delivered_at = deliveryAt
+  }
+
   get returned_at() {
     return this.props.returned_at
   }
 
+  set returned_at(returnedAt: Date | undefined) {
+    this.props.returned_at = returnedAt
+  }
+
   static create(
-    props: Optional<
-      OrderProps,
-      'order_available' | 'pick_up_order' | 'delivered_at' | 'returned_at'
-    >,
+    props: Optional<OrderProps, 'created_at'>,
     id?: UniqueEntityID,
   ) {
     const order = new Order(

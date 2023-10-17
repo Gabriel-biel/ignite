@@ -1,4 +1,4 @@
-import { Either, right } from '@/core/either'
+import { Either, rigth } from '@/core/either'
 import { QuestionComment } from '../../enterprise/entities/question-coment'
 import { QuestionCommentsRepository } from '../repositories/question-comments-repository'
 
@@ -27,7 +27,7 @@ export class FetchQuestionCommentsUseCase {
         { page },
       )
 
-    return right({
+    return rigth({
       questionComments,
     })
   }

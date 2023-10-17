@@ -1,4 +1,4 @@
-import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman'
+import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman-repository'
 import { Deliveryman } from '@/domain/delivery-management/enterprise/entity/deliveryman'
 
 export class InMemoryDeliverymansRepository implements DeliverymanRepository {

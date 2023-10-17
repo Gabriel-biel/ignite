@@ -10,13 +10,13 @@ export class Left<L, R> {
     return true
   }
 
-  isRight(): this is Right<L, R> {
+  isRigth(): this is Rigth<L, R> {
     return false
   }
 }
 
 // Success
-export class Right<L, R> {
+export class Rigth<L, R> {
   readonly value: R
 
   constructor(value: R) {
@@ -27,17 +27,17 @@ export class Right<L, R> {
     return false
   }
 
-  isRight(): this is Right<L, R> {
+  isRigth(): this is Rigth<L, R> {
     return true
   }
 }
 
-export type Either<L, R> = Left<L, R> | Right<L, R>
+export type Either<L, R> = Left<L, R> | Rigth<L, R>
 
 export const left = <L, R>(value: L): Either<L, R> => {
   return new Left(value)
 }
 
-export const right = <L, R>(value: R): Either<L, R> => {
-  return new Right(value)
+export const rigth = <L, R>(value: R): Either<L, R> => {
+  return new Rigth(value)
 }
