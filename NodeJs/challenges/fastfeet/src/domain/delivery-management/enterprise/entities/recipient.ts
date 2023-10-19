@@ -5,6 +5,7 @@ export interface RecipientProps {
   name: string
   email: string
   cpf: string
+  password: string
 }
 
 export class Recipient extends Entity<RecipientProps> {
@@ -26,6 +27,14 @@ export class Recipient extends Entity<RecipientProps> {
 
   get cpf() {
     return this.props.cpf
+  }
+
+  get password() {
+    return this.props.password
+  }
+
+  set password(password: string) {
+    this.props.password = password
   }
 
   static create(props: RecipientProps, id?: UniqueEntityID) {

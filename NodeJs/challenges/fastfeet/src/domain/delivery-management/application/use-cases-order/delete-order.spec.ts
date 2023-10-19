@@ -1,13 +1,19 @@
 import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repository'
 import { DeleteOrderUseCase } from './delete-order'
 import { MakeOrder } from 'test/factories/make-order'
+import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
+let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let deleteOrderUseCase: DeleteOrderUseCase
 
 describe('Delete order use case', () => {
   beforeEach(() => {
-    inMemoryOrderRepository = new InMemoryOrderRepository()
+    inMemoryOrderAttachmentsRepository =
+      new InMemoryOrderAttachmentsRepository()
+    inMemoryOrderRepository = new InMemoryOrderRepository(
+      inMemoryOrderAttachmentsRepository,
+    )
     deleteOrderUseCase = new DeleteOrderUseCase(inMemoryOrderRepository)
   })
 

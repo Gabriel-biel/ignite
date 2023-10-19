@@ -1,5 +1,4 @@
 import { Either, left, rigth } from '@/core/either'
-import { OrderAlreadyExists } from '../errors/order-already-exists'
 import { OrderRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
@@ -7,7 +6,7 @@ export interface DeleteOrderUseCaseRequest {
   orderId: string
 }
 
-export type DeleteOrderUseCaseResponse = Either<OrderAlreadyExists, null>
+export type DeleteOrderUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class DeleteOrderUseCase {
   constructor(private orderRepository: OrderRepository) {}

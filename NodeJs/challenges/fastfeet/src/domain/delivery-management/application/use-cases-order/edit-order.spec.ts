@@ -18,14 +18,14 @@ describe('Edit order use case', () => {
 
     const result = await editOrderUseCase.execute({
       orderId: order.id.toString(),
-      orderAvailable: new Date(2023, 7, 22),
+      pickupAvailableOrder: new Date(2023, 7, 22),
     })
 
     expect(result.isRigth()).toBeTruthy()
     expect(inMemoryOrderRepository.items).toHaveLength(1)
     expect(inMemoryOrderRepository.items[0]).toEqual(
       expect.objectContaining({
-        order_available: new Date(2023, 7, 22),
+        pickup_available_order: new Date(2023, 7, 22),
       }),
     )
   })

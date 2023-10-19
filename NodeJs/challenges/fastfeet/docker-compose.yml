@@ -11,5 +11,3 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: fastfeet-clean
       PGDATA: /data/postgres
-    volumes:
-      - ./data/pg:/data/postgres

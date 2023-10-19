@@ -1,13 +1,19 @@
 import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repository'
 import { GetOrderUseCase } from './get-order'
 import { MakeOrder } from 'test/factories/make-order'
+import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
 
+let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let getOrderUseCase: GetOrderUseCase
 
 describe('Get order use case', () => {
   beforeEach(() => {
-    inMemoryOrderRepository = new InMemoryOrderRepository()
+    inMemoryOrderAttachmentsRepository =
+      new InMemoryOrderAttachmentsRepository()
+    inMemoryOrderRepository = new InMemoryOrderRepository(
+      inMemoryOrderAttachmentsRepository,
+    )
     getOrderUseCase = new GetOrderUseCase(inMemoryOrderRepository)
   })
 
@@ -18,6 +24,7 @@ describe('Get order use case', () => {
 
     const result = await getOrderUseCase.execute({
       orderId: order.id.toString(),
+      recipientId: order.recipientId.toString(),
     })
 
     expect(result.isRigth()).toBeTruthy()

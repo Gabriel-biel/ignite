@@ -1,5 +1,5 @@
 import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman-repository'
-import { Deliveryman } from '@/domain/delivery-management/enterprise/entity/deliveryman'
+import { Deliveryman } from '@/domain/delivery-management/enterprise/entities/deliveryman'
 
 export class InMemoryDeliverymansRepository implements DeliverymanRepository {
   public items: Deliveryman[] = []
@@ -22,8 +22,8 @@ export class InMemoryDeliverymansRepository implements DeliverymanRepository {
     return deliveryman
   }
 
-  async findByEmail(email: string) {
-    const deliveryman = this.items.find((item) => item.email === email)
+  async findByCpf(cpf: string) {
+    const deliveryman = this.items.find((item) => item.cpf === cpf)
 
     if (!deliveryman) {
       return null

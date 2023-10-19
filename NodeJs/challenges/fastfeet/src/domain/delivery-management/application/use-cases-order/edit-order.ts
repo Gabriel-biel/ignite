@@ -1,15 +1,19 @@
 import { Either, left, rigth } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Order } from '../../enterprise/entity/order'
+import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
+import { OrderAttachmentsRepository } from '../repositories/order-attachments-repository'
+import { OrderAttachmentList } from '../../enterprise/entities/order-attachment-list'
+import { OrderAttachment } from '../../enterprise/entities/order-attachment'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface EditOrderUseCaseRequest {
   orderId: string
-  orderAvailable?: Date
   pickupAvailableOrder?: Date
   deliveredAt?: Date
   returnedAt?: Date
+  attachmentsIds?: string[]
 }
 
 export type EditOrderUseCaseResponse = Either<
@@ -20,14 +24,17 @@ export type EditOrderUseCaseResponse = Either<
 >
 
 export class EditOrderUseCase {
-  constructor(private orderRepository: OrderRepository) {}
+  constructor(
+    private orderRepository: OrderRepository,
+    private orderAttachmentsRepository: OrderAttachmentsRepository,
+  ) {}
 
   async execute({
     orderId,
-    orderAvailable,
     deliveredAt,
     pickupAvailableOrder,
     returnedAt,
+    attachmentsIds,
   }: EditOrderUseCaseRequest): Promise<EditOrderUseCaseResponse> {
     const order = await this.orderRepository.findById(orderId)
 
@@ -35,21 +42,33 @@ export class EditOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    // if (orderAvailable) {
-    order.order_available = orderAvailable
-    // }
+    if (!attachmentsIds) {
+      order.pickup_available_order = pickupAvailableOrder
+      order.returned_at = returnedAt
 
-    // if (deliveredAt) {
+      await this.orderRepository.save(order)
+
+      return rigth({ order })
+    }
+
+    const currentOrderAttachments =
+      await this.orderAttachmentsRepository.findManyByOrderId(orderId)
+
+    const orderAttachmentList = new OrderAttachmentList(currentOrderAttachments)
+
+    const orderAttachments = attachmentsIds.map((attachmentId) => {
+      return OrderAttachment.create({
+        orderId: order.id,
+        attachmentId: new UniqueEntityID(attachmentId),
+      })
+    })
+
+    orderAttachmentList.update(orderAttachments)
+
     order.delivered_at = deliveredAt
-    // }
-
-    // if (pickupAvailableOrder) {
     order.pickup_available_order = pickupAvailableOrder
-    // }
-
-    // if (returnedAt) {
     order.returned_at = returnedAt
-    // }
+    order.attachments = orderAttachmentList
 
     await this.orderRepository.save(order)
 

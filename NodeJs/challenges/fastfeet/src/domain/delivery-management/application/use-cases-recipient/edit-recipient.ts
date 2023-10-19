@@ -1,7 +1,7 @@
 import { Either, left, rigth } from '@/core/either'
 import { RecipientRepository } from '../repositories/recipient-respository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Recipient } from '../../enterprise/entity/recipient'
+import { Recipient } from '../../enterprise/entities/recipient'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 export interface EditRecipientUseCaseRequest {

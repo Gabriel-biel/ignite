@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   Order,
   OrderProps,
-} from '@/domain/delivery-management/enterprise/entity/order'
+} from '@/domain/delivery-management/enterprise/entities/order'
 import { faker } from '@faker-js/faker'
 
 export function MakeOrder(

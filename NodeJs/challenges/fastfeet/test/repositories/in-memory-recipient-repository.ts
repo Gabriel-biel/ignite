@@ -1,5 +1,5 @@
 import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
-import { Recipient } from '@/domain/delivery-management/enterprise/entity/recipient'
+import { Recipient } from '@/domain/delivery-management/enterprise/entities/recipient'
 
 export class InMemoryRecipientRepository implements RecipientRepository {
   public items: Recipient[] = []
@@ -20,8 +20,8 @@ export class InMemoryRecipientRepository implements RecipientRepository {
     return recipient
   }
 
-  async findByEmail(email: string) {
-    const recipient = await this.items.find((item) => item.email === email)
+  async findByCpf(cpf: string) {
+    const recipient = this.items.find((item) => item.cpf === cpf)
 
     if (!recipient) {
       return null

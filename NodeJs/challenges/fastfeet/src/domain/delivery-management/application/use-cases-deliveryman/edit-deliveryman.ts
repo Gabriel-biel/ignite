@@ -1,7 +1,7 @@
 import { Either, left, rigth } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Deliveryman } from '../../enterprise/entity/deliveryman'
+import { Deliveryman } from '../../enterprise/entities/deliveryman'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { HashGenerator } from '../cryptography/hash-generator'
 

@@ -2,7 +2,7 @@ import { Either, left, rigth } from '@/core/either'
 import { HashGenerator } from '../cryptography/hash-generator'
 import { DeliverymanAlreadyExists } from '../errors/deliveryman-already-exists'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
-import { Deliveryman } from '../../enterprise/entity/deliveryman'
+import { Deliveryman } from '../../enterprise/entities/deliveryman'
 
 export interface RegisterDeliverymanUseCaseRequest {
   name: string
@@ -30,11 +30,10 @@ export class RegisterDeliverymanUseCase {
     cpf,
     password,
   }: RegisterDeliverymanUseCaseRequest): Promise<RegisterDeliverymanUseCaseResponse> {
-    const studentWithSameEmail =
-      await this.deiverymanRepository.findByEmail(email)
+    const studentWithSameCpf = await this.deiverymanRepository.findByCpf(cpf)
 
-    if (studentWithSameEmail) {
-      return left(new DeliverymanAlreadyExists(email))
+    if (studentWithSameCpf) {
+      return left(new DeliverymanAlreadyExists(cpf))
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)
