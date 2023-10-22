@@ -12,8 +12,10 @@ export class OnAsnwerCreated implements EventHandler {
     this.setupSubscriptions()
   }
 
+  // cria a subscription
   setupSubscriptions(): void {
     DomainEvents.register(
+      // bind para dizer que o this e uma referência dessa classe, e não uma referência da classe que a chamou
       this.sendNewAnswerNotification.bind(this),
       AnswerCreatedEvent.name,
     )

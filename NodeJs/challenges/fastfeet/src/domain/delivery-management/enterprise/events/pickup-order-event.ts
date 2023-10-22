@@ -1,15 +1,15 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { DomainEvent } from '@/core/events/domain-Event'
 import { Order } from '../entities/order'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-export class DeliveredOrderEvent implements DomainEvent {
+export class PickupOrderEvent implements DomainEvent {
   public order: Order
-  public deliveredOrder: Date
+  public pickupOrder: Date
   public ocurredAt: Date
 
-  constructor(order: Order, deliveredOrder: Date) {
+  constructor(order: Order, pickupOrder: Date) {
     this.order = order
-    this.deliveredOrder = deliveredOrder
+    this.pickupOrder = pickupOrder
     this.ocurredAt = new Date()
   }
 

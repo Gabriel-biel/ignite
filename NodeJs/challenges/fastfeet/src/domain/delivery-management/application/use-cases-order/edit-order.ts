@@ -11,6 +11,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 export interface EditOrderUseCaseRequest {
   orderId: string
   pickupAvailableOrder?: Date
+  pickupAt?: Date
   deliveredAt?: Date
   returnedAt?: Date
   attachmentsIds?: string[]
@@ -33,6 +34,7 @@ export class EditOrderUseCase {
     orderId,
     deliveredAt,
     pickupAvailableOrder,
+    pickupAt,
     returnedAt,
     attachmentsIds,
   }: EditOrderUseCaseRequest): Promise<EditOrderUseCaseResponse> {
@@ -44,6 +46,7 @@ export class EditOrderUseCase {
 
     if (!attachmentsIds) {
       order.pickup_available_order = pickupAvailableOrder
+      order.pickup_at = pickupAt
       order.returned_at = returnedAt
 
       await this.orderRepository.save(order)

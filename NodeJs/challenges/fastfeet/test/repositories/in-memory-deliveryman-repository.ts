@@ -6,8 +6,6 @@ export class InMemoryDeliverymansRepository implements DeliverymanRepository {
 
   async create(deliveryman: Deliveryman) {
     this.items.push(deliveryman)
-
-    // DomainEvents.dispatchEventsForAggregate(deliveryman.id)
   }
 
   async findById(deliverymanId: string) {

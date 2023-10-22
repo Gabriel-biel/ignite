@@ -1,14 +1,23 @@
 import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repository'
 import { EditOrderUseCase } from './edit-order'
 import { MakeOrder } from 'test/factories/make-order'
+import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
 
+let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let editOrderUseCase: EditOrderUseCase
 
 describe('Edit order use case', () => {
   beforeEach(() => {
-    inMemoryOrderRepository = new InMemoryOrderRepository()
-    editOrderUseCase = new EditOrderUseCase(inMemoryOrderRepository)
+    inMemoryOrderAttachmentsRepository =
+      new InMemoryOrderAttachmentsRepository()
+    inMemoryOrderRepository = new InMemoryOrderRepository(
+      inMemoryOrderAttachmentsRepository,
+    )
+    editOrderUseCase = new EditOrderUseCase(
+      inMemoryOrderRepository,
+      inMemoryOrderAttachmentsRepository,
+    )
   })
 
   it('should be able to edit a order', async () => {

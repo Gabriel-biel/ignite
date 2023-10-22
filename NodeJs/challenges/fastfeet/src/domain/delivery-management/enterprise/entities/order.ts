@@ -5,11 +5,13 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { PickupAvailableOrderEvent } from '../events/pickup-available-order-event'
 import { DeliveredOrderEvent } from '../events/delivered-order-event'
 import { ReturnedOrderEvent } from '../events/returned-order-event'
+import { PickupOrderEvent } from '../events/pickup-order-event'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
   deliverymanId?: UniqueEntityID
   pickup_available_order?: Date
+  pickup_at?: Date
   delivered_at?: Date
   returned_at?: Date
   attachments: OrderAttachmentList
@@ -24,6 +26,18 @@ export class Order extends AggregateRoot<OrderProps> {
 
   get deliverymanId() {
     return this.props.deliverymanId
+  }
+
+  get pickup_at() {
+    return this.props.pickup_at
+  }
+
+  set pickup_at(pickupAt: Date | undefined) {
+    if (pickupAt && pickupAt !== this.props.pickup_at) {
+      this.addDomainEvent(new PickupOrderEvent(this, pickupAt))
+    }
+
+    this.props.pickup_at = pickupAt
   }
 
   get pickup_available_order() {
