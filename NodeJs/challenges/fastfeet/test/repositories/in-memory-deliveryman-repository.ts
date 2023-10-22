@@ -1,13 +1,18 @@
-import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman'
-import { Deliveryman } from '@/domain/delivery-management/enterprise/entity/deliveryman'
+import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
+import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman-repository'
+import { Deliveryman } from '@/domain/delivery-management/enterprise/entities/deliveryman'
 
 export class InMemoryDeliverymansRepository implements DeliverymanRepository {
   public items: Deliveryman[] = []
 
+  constructor(private addressRepository: AddressRepository) {}
+
   async create(deliveryman: Deliveryman) {
     this.items.push(deliveryman)
 
-    // DomainEvents.dispatchEventsForAggregate(deliveryman.id)
+    if (deliveryman.address) {
+      await this.addressRepository.create(deliveryman.address)
+    }
   }
 
   async findById(deliverymanId: string) {
@@ -22,8 +27,8 @@ export class InMemoryDeliverymansRepository implements DeliverymanRepository {
     return deliveryman
   }
 
-  async findByEmail(email: string) {
-    const deliveryman = this.items.find((item) => item.email === email)
+  async findByCpf(cpf: string) {
+    const deliveryman = this.items.find((item) => item.cpf === cpf)
 
     if (!deliveryman) {
       return null

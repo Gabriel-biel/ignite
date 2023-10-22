@@ -1,4 +1,4 @@
-import { Either, left, right } from '@/core/either'
+import { Either, left, rigth } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { Student } from '../../enterprise/entities/student'
 import { StudentRepository } from '../repositories/student-repository'
@@ -47,6 +47,6 @@ export class RegisterStudentUseCase {
 
     await this.studentsRepository.create(student)
 
-    return right({ student })
+    return rigth({ student })
   }
 }

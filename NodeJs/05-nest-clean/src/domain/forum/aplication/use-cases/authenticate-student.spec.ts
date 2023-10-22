@@ -34,7 +34,7 @@ describe('Authenticate Student', () => {
       password: '123456',
     })
 
-    expect(result.isRight()).toBeTruthy()
+    expect(result.isRigth()).toBeTruthy()
     expect(result.value).toEqual({
       accessToken: expect.any(String),
     })
