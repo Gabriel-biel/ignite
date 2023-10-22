@@ -14,10 +14,10 @@ import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-not
 import { SpyInstance } from 'vitest'
 import { waitFor } from 'test/utils/wait-for'
 
-let inMemoryNotificationsRepository: InMemoryNotificationsRepository
-let inMemoryRecipientRepository: InMemoryRecipientRepository
-let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryOrderAttachments: InMemoryOrderAttachmentsRepository
+let inMemoryOrderRepository: InMemoryOrderRepository
+let inMemoryRecipientRepository: InMemoryRecipientRepository
+let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
 
 let sendNotificationExecuteSpy: SpyInstance<

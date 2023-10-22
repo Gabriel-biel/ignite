@@ -1,11 +1,12 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Address } from './address'
 
 export interface RecipientProps {
   name: string
   email: string
   cpf: string
-  password: string
+  address?: Address
 }
 
 export class Recipient extends Entity<RecipientProps> {
@@ -29,12 +30,12 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.cpf
   }
 
-  get password() {
-    return this.props.password
+  get address() {
+    return this.props.address
   }
 
-  set password(password: string) {
-    this.props.password = password
+  set address(address: Address | undefined) {
+    this.props.address = address
   }
 
   static create(props: RecipientProps, id?: UniqueEntityID) {

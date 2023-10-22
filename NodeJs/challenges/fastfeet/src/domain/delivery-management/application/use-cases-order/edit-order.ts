@@ -10,6 +10,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface EditOrderUseCaseRequest {
   orderId: string
+  recipientId: string
   pickupAvailableOrder?: Date
   pickupAt?: Date
   deliveredAt?: Date
@@ -32,6 +33,7 @@ export class EditOrderUseCase {
 
   async execute({
     orderId,
+    recipientId,
     deliveredAt,
     pickupAvailableOrder,
     pickupAt,
@@ -42,6 +44,10 @@ export class EditOrderUseCase {
 
     if (!order) {
       return left(new ResourceNotFoundError())
+    }
+
+    if (order.recipientId.toString() !== recipientId) {
+      return left(new NotAllowedError())
     }
 
     if (!attachmentsIds) {
