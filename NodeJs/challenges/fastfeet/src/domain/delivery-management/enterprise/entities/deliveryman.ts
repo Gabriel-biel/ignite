@@ -1,12 +1,10 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Address } from './address'
 
 export interface DeliverymanProps {
   name: string
   email: string
   cpf: string
-  address?: Address
   password: string
 }
 
@@ -29,14 +27,6 @@ export class Deliveryman extends Entity<DeliverymanProps> {
 
   get cpf() {
     return this.props.cpf
-  }
-
-  get address() {
-    return this.props.address
-  }
-
-  set address(address: Address | undefined) {
-    this.props.address = address
   }
 
   get password() {

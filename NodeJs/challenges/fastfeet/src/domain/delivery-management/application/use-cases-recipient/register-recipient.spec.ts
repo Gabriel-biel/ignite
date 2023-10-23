@@ -1,12 +1,17 @@
 import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 import { RegisterRecipientUseCase } from './register-recipient'
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
 
+let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let registerRecipientUseCase: RegisterRecipientUseCase
 
 describe('Register recipient use case', () => {
   beforeEach(() => {
-    inMemoryRecipientRepository = new InMemoryRecipientRepository()
+    inMemoryAddressRepository = new InMemoryAddressRepository()
+    inMemoryRecipientRepository = new InMemoryRecipientRepository(
+      inMemoryAddressRepository,
+    )
     registerRecipientUseCase = new RegisterRecipientUseCase(
       inMemoryRecipientRepository,
     )
@@ -17,7 +22,16 @@ describe('Register recipient use case', () => {
       name: 'Gabriel',
       email: 'gabriel97ga98@gmail.com',
       cpf: '123456',
+      address: {
+        city: 'Lábre',
+        street: 'Rua 1',
+        house_number: 1234,
+        latitude: 1,
+        longitude: 2,
+      },
     })
+
+    console.log(result.value?.recipient.address)
 
     expect(result.isRigth()).toBeTruthy()
     expect(result.value).toEqual({

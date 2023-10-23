@@ -14,7 +14,7 @@ export type FetchOrdersNearbyResponse = Either<
   }
 >
 
-export class FetchOrdersNearby {
+export class FetchOrdersNearbyUseCase {
   constructor(private orderRepository: OrderRepository) {}
 
   async execute({

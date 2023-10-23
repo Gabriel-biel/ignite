@@ -1,21 +1,16 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 import {
   FindManyNearbyParams,
   OrderRepository,
 } from '@/domain/delivery-management/application/repositories/order-repository'
 import { Order } from '@/domain/delivery-management/enterprise/entities/order'
-import { GetDistanceBetweenCoordinates } from 'test/utils/get-distance-between-coordinates'
 
 export class InMemoryOrderRepository implements OrderRepository {
   public items: Order[] = []
 
-  constructor(
-    private orderAttachmentsRepository: OrderAttachmentsRepository,
-    private addressRepository: AddressRepository,
-  ) {}
+  constructor(private orderAttachmentsRepository: OrderAttachmentsRepository) {}
 
   async create(order: Order) {
     this.items.push(order)
@@ -31,24 +26,8 @@ export class InMemoryOrderRepository implements OrderRepository {
     return order
   }
 
-  async findManyNearby(params: FindManyNearbyParams): Promise<Order[]> {
-    return this.items.filter(async (item) => {
-      const recipientAddress = await this.addressRepository.findById(
-        item.recipientId.toString(),
-      )
-
-      const distance = GetDistanceBetweenCoordinates(
-        {
-          latitude: params.latitude,
-          longitude: params.longitude,
-        },
-        {
-          latitude: recipientAddress.latitude,
-          longitude: recipientAddress.longitude,
-        },
-      )
-      return distance < 3
-    })
+  async findManyNearby(params: FindManyNearbyParams) {
+    return this.items
   }
 
   async findManyByOrdersDeliveryman({ page }, deliverymanId: string) {

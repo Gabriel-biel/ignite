@@ -2,6 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface AddressProps {
+  recipientId: UniqueEntityID
   city: string
   street: string
   house_number: number
@@ -50,7 +51,7 @@ export class Address extends Entity<AddressProps> {
     this.props.longitude = longitude
   }
 
-  async create(props: AddressProps, id?: UniqueEntityID) {
+  static create(props: AddressProps, id?: UniqueEntityID) {
     const address = new Address(
       {
         ...props,

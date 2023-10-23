@@ -1,18 +1,11 @@
-import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
 import { DeliverymanRepository } from '@/domain/delivery-management/application/repositories/deliveryman-repository'
 import { Deliveryman } from '@/domain/delivery-management/enterprise/entities/deliveryman'
 
 export class InMemoryDeliverymansRepository implements DeliverymanRepository {
   public items: Deliveryman[] = []
 
-  constructor(private addressRepository: AddressRepository) {}
-
   async create(deliveryman: Deliveryman) {
     this.items.push(deliveryman)
-
-    if (deliveryman.address) {
-      await this.addressRepository.create(deliveryman.address)
-    }
   }
 
   async findById(deliverymanId: string) {
