@@ -23,7 +23,7 @@ describe('Read notification event test', () => {
       recipientId: notification.recipientId.toString(),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryNotificationsRepository.items[0].readAt).toEqual(
       expect.any(Date),
     )

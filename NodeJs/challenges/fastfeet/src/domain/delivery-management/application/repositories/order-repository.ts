@@ -2,6 +2,7 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Order } from '../../enterprise/entities/order'
 
 export interface FindManyNearbyParams {
+  deliverymanId: string
   latitude: number
   longitude: number
 }

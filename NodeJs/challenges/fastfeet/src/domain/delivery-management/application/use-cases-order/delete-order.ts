@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { OrderRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
@@ -22,6 +22,6 @@ export class DeleteOrderUseCase {
 
     await this.orderRepository.delete(order)
 
-    return rigth(null)
+    return right(null)
   }
 }

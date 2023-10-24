@@ -11,6 +11,14 @@ export interface AddressProps {
 }
 
 export class Address extends Entity<AddressProps> {
+  get recipientId() {
+    return this.props.recipientId
+  }
+
+  set recipientId(recipientId: UniqueEntityID) {
+    this.props.recipientId = recipientId
+  }
+
   get city() {
     return this.props.city
   }

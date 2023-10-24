@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Order } from '../../enterprise/entities/order'
@@ -57,7 +57,7 @@ export class EditOrderUseCase {
 
       await this.orderRepository.save(order)
 
-      return rigth({ order })
+      return right({ order })
     }
 
     const currentOrderAttachments =
@@ -81,6 +81,6 @@ export class EditOrderUseCase {
 
     await this.orderRepository.save(order)
 
-    return rigth({ order })
+    return right({ order })
   }
 }

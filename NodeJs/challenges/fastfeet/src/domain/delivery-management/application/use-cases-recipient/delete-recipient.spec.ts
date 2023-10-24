@@ -22,7 +22,7 @@ describe('Delete recipient use case', () => {
       recipientId: recipient.id.toString(),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryRecipientRepository.items).toHaveLength(0)
   })
 })

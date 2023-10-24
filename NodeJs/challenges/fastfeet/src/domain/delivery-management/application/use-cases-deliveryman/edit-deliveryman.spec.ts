@@ -35,7 +35,7 @@ describe('Edit deliveryman use case', () => {
       password: '123456',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryDeliverymanRepository.items).toHaveLength(1)
     expect(inMemoryDeliverymanRepository.items[0]).toEqual(
       expect.objectContaining({

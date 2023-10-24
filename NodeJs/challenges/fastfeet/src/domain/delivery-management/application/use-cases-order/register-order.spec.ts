@@ -21,7 +21,7 @@ describe('Register order use case', () => {
       recipientId: '123',
     })
 
-    expect(result.isRigth()).toBe(true)
+    expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
       order: inMemoryOrderRepository.items[0],
     })

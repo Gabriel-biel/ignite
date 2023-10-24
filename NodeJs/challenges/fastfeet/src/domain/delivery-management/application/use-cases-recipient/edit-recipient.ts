@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { RecipientRepository } from '../repositories/recipient-respository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Recipient } from '../../enterprise/entities/recipient'
@@ -36,6 +36,6 @@ export class EditRecipientUseCase {
 
     await this.recipientRepository.save(recipient)
 
-    return rigth({ recipient })
+    return right({ recipient })
   }
 }

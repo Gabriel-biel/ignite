@@ -36,7 +36,7 @@ describe('Fetch orders by recipient', () => {
       recipientId: 'recipient-id',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryOrderRepository.items).toHaveLength(3)
   })
 })

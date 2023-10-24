@@ -3,7 +3,6 @@ import {
   Order,
   OrderProps,
 } from '@/domain/delivery-management/enterprise/entities/order'
-import { faker } from '@faker-js/faker'
 
 export function MakeOrder(
   override: Partial<OrderProps> = {},
@@ -11,9 +10,9 @@ export function MakeOrder(
 ) {
   const order = Order.create(
     {
+      addressId: new UniqueEntityID(),
+      deliverymanId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
-      delivered_at: faker.date.past(),
-      created_at: faker.date.past(),
       ...override,
     },
     id,

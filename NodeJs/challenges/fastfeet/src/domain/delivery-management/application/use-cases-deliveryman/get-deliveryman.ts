@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Deliveryman } from '../../enterprise/entities/deliveryman'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
@@ -27,6 +27,6 @@ export class GetDeliverymanUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    return rigth({ deliveryman })
+    return right({ deliveryman })
   }
 }

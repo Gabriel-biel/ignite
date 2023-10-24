@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { RecipientRepository } from '../repositories/recipient-respository'
 
@@ -22,6 +22,6 @@ export class DeleteRecipientUseCase {
 
     await this.recipientRepository.delete(recipient)
 
-    return rigth(null)
+    return right(null)
   }
 }

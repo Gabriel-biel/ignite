@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Deliveryman } from '../../enterprise/entities/deliveryman'
@@ -49,6 +49,6 @@ export class EditDeliverymanUseCase {
 
     await this.deliverymanRepository.save(deliveryman)
 
-    return rigth({ deliveryman })
+    return right({ deliveryman })
   }
 }

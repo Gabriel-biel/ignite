@@ -20,7 +20,7 @@ describe('Get recipient use case', () => {
       recipientId: recipient.id.toString(),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(result.value).toEqual({
       recipient: inMemoryRecipientRepository.items[0],
     })

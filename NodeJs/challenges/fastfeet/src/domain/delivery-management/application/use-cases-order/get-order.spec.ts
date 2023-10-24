@@ -27,7 +27,7 @@ describe('Get order use case', () => {
       recipientId: order.recipientId.toString(),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(result.value).toMatchObject({
       order: expect.objectContaining({
         delivered_at: new Date(2023, 7, 22),

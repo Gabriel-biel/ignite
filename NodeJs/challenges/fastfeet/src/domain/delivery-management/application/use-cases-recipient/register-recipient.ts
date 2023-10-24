@@ -1,4 +1,4 @@
-import { Either, rigth } from '@/core/either'
+import { Either, right } from '@/core/either'
 import { Recipient } from '../../enterprise/entities/recipient'
 import { RecipientRepository } from '../repositories/recipient-respository'
 
@@ -28,6 +28,6 @@ export class RegisterRecipientUseCase {
 
     await this.recipientRepository.create(recipient)
 
-    return rigth({ recipient })
+    return right({ recipient })
   }
 }

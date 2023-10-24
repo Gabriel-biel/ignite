@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { HashGenerator } from '../cryptography/hash-generator'
 import { DeliverymanAlreadyExists } from '../errors/deliveryman-already-exists'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
@@ -48,6 +48,6 @@ export class RegisterDeliverymanUseCase {
 
     await this.deiverymanRepository.create(deliveryman)
 
-    return rigth({ deliveryman })
+    return right({ deliveryman })
   }
 }

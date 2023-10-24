@@ -35,7 +35,7 @@ describe('Authenticate deliveryman use case', () => {
       password: '123456',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(result.value).toEqual({
       accessToken: expect.any(String),
     })

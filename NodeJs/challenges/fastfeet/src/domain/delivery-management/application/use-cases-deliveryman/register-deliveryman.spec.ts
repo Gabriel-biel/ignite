@@ -23,7 +23,7 @@ describe('Register deliveryman use case', () => {
       password: await fakeHasher.hash('123456'),
     })
 
-    expect(result.isRigth()).toBe(true)
+    expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
       deliveryman: inMemoryDeliveryManRepository.items[0],
     })

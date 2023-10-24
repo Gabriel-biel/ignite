@@ -19,7 +19,7 @@ describe('Send notification event test', () => {
       title: 'fake-title',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryNotificationsRepository.items[0]).toEqual(
       result.value?.notification,
     )

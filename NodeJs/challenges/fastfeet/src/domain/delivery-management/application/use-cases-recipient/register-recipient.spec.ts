@@ -33,7 +33,7 @@ describe('Register recipient use case', () => {
 
     console.log(result.value?.recipient.address)
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(result.value).toEqual({
       recipient: expect.objectContaining({
         name: 'Gabriel',

@@ -10,6 +10,7 @@ import { PickupOrderEvent } from '../events/pickup-order-event'
 export interface OrderProps {
   recipientId: UniqueEntityID
   deliverymanId?: UniqueEntityID
+  addressId: UniqueEntityID
   pickup_available_order?: Date
   pickup_at?: Date
   delivered_at?: Date
@@ -22,6 +23,10 @@ export interface OrderProps {
 export class Order extends AggregateRoot<OrderProps> {
   get recipientId() {
     return this.props.recipientId
+  }
+
+  get addressId() {
+    return this.props.addressId
   }
 
   get deliverymanId() {

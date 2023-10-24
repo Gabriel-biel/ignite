@@ -1,16 +1,21 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
+import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 import {
   FindManyNearbyParams,
   OrderRepository,
 } from '@/domain/delivery-management/application/repositories/order-repository'
 import { Order } from '@/domain/delivery-management/enterprise/entities/order'
+import { GetDistanceBetweenCoordinates } from 'test/utils/get-distance-between-coordinates'
 
 export class InMemoryOrderRepository implements OrderRepository {
   public items: Order[] = []
 
-  constructor(private orderAttachmentsRepository: OrderAttachmentsRepository) {}
+  constructor(
+    private orderAttachmentsRepository: OrderAttachmentsRepository,
+    private addressRepository: AddressRepository,
+  ) {}
 
   async create(order: Order) {
     this.items.push(order)
@@ -26,8 +31,44 @@ export class InMemoryOrderRepository implements OrderRepository {
     return order
   }
 
-  async findManyNearby(params: FindManyNearbyParams) {
-    return this.items
+  async findManyNearby({
+    deliverymanId,
+    latitude,
+    longitude,
+  }: FindManyNearbyParams) {
+    const orders = this.items.filter(
+      (item) =>
+        item.deliverymanId?.toString() === deliverymanId &&
+        !item.delivered_at &&
+        !item.returned_at,
+    )
+
+    const nearby = orders.filter(async (item) => {
+      const address = await this.addressRepository.findById(
+        item.addressId.toString(),
+      )
+
+      if (!address) {
+        throw new Error(
+          `no address found with this id: ${item.addressId.toString()}`,
+        )
+      }
+
+      const distance = GetDistanceBetweenCoordinates(
+        {
+          latitude,
+          longitude,
+        },
+        {
+          latitude: address.latitude,
+          longitude: address.longitude,
+        },
+      )
+
+      return distance < 1
+    })
+
+    return nearby
   }
 
   async findManyByOrdersDeliveryman({ page }, deliverymanId: string) {

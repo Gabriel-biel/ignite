@@ -41,7 +41,7 @@ describe('Edit order use case', () => {
       pickupAvailableOrder: new Date(2023, 7, 22),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryOrderRepository.items).toHaveLength(1)
     expect(inMemoryOrderRepository.items[0]).toEqual(
       expect.objectContaining({

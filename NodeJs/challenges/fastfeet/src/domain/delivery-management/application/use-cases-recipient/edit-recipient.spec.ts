@@ -22,7 +22,7 @@ describe('Edit recipient use case', () => {
       email: 'gabriel123@gmail.com',
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(result.value).toMatchObject({
       recipient: expect.objectContaining({
         name: 'gabriel',

@@ -1,4 +1,4 @@
-import { Either, rigth } from '@/core/either'
+import { Either, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 
@@ -26,6 +26,6 @@ export class FetchOrdersRecipientUseCase {
       recipientId,
     )
 
-    return rigth({ order })
+    return right({ order })
   }
 }

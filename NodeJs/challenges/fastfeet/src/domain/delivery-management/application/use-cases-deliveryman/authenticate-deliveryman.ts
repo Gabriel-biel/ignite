@@ -1,4 +1,4 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { WrongCredentialsError } from '../errors/wrong-credentials-error'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { HashCompare } from '../cryptography/hash-compare'
@@ -46,6 +46,6 @@ export class AuthenticateDeliverymanUseCase {
       sub: deliveryman.id.toString(),
     })
 
-    return rigth({ accessToken })
+    return right({ accessToken })
   }
 }

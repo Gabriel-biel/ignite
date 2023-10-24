@@ -1,4 +1,4 @@
-import { Either, rigth } from '@/core/either'
+import { Either, right } from '@/core/either'
 import { Notification } from '../../enterprise/entities/notification'
 import { NotificationsRepository } from '../repositories/notifications-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
@@ -32,6 +32,6 @@ export class SendNotificationUseCase {
 
     await this.notificationsRepository.create(notification)
 
-    return rigth({ notification })
+    return right({ notification })
   }
 }

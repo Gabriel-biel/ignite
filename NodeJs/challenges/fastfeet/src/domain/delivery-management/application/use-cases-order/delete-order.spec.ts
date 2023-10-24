@@ -26,7 +26,7 @@ describe('Delete order use case', () => {
       orderId: order.id.toString(),
     })
 
-    expect(result.isRigth()).toBeTruthy()
+    expect(result.isRight()).toBeTruthy()
     expect(inMemoryOrderRepository.items).toHaveLength(0)
   })
 })
