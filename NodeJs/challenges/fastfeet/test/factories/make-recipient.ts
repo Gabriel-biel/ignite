@@ -14,7 +14,6 @@ export function MakeRecipient(
       name: faker.person.firstName(),
       email: faker.internet.email(),
       cpf: faker.phone.number(),
-      password: faker.internet.password(),
       ...override,
     },
     id,
