@@ -22,24 +22,24 @@ model User {
   email    String
   cpf      String   @unique
   password String?
-  role     UserRole @default(ADM)
+  role     UserRole @default(DELIVERYMAN)
 
   orders    Order[]
   addresses Address[]
 }
 
 model Order {
-  id                   String    @id @default(uuid())
-  pickupAvailableOrder DateTime? @map("pickup_available_order")
-  pickupAt             DateTime? @map("pickup_at")
-  deliveredAt          DateTime? @map("delivered_at")
-  returnedAt           DateTime? @map("returned_at")
-  createdAt            DateTime  @default(now()) @map("created_at")
-  updatedAt            DateTime? @updatedAt @map("updated_at")
-  userId               String    @map("user_id")
+  id                   String        @id @default(uuid())
+  pickupAvailableOrder DateTime?     @map("pickup_available_order")
+  pickupAt             DateTime?     @map("pickup_at")
+  deliveredAt          DateTime?     @map("delivered_at")
+  returnedAt           DateTime?     @map("returned_at")
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime?     @updatedAt @map("updated_at")
+  recipientId          String        @map("recipient_id")
+  attachments          Attachments[]
 
-  user        User          @relation(fields: [userId], references: [id])
-  Attachments Attachments[]
+  recipient User @relation(fields: [recipientId], references: [id])
 
   @@map("orders")
 }
@@ -53,7 +53,7 @@ model Address {
   longitude   String
   recipientId String @map("recipient_id")
 
-  user User @relation(fields: [recipientId], references: [id])
+  recipient User @relation(fields: [recipientId], references: [id])
 
   @@map("addresses")
 }
