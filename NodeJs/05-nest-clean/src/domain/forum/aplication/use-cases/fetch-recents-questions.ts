@@ -1,4 +1,4 @@
-import { Either, right } from '@/core/either'
+import { Either, rigth } from '@/core/either'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-repository'
 import { Injectable } from '@nestjs/common'
@@ -25,6 +25,6 @@ export class FetchRecentQuestionsUseCase {
       page,
     })
 
-    return right({ questions })
+    return rigth({ questions })
   }
 }

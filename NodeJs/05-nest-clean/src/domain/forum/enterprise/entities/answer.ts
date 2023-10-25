@@ -11,7 +11,7 @@ export interface AnswerProps {
   content: string
   attachments: AnswerAttachmentList
   created_at: Date
-  updated_at?: Date
+  updated_at?: Date | null
 }
 
 export class Answer extends AggregateRoot<AnswerProps> {
