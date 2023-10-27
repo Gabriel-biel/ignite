@@ -8,24 +8,21 @@ import { OrderAttachmentList } from '../../enterprise/entities/order-attachment-
 import { OrderAttachment } from '../../enterprise/entities/order-attachment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-export interface EditOrderUseCaseRequest {
+export interface DeliverOrderUseCaseRequest {
   orderId: string
   recipientId: string
-  pickupAvailableOrder?: Date
-  pickupAt?: Date
-  deliveredAt?: Date
-  returnedAt?: Date
-  attachmentsIds?: string[]
+  deliveredAt: Date
+  attachmentsIds: string[]
 }
 
-export type EditOrderUseCaseResponse = Either<
+export type DeliverOrderUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   {
     order: Order
   }
 >
 
-export class EditOrderUseCase {
+export class DeliverOrderUseCase {
   constructor(
     private orderRepository: OrderRepository,
     private orderAttachmentsRepository: OrderAttachmentsRepository,
@@ -35,11 +32,8 @@ export class EditOrderUseCase {
     orderId,
     recipientId,
     deliveredAt,
-    pickupAvailableOrder,
-    pickupAt,
-    returnedAt,
     attachmentsIds,
-  }: EditOrderUseCaseRequest): Promise<EditOrderUseCaseResponse> {
+  }: DeliverOrderUseCaseRequest): Promise<DeliverOrderUseCaseResponse> {
     const order = await this.orderRepository.findById(orderId)
 
     if (!order) {
@@ -48,16 +42,6 @@ export class EditOrderUseCase {
 
     if (order.recipientId.toString() !== recipientId) {
       return left(new NotAllowedError())
-    }
-
-    if (!attachmentsIds) {
-      order.pickup_available_order = pickupAvailableOrder
-      order.pickup_at = pickupAt
-      order.returned_at = returnedAt
-
-      await this.orderRepository.save(order)
-
-      return right({ order })
     }
 
     const currentOrderAttachments =
@@ -75,8 +59,6 @@ export class EditOrderUseCase {
     orderAttachmentList.update(orderAttachments)
 
     order.delivered_at = deliveredAt
-    order.pickup_available_order = pickupAvailableOrder
-    order.returned_at = returnedAt
     order.attachments = orderAttachmentList
 
     await this.orderRepository.save(order)
