@@ -4,31 +4,33 @@ import {
   HttpCode,
   Body,
   ConflictException,
-  UsePipes,
+  UseGuards,
 } from '@nestjs/common'
 import { PrismaService } from '@/prisma/prisma.service'
-import { hash } from 'bcryptjs'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 
-const createAccountBodySchema = z.object({
+const createRecipientBodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   cpf: z.string(),
-  password: z.string(),
+  role: z.enum(['DELIVERYMAN', 'RECIPIENT', 'ADM']),
 })
 
-type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
+type CreateRecipientBodySchema = z.infer<typeof createRecipientBodySchema>
 
-@Controller('/accounts')
-export class CreateAccountController {
+const validationPipe = new ZodValidationPipe(createRecipientBodySchema)
+
+@Controller('/accounts/recipients')
+export class CreateRecipientController {
   constructor(private prisma: PrismaService) {}
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-  async handle(@Body() body: CreateAccountBodySchema) {
-    const { name, email, cpf, password } = body
+  @UseGuards(JwtAuthGuard)
+  async handle(@Body(validationPipe) body: CreateRecipientBodySchema) {
+    const { name, email, cpf, role } = body
 
     const userWithEmail = await this.prisma.user.findUnique({
       where: {
@@ -40,14 +42,12 @@ export class CreateAccountController {
       throw new ConflictException('user whit same email addres already exists')
     }
 
-    const hashedPassword = await hash(password, 8)
-
     await this.prisma.user.create({
       data: {
         name,
         email,
         cpf,
-        password: hashedPassword,
+        role,
       },
     })
   }

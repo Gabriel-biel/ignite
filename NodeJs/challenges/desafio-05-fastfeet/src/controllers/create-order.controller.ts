@@ -1,68 +1,51 @@
-import {
-  Controller,
-  Post,
-  HttpCode,
-  Body,
-  Query,
-  ConflictException,
-  UsePipes,
-} from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { Controller, Post, Body, UseGuards } from '@nestjs/common'
+import { PrismaService } from '@/prisma/prisma.service'
 import { z } from 'zod'
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
+import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { CurrentUser } from '@/auth/current-user-decorator'
+import { UserPayload } from '@/auth/jwt.strategy'
 
 const createOrderBodySchema = z.object({
-  pickupAvailableOrder: z.date().optional(),
-  pickupAt: z.date().optional(),
-  deliveryAt: z.date().optional(),
-  returnedAt: z.date().optional(),
-  attachments: z.string().array().optional(),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
-})
-
-const createOrderQuerySchema = z.object({
   recipientId: z.string(),
-  deliverymanId: z.string(),
-  addressId: z.string(),
+  pickupAvailableOrder: z.coerce.date().optional(),
+  pickupAt: z.date().optional(),
+  deliveredAt: z.date().optional(),
+  returnedAt: z.date().optional(),
 })
 
-type createOrderQuerySchema = z.infer<typeof createOrderQuerySchema>
 type CreateOrderBodySchema = z.infer<typeof createOrderBodySchema>
 
+const validationPipe = new ZodValidationPipe(createOrderBodySchema)
+
 @Controller('/orders')
-export class CreateAccountController {
+@UseGuards(JwtAuthGuard)
+export class CreateOrderController {
   constructor(private prisma: PrismaService) {}
 
   @Post()
-  @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createOrderBodySchema))
   async handle(
-    @Body() body: CreateOrderBodySchema,
-    @Query() query: createOrderQuerySchema,
+    @Body(validationPipe) body: CreateOrderBodySchema,
+    @CurrentUser() user: UserPayload,
   ) {
-    const {
-      deliveryAt,
-      pickupAt,
-      returnedAt,
-      pickupAvailableOrder,
-      attachments,
-      createdAt,
-      updatedAt,
-    } = body
+    const userId = user.sub
+    console.log(userId)
 
-    const { addressId, deliverymanId, recipientId } = query
+    const {
+      recipientId,
+      pickupAvailableOrder,
+      pickupAt,
+      deliveredAt,
+      returnedAt,
+    } = body
 
     await this.prisma.order.create({
       data: {
         recipientId,
-        deliveryAt,
-        pickupAt,
-        returnedAt,
         pickupAvailableOrder,
-        attachments,
-        createdAt,
-        updatedAt,
+        pickupAt,
+        deliveredAt,
+        returnedAt,
       },
     })
   }

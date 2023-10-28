@@ -1,24 +1,57 @@
-@baseURl= http://localhost:3333
-@authToken= {{{{authenticate.response.body.access_token}}}}
+@baseURL= http://localhost:3333
+@authToken= {{ authenticate.response.body.access_token }}
 
 # @name create_account
-POST {{baseURl}}/accounts
+POST {{baseURL}}/accounts
 Content-Type: application/json
 
 {
   "name": "Gabriel",
   "email": "gabriel@gmail.com",
-  "cpf": "123456",
-  "password": "124356"
+  "cpf": "1234567",
+  "password": "123456"
 }
 
 ###
 
 # @name authenticate
-POST {{baseURl}}/authenticate
+POST {{baseURL}}/authenticate
 Content-Type: application/json
 
 {
   "email": "gabriel@gmail.com",
   "password": "124356"
 }
+
+###
+
+# @name create_recipient_account
+POST {{baseURL}}/accounts/recipients
+Content-Type: application/json
+
+{
+  "name": "Gabriel",
+  "email": "gabriel97@gmail.com",
+  "cpf": "1234567",
+  "role": "RECIPIENT"
+}
+
+###
+
+# @name create_order
+POST {{baseURL}}/orders
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
+  "pickupAvailableOrder": "2023-7-22"
+}
+
+###
+
+# @name  fetch_deliveryman_orders
+GET {{baseURL}}/deliveryman/orders
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
