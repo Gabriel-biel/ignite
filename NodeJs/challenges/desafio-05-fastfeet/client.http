@@ -15,7 +15,7 @@ Content-Type: application/json
 ###
 
 # @name authenticate
-POST {{baseURL}}/authenticate
+POST {{baseURL}}/sessions
 Content-Type: application/json
 
 {
@@ -28,6 +28,7 @@ Content-Type: application/json
 # @name create_recipient_account
 POST {{baseURL}}/accounts/recipients
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "name": "Gabriel",
@@ -45,7 +46,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
-  "pickupAvailableOrder": "2023-7-22"
+  "pickupAvailableOrder": "2023-8-22"
 }
 
 ###
@@ -54,4 +55,6 @@ Authorization: Bearer {{authToken}}
 GET {{baseURL}}/deliveryman/orders
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+
 

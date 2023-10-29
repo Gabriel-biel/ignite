@@ -29,7 +29,6 @@ export class CreateOrderController {
     @CurrentUser() user: UserPayload,
   ) {
     const userId = user.sub
-    console.log(userId)
 
     const {
       recipientId,

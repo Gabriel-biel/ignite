@@ -1,5 +1,4 @@
 import { Controller, UseGuards, Get, Query } from '@nestjs/common'
-import { getDefaultAutoSelectFamilyAttemptTimeout } from 'net'
 import { CurrentUser } from '@/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 import { UserPayload } from '@/auth/jwt.strategy'
@@ -29,11 +28,12 @@ export class FetchOrdersDeliverymanController {
     @CurrentUser() user: UserPayload,
   ) {
     const deliverymanId = user.sub
-    const perpage = 5
+    const perpage = 10
 
     const orders = await this.prisma.order.findMany({
+      // Alert: Datatime in pickupAvailableOrder used for tests
       where: {
-        pickupAvailableOrder: '2023-07-22T04:00:00.000Z',
+        pickupAvailableOrder: '2023-08-22T04:00:00.000Z',
       },
       take: perpage,
       skip: (page - 1) * perpage,
