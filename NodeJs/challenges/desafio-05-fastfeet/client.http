@@ -39,6 +39,22 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name create_address
+POST {{baseURL}}/addresses
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "city": "Lábrea",
+  "street": "Rua nova",
+  "recipientId": "precisa add recipientId aqui",
+  "house_number": "112233",
+  "latitude": "add latitude maps",
+  "longitude": "add longitude maps",
+}
+
+###
+
 # @name create_order
 POST {{baseURL}}/orders
 Content-Type: application/json
@@ -46,6 +62,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
+  "addressId": "precisa passar aqui o id do address",
   "pickupAvailableOrder": "2023-8-22"
 }
 
@@ -55,6 +72,8 @@ Authorization: Bearer {{authToken}}
 GET {{baseURL}}/deliveryman/orders
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
 
 
 
