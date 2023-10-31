@@ -17,9 +17,9 @@ type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
 const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 
-@Controller('/deliveryman/orders')
+@Controller('/orders/account')
 @UseGuards(JwtAuthGuard)
-export class FetchOrdersDeliverymanController {
+export class FetchOrdersAccountController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
@@ -27,8 +27,8 @@ export class FetchOrdersDeliverymanController {
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const deliverymanId = user.sub
-    console.log(`deliverymanID= ${deliverymanId}`)
+    const accountId = user.sub
+    console.log(`accountID= ${accountId}`)
     const perpage = 10
 
     const orders = await this.prisma.order.findMany({

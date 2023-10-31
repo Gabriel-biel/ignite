@@ -17,15 +17,17 @@ enum UserRole {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  name     String
-  email    String   @unique
-  cpf      String   @unique
-  password String?
-  role     UserRole @default(DELIVERYMAN)
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  cpf           String   @unique
+  password      String?
+  role          UserRole @default(ADM)
+  bestAddressId String?  @unique @map("best_address_id")
 
-  orders    Order[]
-  addresses Address[]
+  orders      Order[]
+  addresses   Address[]
+  bestAddress Address?  @relation("bestAddress", fields: [bestAddressId], references: [id])
 }
 
 model Order {
@@ -53,7 +55,8 @@ model Address {
   longitude   String
   recipientId String @map("recipient_id")
 
-  recipient User @relation(fields: [recipientId], references: [id])
+  recipient   User  @relation(fields: [recipientId], references: [id])
+  bestAddress User? @relation("bestAddress")
 
   @@map("addresses")
 }

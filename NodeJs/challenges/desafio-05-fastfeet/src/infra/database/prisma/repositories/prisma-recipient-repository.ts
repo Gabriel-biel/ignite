@@ -1,26 +1,58 @@
 import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
-import { Recipient } from '@/domain/delivery-management/enterprise/entities/recipient'
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma.service'
+import { PrismaRecipientMapper } from '../mappers/prisma-recipient-mapper'
+import { Recipient } from '@/domain/delivery-management/enterprise/entities/recipient'
 
 @Injectable()
 export class PrismaRecipientsRepository implements RecipientRepository {
+  constructor(private prisma: PrismaService) {}
+
   async create(recipient: Recipient) {
-    throw new Error('Method not implemented.')
+    const data = PrismaRecipientMapper.toPrisma(recipient)
+    await this.prisma.user.create({
+      data,
+    })
   }
 
-  findById(recipientId: string): Promise<Recipient | null> {
-    throw new Error('Method not implemented.')
+  async findById(recipientId: string) {
+    const recipient = await this.prisma.user.findUnique({
+      where: { id: recipientId },
+    })
+
+    if (!recipient) {
+      return null
+    }
+
+    return PrismaRecipientMapper.toDomain(recipient)
   }
 
-  findByCpf(cpf: string): Promise<Recipient | null> {
-    throw new Error('Method not implemented.')
+  async findByCpf(cpf: string) {
+    const recipient = await this.prisma.user.findFirst({
+      where: { cpf },
+    })
+
+    if (!recipient) {
+      return null
+    }
+
+    return PrismaRecipientMapper.toDomain(recipient)
   }
 
-  delete(recicipent: Recipient): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(recicipent: Recipient) {
+    const data = PrismaRecipientMapper.toPrisma(recicipent)
+    await this.prisma.user.delete({
+      where: { id: data.id },
+    })
   }
 
-  save(recicipent: Recipient): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(recipient: Recipient) {
+    const data = PrismaRecipientMapper.toPrisma(recipient)
+    await this.prisma.user.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    })
   }
 }

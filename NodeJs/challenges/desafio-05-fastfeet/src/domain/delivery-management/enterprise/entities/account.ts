@@ -1,14 +1,16 @@
+import { Optional } from '@/core/@types/optional'
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-export interface DeliverymanProps {
+export interface AccountProps {
   name: string
   email: string
   cpf: string
   password: string
+  role: 'ADM' | 'RECIPIENT' | 'DELIVERYMAN' // test
 }
 
-export class Deliveryman extends Entity<DeliverymanProps> {
+export class Account extends Entity<AccountProps> {
   get name() {
     return this.props.name
   }
@@ -37,9 +39,23 @@ export class Deliveryman extends Entity<DeliverymanProps> {
     this.props.password = password
   }
 
-  static create(props: DeliverymanProps, id?: UniqueEntityID) {
-    const deliveryman = new Deliveryman(props, id)
+  get role() {
+    return this.props.role // test
+  }
 
-    return deliveryman
+  set role(role: 'ADM' | 'DELIVERYMAN' | 'RECIPIENT') {
+    this.props.role = role
+  }
+
+  static create(props: Optional<AccountProps, 'role'>, id?: UniqueEntityID) {
+    const account = new Account(
+      {
+        ...props,
+        role: props.role ?? 'ADM', // test
+      },
+      id,
+    )
+
+    return account
   }
 }

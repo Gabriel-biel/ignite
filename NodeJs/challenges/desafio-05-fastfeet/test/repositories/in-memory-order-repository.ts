@@ -32,13 +32,13 @@ export class InMemoryOrderRepository implements OrderRepository {
   }
 
   async findManyNearby({
-    deliverymanId,
+    accountId,
     latitude,
     longitude,
   }: FindManyNearbyParams) {
     const orders = this.items.filter(
       (item) =>
-        item.deliverymanId?.toString() === deliverymanId &&
+        item.accountId?.toString() === accountId &&
         !item.delivered_at &&
         !item.returned_at,
     )
@@ -71,9 +71,9 @@ export class InMemoryOrderRepository implements OrderRepository {
     return nearby
   }
 
-  async findManyByOrdersDeliveryman({ page }, deliverymanId: string) {
+  async findManyByOrdersAccount({ page }, accountId: string) {
     const orders = this.items
-      .filter((item) => item.deliverymanId?.toString() === deliverymanId)
+      .filter((item) => item.accountId?.toString() === accountId)
       .sort()
       .splice((page - 1) * 20, page * 20)
 

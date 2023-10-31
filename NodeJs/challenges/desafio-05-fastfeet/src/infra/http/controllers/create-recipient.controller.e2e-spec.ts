@@ -30,7 +30,6 @@ describe('Create recipient (E2E)', () => {
         email: 'gabriel97@gmail.com',
         cpf: '12345',
         password: '23456',
-        role: 'ADM',
       },
     })
 
@@ -43,7 +42,6 @@ describe('Create recipient (E2E)', () => {
         name: 'Gabriel',
         email: 'gabrielRecipient@gmail.com',
         cpf: '1234567',
-        role: 'RECIPIENT',
       })
 
     expect(response.statusCode).toBe(201)

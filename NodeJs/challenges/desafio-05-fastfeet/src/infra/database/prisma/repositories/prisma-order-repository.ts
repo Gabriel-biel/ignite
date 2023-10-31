@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrderRepository {
-  create(order: Order): Promise<void> {
+  async create(order: Order) {
     throw new Error('Method not implemented.')
   }
 
@@ -23,9 +23,9 @@ export class PrismaOrdersRepository implements OrderRepository {
     throw new Error('Method not implemented.')
   }
 
-  findManyByOrdersDeliveryman(
+  findManyByOrdersAccount(
     page: PaginationParams,
-    deliverymanId: string,
+    accountId: string,
   ): Promise<Order[]> {
     throw new Error('Method not implemented.')
   }

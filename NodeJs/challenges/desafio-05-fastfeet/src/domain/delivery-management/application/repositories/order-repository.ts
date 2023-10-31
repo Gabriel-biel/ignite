@@ -2,7 +2,7 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Order } from '../../enterprise/entities/order'
 
 export interface FindManyNearbyParams {
-  deliverymanId: string
+  accountId: string
   latitude: number
   longitude: number
 }
@@ -14,9 +14,9 @@ export interface OrderRepository {
     page: PaginationParams,
     recipientId: string,
   ): Promise<Order[]>
-  findManyByOrdersDeliveryman(
+  findManyByOrdersAccount(
     page: PaginationParams,
-    deliverymanId: string,
+    accountId: string,
   ): Promise<Order[]>
   findManyNearby(params: FindManyNearbyParams): Promise<Order[]>
   delete(order: Order): Promise<void>

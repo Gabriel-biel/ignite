@@ -1,5 +1,6 @@
 @baseURL= http://localhost:3333
-@authToken= {{ authenticate.response.body.access_token }}
+@authToken= {{authenticate.response.body.access_token}}
+@recipientId= {{create_recipient_account.response.body.recipientId.value}}
 
 # @name create_account
 POST {{baseURL}}/accounts
@@ -9,7 +10,8 @@ Content-Type: application/json
   "name": "Gabriel",
   "email": "gabriel@gmail.com",
   "cpf": "1234567",
-  "password": "123456"
+  "password": "123456",
+  "role": "ADM"
 }
 
 ###
@@ -20,7 +22,7 @@ Content-Type: application/json
 
 {
   "email": "gabriel@gmail.com",
-  "password": "124356"
+  "password": "123456"
 }
 
 ###
@@ -33,8 +35,7 @@ Authorization: Bearer {{authToken}}
 {
   "name": "Gabriel",
   "email": "gabriel97@gmail.com",
-  "cpf": "1234567",
-  "role": "RECIPIENT"
+  "cpf": "12345678"
 }
 
 ###
@@ -47,7 +48,7 @@ Authorization: Bearer {{authToken}}
 {
   "city": "Lábrea",
   "street": "Rua nova",
-  "recipientId": "precisa add recipientId aqui",
+  "recipientId": "{{recipientId}}",
   "house_number": "112233",
   "latitude": "add latitude maps",
   "longitude": "add longitude maps",
@@ -68,8 +69,8 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-# @name  fetch_deliveryman_orders
-GET {{baseURL}}/deliveryman/orders
+# @name  fetch_account_orders
+GET {{baseURL}}/orders/account
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

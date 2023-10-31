@@ -3,7 +3,7 @@ import { Address } from '@/domain/delivery-management/enterprise/entities/addres
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
-export class PrismaaAddressesRepository implements AddressRepository {
+export class PrismaAddressesRepository implements AddressRepository {
   create(address: Address): Promise<void> {
     throw new Error('Method not implemented.')
   }

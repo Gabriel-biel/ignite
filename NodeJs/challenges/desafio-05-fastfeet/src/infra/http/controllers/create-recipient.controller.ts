@@ -1,54 +1,35 @@
-import {
-  Controller,
-  Post,
-  HttpCode,
-  Body,
-  ConflictException,
-  UseGuards,
-} from '@nestjs/common'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { Controller, Post, HttpCode, Body, UseGuards } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
+import { RegisterRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/register-recipient'
 
-const createRecipientBodySchema = z.object({
+const registerRecipientBodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   cpf: z.string(),
-  role: z.enum(['DELIVERYMAN', 'RECIPIENT', 'ADM']),
 })
 
-type CreateRecipientBodySchema = z.infer<typeof createRecipientBodySchema>
+type RegisterRecipientBodySchema = z.infer<typeof registerRecipientBodySchema>
 
-const validationPipe = new ZodValidationPipe(createRecipientBodySchema)
+const validationPipe = new ZodValidationPipe(registerRecipientBodySchema)
 
 @Controller('/accounts/recipients')
-export class CreateRecipientController {
-  constructor(private prisma: PrismaService) {}
+export class RegisterRecipientController {
+  constructor(private registerRecipient: RegisterRecipientUseCase) {}
 
   @Post()
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  async handle(@Body(validationPipe) body: CreateRecipientBodySchema) {
-    const { name, email, cpf, role } = body
+  async handle(@Body(validationPipe) body: RegisterRecipientBodySchema) {
+    const { name, email, cpf } = body
 
-    const userWithEmail = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
+    const result = await this.registerRecipient.execute({
+      name,
+      email,
+      cpf,
     })
 
-    if (userWithEmail) {
-      throw new ConflictException('user whit same email addres already exists')
-    }
-
-    await this.prisma.user.create({
-      data: {
-        name,
-        email,
-        cpf,
-        role,
-      },
-    })
+    return { recipientId: result.value?.recipient.id } // test
   }
 }

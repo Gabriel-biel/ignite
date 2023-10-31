@@ -3,9 +3,9 @@ import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 
 export interface FetchOrdersNearbyRequest {
-  deliverymanId: string
-  deliverymanLatitude: number
-  deliverymanLongitude: number
+  accountId: string
+  accountLatitude: number
+  accountLongitude: number
 }
 
 export type FetchOrdersNearbyResponse = Either<
@@ -19,14 +19,14 @@ export class FetchOrdersNearbyUseCase {
   constructor(private orderRepository: OrderRepository) {}
 
   async execute({
-    deliverymanId,
-    deliverymanLatitude,
-    deliverymanLongitude,
+    accountId,
+    accountLatitude,
+    accountLongitude,
   }: FetchOrdersNearbyRequest): Promise<FetchOrdersNearbyResponse> {
     const orders = await this.orderRepository.findManyNearby({
-      deliverymanId,
-      latitude: deliverymanLatitude,
-      longitude: deliverymanLongitude,
+      accountId,
+      latitude: accountLatitude,
+      longitude: accountLongitude,
     })
 
     return right({ orders })

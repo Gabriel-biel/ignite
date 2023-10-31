@@ -1,6 +1,6 @@
 import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
 import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repository'
-import { FetchOrdersDeliverymanUseCase } from './fetch-orders-deliveryman'
+import { FetchOrdersAccountUseCase } from './fetch-orders-account'
 import { MakeOrder } from 'test/factories/make-order'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
@@ -8,9 +8,9 @@ import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-r
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
-let fetchOrdersDeliveryman: FetchOrdersDeliverymanUseCase
+let fetchOrdersAccount: FetchOrdersAccountUseCase
 
-describe('Fetch orders by deliveryman', () => {
+describe('Fetch orders by account', () => {
   beforeEach(() => {
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
@@ -19,25 +19,23 @@ describe('Fetch orders by deliveryman', () => {
       inMemoryOrderAttachmentsRepository,
       inMemoryAddressRepository,
     )
-    fetchOrdersDeliveryman = new FetchOrdersDeliverymanUseCase(
-      inMemoryOrderRepository,
-    )
+    fetchOrdersAccount = new FetchOrdersAccountUseCase(inMemoryOrderRepository)
   })
 
-  it('should be able to fetch a list orders by deliveryman', async () => {
+  it('should be able to fetch a list orders by account', async () => {
     await inMemoryOrderRepository.create(
-      MakeOrder({ deliverymanId: new UniqueEntityID('deliveryman-id') }),
+      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
     )
     await inMemoryOrderRepository.create(
-      MakeOrder({ deliverymanId: new UniqueEntityID('deliveryman-id') }),
+      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
     )
     await inMemoryOrderRepository.create(
-      MakeOrder({ deliverymanId: new UniqueEntityID('deliveryman-id') }),
+      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
     )
 
-    const result = await fetchOrdersDeliveryman.execute({
+    const result = await fetchOrdersAccount.execute({
       page: 1,
-      deliverymanId: 'deliveryman-id',
+      accountId: 'account-id',
     })
 
     expect(result.isRight()).toBeTruthy()

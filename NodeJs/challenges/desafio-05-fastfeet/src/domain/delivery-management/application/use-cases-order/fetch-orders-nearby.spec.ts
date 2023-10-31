@@ -4,15 +4,15 @@ import { MakeOrder } from 'test/factories/make-order'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
 import { FetchOrdersNearbyUseCase } from './fetch-orders-nearby'
-import { MakeDeliveryman } from 'test/factories/make-deliveryman'
+import { MakeAccount } from 'test/factories/make-account'
 import { MakeRecipient } from 'test/factories/make-recipient'
-import { InMemoryDeliverymansRepository } from 'test/repositories/in-memory-deliveryman-repository'
+import { InMemoryAccountsRepository } from 'test/repositories/in-memory-account-repository'
 import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 import { MakeAddress } from 'test/factories/make-address'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
-let inMemoryDeliverymansRepository: InMemoryDeliverymansRepository
+let inMemoryAccountsRepository: InMemoryAccountsRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let fetchOrdersNearbyUseCase: FetchOrdersNearbyUseCase
@@ -21,7 +21,7 @@ describe('Fetch orders nearby', () => {
   beforeEach(() => {
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
-    inMemoryDeliverymansRepository = new InMemoryDeliverymansRepository()
+    inMemoryAccountsRepository = new InMemoryAccountsRepository()
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryAddressRepository = new InMemoryAddressRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
@@ -34,7 +34,7 @@ describe('Fetch orders nearby', () => {
   })
 
   it('should be able to fetch a list orders nearby', async () => {
-    const deliveryman = MakeDeliveryman()
+    const account = MakeAccount()
     const recipient = MakeRecipient()
 
     const address = MakeAddress({
@@ -47,7 +47,7 @@ describe('Fetch orders nearby', () => {
       recipientId: new UniqueEntityID('recipient-id'),
     })
 
-    await inMemoryDeliverymansRepository.create(deliveryman)
+    await inMemoryAccountsRepository.create(account)
     await inMemoryRecipientRepository.create(recipient)
     await inMemoryAddressRepository.create(address)
 
@@ -55,7 +55,7 @@ describe('Fetch orders nearby', () => {
       recipientId: recipient.id,
       addressId: address.id,
       pickup_at: new Date(),
-      deliverymanId: deliveryman.id,
+      accountId: account.id,
     })
 
     await inMemoryOrderRepository.create(order)
@@ -66,7 +66,7 @@ describe('Fetch orders nearby', () => {
         addressId: address.id,
         delivered_at: new Date(),
         pickup_at: new Date(),
-        deliverymanId: deliveryman.id,
+        accountId: account.id,
       }),
     )
 
@@ -78,12 +78,11 @@ describe('Fetch orders nearby', () => {
     )
 
     const result = await fetchOrdersNearbyUseCase.execute({
-      deliverymanId: deliveryman.id.toString(),
-      deliverymanLatitude: 7.266545,
-      deliverymanLongitude: 64.793686,
+      accountId: account.id.toString(),
+      accountLatitude: 7.266545,
+      accountLongitude: 64.793686,
     })
 
-    console.log(result.value)
     expect(result.isRight()).toBeTruthy()
     expect(result.value).toEqual(
       expect.objectContaining({

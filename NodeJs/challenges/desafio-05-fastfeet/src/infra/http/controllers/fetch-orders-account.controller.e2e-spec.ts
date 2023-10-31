@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('Fetch Orders Deliveryman (E2E)', () => {
+describe('Fetch Orders Account (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -23,7 +23,7 @@ describe('Fetch Orders Deliveryman (E2E)', () => {
     await app.init()
   })
 
-  it('[POST] /deliveryman/orders', async () => {
+  it('[POST] /orders/account', async () => {
     const adm = await prisma.user.create({
       data: {
         name: 'Gabriel',
@@ -62,7 +62,7 @@ describe('Fetch Orders Deliveryman (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/deliveryman/orders')
+      .get('/orders/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 

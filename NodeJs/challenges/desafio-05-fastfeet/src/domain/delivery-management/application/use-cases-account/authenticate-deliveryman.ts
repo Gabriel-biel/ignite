@@ -1,24 +1,24 @@
 import { Either, left, right } from '@/core/either'
 import { WrongCredentialsError } from '../errors/wrong-credentials-error'
-import { DeliverymanRepository } from '../repositories/deliveryman-repository'
+import { AccountRepository } from '../repositories/account-repository'
 import { HashCompare } from '../cryptography/hash-compare'
 import { Encrypter } from '../cryptography/encypter'
 
-export interface AuthenticateDeliverymanUseCaseRequest {
+export interface AuthenticateAccountUseCaseRequest {
   cpf: string
   password: string
 }
 
-export type AuthenticateDeliverymanUseCaseResponse = Either<
+export type AuthenticateAccountUseCaseResponse = Either<
   WrongCredentialsError,
   {
     accessToken: string
   }
 >
 
-export class AuthenticateDeliverymanUseCase {
+export class AuthenticateAccountUseCase {
   constructor(
-    private deliverymansRepository: DeliverymanRepository,
+    private accountsRepository: AccountRepository,
     private hashCompare: HashCompare,
     private encrypter: Encrypter,
   ) {}
@@ -26,16 +26,16 @@ export class AuthenticateDeliverymanUseCase {
   async execute({
     cpf,
     password,
-  }: AuthenticateDeliverymanUseCaseRequest): Promise<AuthenticateDeliverymanUseCaseResponse> {
-    const deliveryman = await this.deliverymansRepository.findByCpf(cpf)
+  }: AuthenticateAccountUseCaseRequest): Promise<AuthenticateAccountUseCaseResponse> {
+    const account = await this.accountsRepository.findByCpf(cpf)
 
-    if (!deliveryman) {
+    if (!account) {
       return left(new WrongCredentialsError())
     }
 
     const hashedPassword = await this.hashCompare.compare(
       password,
-      deliveryman.password,
+      account.password,
     )
 
     if (!hashedPassword) {
@@ -43,7 +43,7 @@ export class AuthenticateDeliverymanUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: deliveryman.id.toString(),
+      sub: account.id.toString(),
     })
 
     return right({ accessToken })

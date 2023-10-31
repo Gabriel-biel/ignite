@@ -9,15 +9,15 @@ import { PickupOrderEvent } from '../events/pickup-order-event'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
-  deliverymanId?: UniqueEntityID
+  accountId?: UniqueEntityID | null
   addressId: UniqueEntityID
-  pickup_available_order?: Date
-  pickup_at?: Date
-  delivered_at?: Date
-  returned_at?: Date
+  pickup_available_order?: Date | null
+  pickup_at?: Date | null
+  delivered_at?: Date | null
+  returned_at?: Date | null
   attachments: OrderAttachmentList
-  created_at?: Date
-  updated_at?: Date
+  created_at?: Date | null
+  updated_at?: Date | null
 }
 
 export class Order extends AggregateRoot<OrderProps> {
@@ -29,15 +29,15 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.addressId
   }
 
-  get deliverymanId() {
-    return this.props.deliverymanId
+  get accountId() {
+    return this.props.accountId
   }
 
   get pickup_at() {
     return this.props.pickup_at
   }
 
-  set pickup_at(pickupAt: Date | undefined) {
+  set pickup_at(pickupAt: Date | undefined | null) {
     if (pickupAt && pickupAt !== this.props.pickup_at) {
       this.addDomainEvent(new PickupOrderEvent(this, pickupAt))
     }
@@ -49,7 +49,7 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.pickup_available_order
   }
 
-  set pickup_available_order(pickupAvailableOrder: Date | undefined) {
+  set pickup_available_order(pickupAvailableOrder: Date | undefined | null) {
     if (
       pickupAvailableOrder &&
       pickupAvailableOrder !== this.props.pickup_available_order
@@ -67,7 +67,7 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.delivered_at
   }
 
-  set delivered_at(deliveryAt: Date | undefined) {
+  set delivered_at(deliveryAt: Date | undefined | null) {
     if (deliveryAt && deliveryAt !== this.props.delivered_at) {
       this.addDomainEvent(new DeliveredOrderEvent(this, deliveryAt))
     }
@@ -80,7 +80,7 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.returned_at
   }
 
-  set returned_at(returnedAt: Date | undefined) {
+  set returned_at(returnedAt: Date | undefined | null) {
     if (returnedAt && returnedAt !== this.returned_at) {
       this.addDomainEvent(new ReturnedOrderEvent(this, returnedAt))
     }
