@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { CreateAccountController } from './controllers/create-account.controller'
+import { RegisterAccountController } from './controllers/register-account.controller'
 import { AuthenticateController } from './controllers/authenticate.controller'
 import { RegisterRecipientController } from './controllers/create-recipient.controller'
 import { CreateOrderController } from './controllers/create-order.controller'
@@ -11,7 +11,7 @@ import { RegisterAccountUseCase } from '@/domain/delivery-management/application
 @Module({
   imports: [DatabaseModule],
   controllers: [
-    CreateAccountController,
+    RegisterAccountController,
     AuthenticateController,
     RegisterRecipientController,
     CreateOrderController,
