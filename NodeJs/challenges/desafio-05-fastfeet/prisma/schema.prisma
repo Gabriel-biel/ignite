@@ -38,10 +38,12 @@ model Order {
   returnedAt           DateTime?     @map("returned_at")
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime?     @updatedAt @map("updated_at")
+  addressId            String        @unique @map("address_id")
   recipientId          String        @map("recipient_id")
   attachments          Attachments[]
 
-  recipient User @relation(fields: [recipientId], references: [id])
+  recipient User    @relation(fields: [recipientId], references: [id])
+  address   Address @relation(fields: [addressId], references: [id])
 
   @@map("orders")
 }
@@ -55,8 +57,9 @@ model Address {
   longitude   String
   recipientId String @map("recipient_id")
 
-  recipient   User  @relation(fields: [recipientId], references: [id])
-  bestAddress User? @relation("bestAddress")
+  recipient   User    @relation(fields: [recipientId], references: [id])
+  bestAddress User?   @relation("bestAddress")
+  orders      Order[]
 
   @@map("addresses")
 }

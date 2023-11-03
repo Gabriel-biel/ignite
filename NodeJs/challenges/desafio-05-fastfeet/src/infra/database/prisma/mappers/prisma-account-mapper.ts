@@ -9,21 +9,21 @@ export class PrismaAccountMapper {
         name: raw.name,
         email: raw.email,
         cpf: raw.cpf,
-        password: raw.password!, // test
+        password: raw.password ?? null, // test
         role: raw.role,
       },
       new UniqueEntityID(raw.id),
     )
   }
 
-  static toPrisma(raw: Account): Prisma.UserUncheckedCreateInput {
+  static toPrisma(account: Account): Prisma.UserUncheckedCreateInput {
     return {
-      id: raw.id.toString(),
-      name: raw.name,
-      email: raw.email,
-      cpf: raw.cpf,
-      password: raw.password,
-      role: raw.role,
+      id: account.id.toString(),
+      name: account.name,
+      email: account.email,
+      cpf: account.cpf,
+      password: account.password,
+      role: account.role,
     }
   }
 }
