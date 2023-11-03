@@ -1,0 +1,80 @@
+@baseURL= http://localhost:3333
+@authToken= {{authenticate.response.body.access_token}}
+@recipientId= {{create_recipient_account.response.body.recipientId.value}}
+
+# @name create_account
+POST {{baseURL}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Gabriel",
+  "email": "gabriel@gmail.com",
+  "cpf": "1234567",
+  "password": "123456",
+  "role": "ADM"
+}
+
+###
+
+# @name authenticate
+POST {{baseURL}}/sessions
+Content-Type: application/json
+
+{
+  "cpf": "1234567",
+  "password": "123456"
+}
+
+###
+
+# @name create_recipient_account
+POST {{baseURL}}/accounts/recipients
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Gabriel",
+  "email": "gabriel97@gmail.com",
+  "cpf": "12345678"
+}
+
+###
+
+# @name create_address
+POST {{baseURL}}/addresses
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "city": "Lábrea",
+  "street": "Rua nova",
+  "recipientId": "{{recipientId}}",
+  "house_number": "112233",
+  "latitude": "add latitude maps",
+  "longitude": "add longitude maps",
+}
+
+###
+
+# @name create_order
+POST {{baseURL}}/orders
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
+  "addressId": "precisa passar aqui o id do address",
+  "pickupAvailableOrder": "2023-8-22"
+}
+
+###
+
+# @name  fetch_account_orders
+GET {{baseURL}}/orders/account
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+
+
