@@ -17,14 +17,14 @@ export class PrismaRecipientMapper {
     )
   }
 
-  static toPrisma(raw: Recipient): Prisma.UserUncheckedCreateInput {
+  static toPrisma(recipient: Recipient): Prisma.UserUncheckedCreateInput {
     return {
-      id: raw.id.toString(),
-      bestAddressId: raw.bestAddressId?.toString(),
-      name: raw.name,
-      email: raw.email,
-      cpf: raw.cpf,
-      role: raw.role ?? 'RECIPIENT',
+      id: recipient.id.toString(),
+      bestAddressId: recipient.bestAddressId?.toString(),
+      name: recipient.name,
+      email: recipient.email,
+      cpf: recipient.cpf,
+      role: recipient.role ?? 'RECIPIENT',
     }
   }
 }

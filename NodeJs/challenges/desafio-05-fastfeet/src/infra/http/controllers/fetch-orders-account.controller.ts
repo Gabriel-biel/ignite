@@ -27,8 +27,8 @@ export class FetchOrdersAccountController {
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const accountId = user.sub
-    console.log(`accountID= ${accountId}`)
+    // const accountId = user.sub
+    // console.log(`accountID= ${accountId}`)
     const perpage = 10
 
     const orders = await this.prisma.order.findMany({

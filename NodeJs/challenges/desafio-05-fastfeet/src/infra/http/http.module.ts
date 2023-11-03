@@ -7,9 +7,11 @@ import { FetchOrdersAccountController } from './controllers/fetch-orders-account
 import { DatabaseModule } from '../database/database.module'
 import { RegisterRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/register-recipient'
 import { RegisterAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/register-account'
+import { AuthenticateAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/authenticate-account'
+import { CryptografyModule } from '../cryptography/cryptografy.module'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, CryptografyModule],
   controllers: [
     RegisterAccountController,
     AuthenticateController,
@@ -17,6 +19,10 @@ import { RegisterAccountUseCase } from '@/domain/delivery-management/application
     CreateOrderController,
     FetchOrdersAccountController,
   ],
-  providers: [RegisterRecipientUseCase, RegisterAccountUseCase],
+  providers: [
+    RegisterRecipientUseCase,
+    RegisterAccountUseCase,
+    AuthenticateAccountUseCase,
+  ],
 })
 export class HttpModule {}

@@ -1,9 +1,9 @@
 import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
 import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repository'
-import { FetchOrdersAccountUseCase } from './fetch-orders-account'
 import { MakeOrder } from 'test/factories/make-order'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
+import { FetchOrdersAccountUseCase } from './fetch-orders-deliveryman'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository

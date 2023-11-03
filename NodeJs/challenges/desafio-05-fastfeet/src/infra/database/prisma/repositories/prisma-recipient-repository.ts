@@ -28,7 +28,7 @@ export class PrismaRecipientsRepository implements RecipientRepository {
   }
 
   async findByCpf(cpf: string) {
-    const recipient = await this.prisma.user.findFirst({
+    const recipient = await this.prisma.user.findUnique({
       where: { cpf },
     })
 

@@ -1,4 +1,11 @@
-import { Controller, Post, HttpCode, Body, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  HttpCode,
+  Body,
+  UseGuards,
+  BadRequestException,
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
@@ -29,6 +36,10 @@ export class RegisterRecipientController {
       email,
       cpf,
     })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
 
     return { recipientId: result.value?.recipient.id } // test
   }

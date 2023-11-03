@@ -27,12 +27,12 @@ import { AccountRepository } from '@/domain/delivery-management/application/repo
   ], // deixa o service disponível para esse module.
   exports: [
     PrismaService,
-    PrismaAddressesRepository,
     AccountRepository,
+    RecipientRepository,
+    PrismaAddressesRepository,
     PrismaNotiicationsRepository,
     PrismaOrderAttachmentsRepository,
     PrismaOrdersRepository,
-    RecipientRepository,
   ], // serve para deixar esse serviço disponível para os modules que o importam também
 })
 export class DatabaseModule {}

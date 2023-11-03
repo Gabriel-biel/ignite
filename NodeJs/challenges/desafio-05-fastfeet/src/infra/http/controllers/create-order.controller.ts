@@ -28,8 +28,8 @@ export class CreateOrderController {
     @Body(validationPipe) body: CreateOrderBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const userId = user.sub
-    console.log(`orderId= ${userId}`)
+    // const userId = user.sub
+    // console.log(`orderId= ${userId}`)
 
     const {
       recipientId,
