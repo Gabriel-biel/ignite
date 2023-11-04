@@ -7,7 +7,7 @@ export interface RecipientProps {
   email: string
   cpf: string
   bestAddressId?: UniqueEntityID | null
-  role: 'ADM' | 'RECIPIENT' | 'DELIVERYMAN' // test
+  role: 'ADM' | 'RECIPIENT' | 'DELIVERYMAN'
 }
 
 export class Recipient extends Entity<RecipientProps> {
@@ -39,7 +39,6 @@ export class Recipient extends Entity<RecipientProps> {
     this.props.bestAddressId = bestAddressId
   }
 
-  // test
   get role() {
     return this.props.role
   }

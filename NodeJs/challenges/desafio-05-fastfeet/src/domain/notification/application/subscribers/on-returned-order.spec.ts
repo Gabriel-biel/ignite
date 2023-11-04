@@ -44,10 +44,7 @@ describe('On returned order', () => {
 
     sendNotificationSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
-    const onReturnedOrder = new OnReturnedOrder(
-      inMemoryRecipientRepository,
-      sendNotificationUseCase,
-    )
+    new OnReturnedOrder(inMemoryRecipientRepository, sendNotificationUseCase)
   })
 
   it('should a send notification when a order was returned', async () => {

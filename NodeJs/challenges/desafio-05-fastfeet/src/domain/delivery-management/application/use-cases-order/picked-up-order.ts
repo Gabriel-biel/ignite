@@ -3,10 +3,11 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface PickedUpOrderUseCaseRequest {
   orderId: string
-  recipientId: string
+  deliverymanId: string
   pickupAt: Date
 }
 
@@ -22,7 +23,7 @@ export class PickedUpOrderUseCase {
 
   async execute({
     orderId,
-    recipientId,
+    deliverymanId,
     pickupAt,
   }: PickedUpOrderUseCaseRequest): Promise<PickedUpOrderUseCaseResponse> {
     const order = await this.orderRepository.findById(orderId)
@@ -31,11 +32,12 @@ export class PickedUpOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (order.recipientId.toString() !== recipientId) {
+    if (order.pickup_at) {
       return left(new NotAllowedError())
     }
 
     order.pickup_at = pickupAt
+    order.deliverymanId = new UniqueEntityID(deliverymanId)
 
     await this.orderRepository.save(order)
 

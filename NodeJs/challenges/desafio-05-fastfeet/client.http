@@ -69,7 +69,7 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-# @name  fetch_account_orders
+# @name fetch_account_orders
 GET {{baseURL}}/orders/account
 Content-Type: application/json
 Authorization: Bearer {{authToken}}

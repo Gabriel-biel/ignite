@@ -44,10 +44,7 @@ describe('On Delivered available order', () => {
 
     sendoNotificationExecuteSpy = vi.spyOn(sendNotification, 'execute')
 
-    const onPickupAvailableOrder = new OnPickupAvailableOrder(
-      inMemoryRecipientRepository,
-      sendNotification,
-    )
+    new OnPickupAvailableOrder(inMemoryRecipientRepository, sendNotification)
   })
 
   it('should send a notification when a order is delivered', async () => {

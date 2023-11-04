@@ -43,10 +43,7 @@ describe('on pickup order', () => {
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
-    const onPickupOrder = new OnPickupOrder(
-      inMemoryRecipientRepository,
-      sendNotificationUseCase,
-    )
+    new OnPickupOrder(inMemoryRecipientRepository, sendNotificationUseCase)
   })
   it('should send a notification when an order is picked', async () => {
     // cria o subscribe / começa a ouvir o evento
