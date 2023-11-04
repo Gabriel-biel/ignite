@@ -2,6 +2,7 @@ import { Either, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 export interface RegisterOrderUseCaseRequest {
   recipientId: string
@@ -15,6 +16,7 @@ export type RegisterOrderUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class RegisterOrderUseCase {
   constructor(private orderRepository: OrderRepository) {}
 

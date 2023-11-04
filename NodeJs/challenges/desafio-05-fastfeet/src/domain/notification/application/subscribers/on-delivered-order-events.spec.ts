@@ -44,10 +44,7 @@ describe('On Delivered order', () => {
 
     sendoNotificationExecuteSpy = vi.spyOn(sendNotification, 'execute')
 
-    const onDeliveredOrder = new OnDeliveredOrder(
-      inMemoryRecipientRepository,
-      sendNotification,
-    )
+    new OnDeliveredOrder(inMemoryRecipientRepository, sendNotification)
   })
 
   it('should send a notification when a order is delivered', async () => {

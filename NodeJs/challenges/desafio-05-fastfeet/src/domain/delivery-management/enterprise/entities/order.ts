@@ -9,7 +9,7 @@ import { PickupOrderEvent } from '../events/pickup-order-event'
 
 export interface OrderProps {
   recipientId: UniqueEntityID
-  accountId?: UniqueEntityID | null
+  deliverymanId?: UniqueEntityID | null
   addressId: UniqueEntityID
   pickup_available_order?: Date | null
   pickup_at?: Date | null
@@ -29,8 +29,12 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.addressId
   }
 
-  get accountId() {
-    return this.props.accountId
+  get deliverymanId() {
+    return this.props.deliverymanId
+  }
+
+  set deliverymanId(deliverymanId: UniqueEntityID | null | undefined) {
+    this.props.deliverymanId = deliverymanId
   }
 
   get pickup_at() {

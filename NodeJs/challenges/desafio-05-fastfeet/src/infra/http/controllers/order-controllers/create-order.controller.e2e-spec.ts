@@ -40,12 +40,14 @@ describe('Create order (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         recipientId: recipient.id,
+        addressId: 'address-id',
       })
 
     expect(response.statusCode).toBe(201)
     const orderOnDatabase = await prisma.order.findFirst({
       where: {
         recipientId: recipient.id,
+        addressId: 'address-id',
       },
     })
     expect(orderOnDatabase).toBeTruthy()

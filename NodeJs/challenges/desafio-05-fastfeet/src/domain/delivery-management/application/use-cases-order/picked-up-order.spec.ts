@@ -2,12 +2,11 @@ import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repos
 import { PickedUpOrderUseCase } from './picked-up-order'
 import { MakeOrder } from 'test/factories/make-order'
 import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-order-attachments-repository'
-import { MakeRecipient } from 'test/factories/make-recipient'
-import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
+import { MakeAccount } from 'test/factories/make-account'
+import { InMemoryAccountsRepository } from 'test/repositories/in-memory-account-repository'
 
-let inMemoryRecipientRepository: InMemoryRecipientRepository
+let inMemoryAccountRepository: InMemoryAccountsRepository
 let inMemoryAddressesRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
@@ -15,7 +14,7 @@ let pickedUpOrderUseCase: PickedUpOrderUseCase
 
 describe('PickedUp order use case', () => {
   beforeEach(() => {
-    inMemoryRecipientRepository = new InMemoryRecipientRepository()
+    inMemoryAccountRepository = new InMemoryAccountsRepository()
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
     inMemoryAddressesRepository = new InMemoryAddressRepository()
@@ -27,18 +26,15 @@ describe('PickedUp order use case', () => {
   })
 
   it('should be able to pickedup a order', async () => {
-    const recipient = MakeRecipient(
-      {},
-      new UniqueEntityID('recipient-id-for-test'),
-    )
-    const order = MakeOrder({ recipientId: recipient.id })
+    const account = MakeAccount({ role: 'DELIVERYMAN' })
+    const order = MakeOrder()
 
-    await inMemoryRecipientRepository.create(recipient)
+    await inMemoryAccountRepository.create(account)
     await inMemoryOrderRepository.create(order)
 
     const result = await pickedUpOrderUseCase.execute({
       orderId: order.id.toString(),
-      recipientId: recipient.id.toString(),
+      accountId: account.id.toString(),
       pickupAt: new Date(2023, 7, 22),
     })
 

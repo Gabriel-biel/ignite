@@ -1,73 +1,59 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Desafio 04
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Desafio referente aos módulos: DDD no Node.js e NestJS
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Introdução
 
-## Description
+Faaala Dev,
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Nesse desafio você reforçará de forma prática os **conceitos** que aprendemos nesses módulos.
 
-## Installation
+Como se trata de um desafio, ele necessita de alguns conhecimentos além dos abordados nesse módulo, então é importante ter autonomia para conseguir pesquisar essas coisas caso não saiba como resolver. Por isso, lembre-se, t**enha calma** e **acredite no seu processo.**
 
-```bash
-$ npm install
-```
+Além isso, este é um desafio prático e opcional, por tanto não há correção sobre ele.
 
-## Running the app
+O aprendizado daqui é muito importante e com certeza você conseguirá sair com muito conhecimento bacana 💜
 
-```bash
-# development
-$ npm run start
+## Sobre o desafio
 
-# watch mode
-$ npm run start:dev
+<aside>
+⚠️ Como informamos anteriormente, **não** vamos mais descrever detalhadamente rotas e propriedades dos registros a serem criadas, mas sim, as regras e requisitos que a API deve ter.
 
-# production mode
-$ npm run start:prod
-```
+O motivo disso é para vocês **também** exercitarem \*\*\*\*o desenvolvimento e a estruturação dessa parte.
 
-## Test
+</aside>
 
-```bash
-# unit tests
-$ npm run test
+Nesse desafio desenvolveremos uma API para controle de encomendas de uma transportadora fictícia, a FastFeet.
 
-# e2e tests
-$ npm run test:e2e
+### Regras da aplicação
 
-# test coverage
-$ npm run test:cov
-```
+[x] - A aplicação deve ter dois tipos de usuário, entregador e/ou admin
+[x] - Deve ser possível realizar login com CPF e Senha
+[x] - Deve ser possível realizar o CRUD dos entregadores
+[x] - Deve ser possível realizar o CRUD das encomendas
+[x] - Deve ser possível realizar o CRUD dos destinatários
+[x] - Deve ser possível marcar uma encomenda como aguardando (Disponível para retirada) ---> ""Package""
+[x] - Deve ser possível retirar uma encomenda
+[x] - Deve ser possível marcar uma encomenda como entregue
+[x] - Deve ser possível marcar uma encomenda como devolvida
+[x] - Deve ser possível listar as encomendas com endereços de entrega próximo ao local do entregador
+[x] - Deve ser possível alterar a senha de um usuário
+[x] - Deve ser possível listar as entregas de um usuário
+[x] - Deve ser possível notificar o destinatário a cada alteração no status da encomenda
 
-## Support
+### Regras de negócio
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+[] - Somente usuário do tipo admin pode realizar operações de CRUD nas encomendas
+[] - Somente usuário do tipo admin pode realizar operações de CRUD dos entregadores
+[] - Somente usuário do tipo admin pode realizar operações de CRUD dos destinatários
+[] - Para marcar uma encomenda como entregue é obrigatório o envio de uma foto
+[] - Somente o entregador que retirou a encomenda pode marcar ela como entregue
+[] - Somente o admin pode alterar a senha de um usuário
+[] - Não deve ser possível um entregador listar as encomendas de outro entregador
 
-## Stay in touch
+### Conceitos que pode praticar
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- DDD, Domain Events, Clean Architecture
+- Autenticação e Autorização (RBAC)
+- Testes unitários e e2e
+- Integração com serviços externos
