@@ -15,9 +15,9 @@ export abstract class OrderRepository {
     recipientId: string,
   ): Promise<Order[]>
 
-  abstract findManyByOrdersAccount(
+  abstract findManyByOrdersDeliveryman(
     { page }: PaginationParams,
-    accountId: string,
+    delvierymanId: string,
   ): Promise<Order[]>
 
   abstract findManyNearby({

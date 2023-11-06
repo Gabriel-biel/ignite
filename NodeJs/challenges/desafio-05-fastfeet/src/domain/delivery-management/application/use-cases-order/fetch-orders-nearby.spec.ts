@@ -55,7 +55,7 @@ describe('Fetch orders nearby', () => {
       recipientId: recipient.id,
       addressId: address.id,
       pickup_at: new Date(),
-      accountId: account.id,
+      deliverymanId: account.id,
     })
 
     await inMemoryOrderRepository.create(order)
@@ -66,7 +66,7 @@ describe('Fetch orders nearby', () => {
         addressId: address.id,
         delivered_at: new Date(),
         pickup_at: new Date(),
-        accountId: account.id,
+        deliverymanId: account.id,
       }),
     )
 
@@ -78,7 +78,7 @@ describe('Fetch orders nearby', () => {
     )
 
     const result = await fetchOrdersNearbyUseCase.execute({
-      accountId: account.id.toString(),
+      deliverymanId: account.id.toString(),
       accountLatitude: 7.266545,
       accountLongitude: 64.793686,
     })

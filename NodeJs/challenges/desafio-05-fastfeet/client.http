@@ -57,20 +57,19 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name create_order
-POST {{baseURL}}/orders
+POST {{baseURL}}/orders?recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
   "addressId": "precisa passar aqui o id do address",
   "pickupAvailableOrder": "2023-8-22"
 }
 
 ###
 
-# @name fetch_account_orders
-GET {{baseURL}}/orders/account
+# @name fetch_deliveryman_orders
+GET {{baseURL}}/orders/deliveryman
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

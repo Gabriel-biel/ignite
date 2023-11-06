@@ -39,7 +39,7 @@ model Order {
   returnedAt           DateTime?     @map("returned_at")
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime?     @updatedAt @map("updated_at")
-  addressId            String        @unique @map("address_id")
+  addressId            String        @map("address_id")
   recipientId          String        @map("recipient_id")
   deliverymanId        String?
   attachments          Attachments[]
@@ -52,13 +52,13 @@ model Order {
 }
 
 model Address {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   city        String
   street      String
-  houseNumber String @map("house_number")
-  latitude    String
-  longitude   String
-  recipientId String @map("recipient_id")
+  houseNumber String  @map("house_number")
+  latitude    Decimal
+  longitude   Decimal
+  recipientId String  @map("recipient_id")
 
   recipient   User    @relation(fields: [recipientId], references: [id])
   bestAddress User?   @relation("bestAddress")

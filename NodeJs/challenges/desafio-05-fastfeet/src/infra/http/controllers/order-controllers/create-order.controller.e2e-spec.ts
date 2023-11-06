@@ -35,19 +35,31 @@ describe('Create order (E2E)', () => {
 
     const accessToken = jwt.sign({ sub: recipient.id })
 
+    const address = await prisma.address.create({
+      data: {
+        city: 'Lábrea',
+        houseNumber: '1756',
+        latitude: '1234',
+        longitude: '12345',
+        street: 'Rua Luiz falcão',
+        recipientId: recipient.id,
+      },
+    })
+
     const response = await request(app.getHttpServer())
       .post('/orders')
+      .query({ recipientId: recipient.id })
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         recipientId: recipient.id,
-        addressId: 'address-id',
+        addressId: address.id,
       })
 
     expect(response.statusCode).toBe(201)
     const orderOnDatabase = await prisma.order.findFirst({
       where: {
         recipientId: recipient.id,
-        addressId: 'address-id',
+        addressId: address.id,
       },
     })
     expect(orderOnDatabase).toBeTruthy()

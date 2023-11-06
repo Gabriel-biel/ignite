@@ -1,29 +1,31 @@
 import { Either, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
+import { Injectable } from '@nestjs/common'
 
-export interface FetchOrdersAccountUseCaseRequest {
+export interface FetchOrdersDeliverymanUseCaseRequest {
   page: number
-  accountId: string
+  deliverymanId: string
 }
 
-export type FetchOrdersAccountUseCaseResponse = Either<
+export type FetchOrdersDeliverymanUseCaseResponse = Either<
   null,
   {
     order: Order[]
   }
 >
 
-export class FetchOrdersAccountUseCase {
+@Injectable()
+export class FetchOrdersDeliverymanUseCase {
   constructor(private orderRepository: OrderRepository) {}
 
   async execute({
     page,
-    accountId,
-  }: FetchOrdersAccountUseCaseRequest): Promise<FetchOrdersAccountUseCaseResponse> {
-    const order = await this.orderRepository.findManyByOrdersAccount(
+    deliverymanId,
+  }: FetchOrdersDeliverymanUseCaseRequest): Promise<FetchOrdersDeliverymanUseCaseResponse> {
+    const order = await this.orderRepository.findManyByOrdersDeliveryman(
       { page },
-      accountId,
+      deliverymanId,
     )
 
     return right({ order })
