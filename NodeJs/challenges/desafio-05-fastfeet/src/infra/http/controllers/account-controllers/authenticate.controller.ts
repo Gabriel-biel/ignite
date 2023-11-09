@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  UsePipes,
   UnauthorizedException,
   BadRequestException,
 } from '@nestjs/common'
@@ -19,14 +18,15 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
+const validationPipe = new ZodValidationPipe(authenticateBodySchema)
+
 @Controller('/sessions')
 @Public()
 export class AuthenticateController {
   constructor(private authenticateAccount: AuthenticateAccountUseCase) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(authenticateBodySchema))
-  async handle(@Body() body: AuthenticateBodySchema) {
+  async handle(@Body(validationPipe) body: AuthenticateBodySchema) {
     const { cpf, password } = body
 
     const result = await this.authenticateAccount.execute({

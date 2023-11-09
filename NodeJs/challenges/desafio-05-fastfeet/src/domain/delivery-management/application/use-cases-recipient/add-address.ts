@@ -3,6 +3,7 @@ import { AddressRepository } from '../repositories/address-repository'
 import { Address } from '../../enterprise/entities/address'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AddressAlreadyExists } from '../errors/address-already-exists'
+import { Injectable } from '@nestjs/common'
 
 export interface AddAddressUseCaseRequest {
   recipientId: string
@@ -20,14 +21,15 @@ export type AddAddressUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class AddAddressUseCase {
   constructor(private addressRepository: AddressRepository) {}
 
   async execute({
-    city,
-    houseNumber,
-    street,
     recipientId,
+    city,
+    street,
+    houseNumber,
     latitude,
     longitude,
   }: AddAddressUseCaseRequest): Promise<AddAddressUseCaseResponse> {
@@ -46,10 +48,10 @@ export class AddAddressUseCase {
     }
 
     const address = Address.create({
-      city,
-      house_number: houseNumber,
-      street,
       recipientId: new UniqueEntityID(recipientId),
+      city,
+      street,
+      house_number: houseNumber,
       latitude,
       longitude,
     })

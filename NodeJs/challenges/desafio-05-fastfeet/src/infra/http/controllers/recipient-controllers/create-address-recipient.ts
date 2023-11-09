@@ -8,11 +8,12 @@ import {
   Post,
 } from '@nestjs/common'
 import { z } from 'zod'
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 
 const createAddressBodySchema = z.object({
+  recipientId: z.string(),
   city: z.string(),
   street: z.string(),
-  recipientId: z.string(),
   houseNumber: z.string(),
   latitude: z.coerce.number().refine((value) => {
     return Math.abs(value) <= 90
@@ -24,20 +25,22 @@ const createAddressBodySchema = z.object({
 
 type CreateAddressBodySchema = z.infer<typeof createAddressBodySchema>
 
-@Controller('accounts/recipients/addresses')
+const validadionPipe = new ZodValidationPipe(createAddressBodySchema)
+
+@Controller('/recipients/addresses')
 export class CreateAddressRecipientController {
   constructor(private addAddress: AddAddressUseCase) {}
 
   @Post()
   @HttpCode(201)
-  async handle(@Body() body: CreateAddressBodySchema) {
-    const { city, houseNumber, street, recipientId, latitude, longitude } = body
+  async handle(@Body(validadionPipe) body: CreateAddressBodySchema) {
+    const { recipientId, city, street, houseNumber, latitude, longitude } = body
 
     const result = await this.addAddress.execute({
+      recipientId,
       city,
       street,
       houseNumber,
-      recipientId,
       latitude,
       longitude,
     })
@@ -49,8 +52,11 @@ export class CreateAddressRecipientController {
         case AddressAlreadyExists:
           throw new AddressAlreadyExists()
         default:
+          console.log(error.message)
           throw new BadRequestException()
       }
     }
+
+    // return { addressId: result.value.address.id }
   }
 }

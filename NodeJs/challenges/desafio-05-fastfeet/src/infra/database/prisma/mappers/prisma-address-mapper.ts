@@ -16,6 +16,7 @@ export class PrismaAddressMapper {
 
   static toPrisma(address: Address): Prisma.AddressUncheckedCreateInput {
     return {
+      id: address.id.toString(),
       recipientId: address.recipientId.toString(),
       city: address.city,
       street: address.street,

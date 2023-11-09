@@ -23,7 +23,7 @@ describe('Create recipient (E2E)', () => {
     await app.init()
   })
 
-  it('[POST] /accounts/recipients', async () => {
+  it('[POST] /recipients', async () => {
     const adm = await prisma.user.create({
       data: {
         name: 'Gabriel',
@@ -36,7 +36,7 @@ describe('Create recipient (E2E)', () => {
     const accessToken = jwt.sign({ sub: adm.id })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts/recipients')
+      .post('/recipients')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'Gabriel',

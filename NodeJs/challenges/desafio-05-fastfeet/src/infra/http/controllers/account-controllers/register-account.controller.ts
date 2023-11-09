@@ -3,7 +3,6 @@ import {
   Post,
   HttpCode,
   Body,
-  UsePipes,
   ConflictException,
   BadRequestException,
 } from '@nestjs/common'
@@ -23,6 +22,8 @@ const createAccountBodySchema = z.object({
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
+const validationPipe = new ZodValidationPipe(createAccountBodySchema)
+
 @Controller('/accounts')
 @Public()
 export class RegisterAccountController {
@@ -30,8 +31,7 @@ export class RegisterAccountController {
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-  async handle(@Body() body: CreateAccountBodySchema) {
+  async handle(@Body(validationPipe) body: CreateAccountBodySchema) {
     const { name, email, cpf, password, role } = body
 
     const result = await this.registerAccount.execute({

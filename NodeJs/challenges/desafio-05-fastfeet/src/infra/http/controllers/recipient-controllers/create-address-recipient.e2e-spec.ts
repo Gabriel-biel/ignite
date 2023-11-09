@@ -23,7 +23,7 @@ describe('Create address (E2E)', () => {
     await app.init()
   })
 
-  it('[POST] /accounts/recipients/addresses', async () => {
+  it('[POST] /recipients/addresses', async () => {
     const adm = await prisma.user.create({
       data: {
         name: 'Gabriel',
@@ -45,7 +45,7 @@ describe('Create address (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts/recipients/addresses')
+      .post('/recipients/addresses')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         city: 'Lábrea',

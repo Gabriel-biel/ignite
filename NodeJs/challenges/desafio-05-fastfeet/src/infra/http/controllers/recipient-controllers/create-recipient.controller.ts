@@ -21,7 +21,7 @@ type RegisterRecipientBodySchema = z.infer<typeof registerRecipientBodySchema>
 
 const validationPipe = new ZodValidationPipe(registerRecipientBodySchema)
 
-@Controller('/accounts/recipients')
+@Controller('/recipients')
 export class RegisterRecipientController {
   constructor(private registerRecipient: RegisterRecipientUseCase) {}
 

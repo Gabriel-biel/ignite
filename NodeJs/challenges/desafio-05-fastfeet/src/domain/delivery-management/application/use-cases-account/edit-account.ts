@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Account } from '../../enterprise/entities/account'
 import { AccountRepository } from '../repositories/account-repository'
 import { HashGenerator } from '../cryptography/hash-generator'
+import { Injectable } from '@nestjs/common'
 
 export interface EditAccountUseCaseRequest {
   accountId: string
@@ -19,6 +20,7 @@ export type EditAccountUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class EditAccountUseCase {
   constructor(
     private accountRepository: AccountRepository,
