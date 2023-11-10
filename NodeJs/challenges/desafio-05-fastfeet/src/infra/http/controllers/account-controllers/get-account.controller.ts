@@ -15,8 +15,8 @@ import { AccountPresenter } from '../../presenters/account-presenter'
 export class GetAccountController {
   constructor(private getAccount: GetAccountUseCase) {}
 
-  @HttpCode(200)
   @Get()
+  @HttpCode(200)
   async handle(@CurrentUser() user: UserPayload) {
     const accountId = user.sub
 

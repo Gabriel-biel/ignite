@@ -20,6 +20,12 @@ import { DeleteAccountController } from './controllers/account-controllers/delet
 import { DeleteAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/delete-account'
 import { EditAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/edit-account'
 import { EditAccountController } from './controllers/account-controllers/edit-account.controller'
+import { GetOrderController } from './controllers/order-controllers/get-order.controller'
+import { GetOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/get-order'
+import { FetchOrdersRecipientUseCase } from '@/domain/delivery-management/application/use-cases-order/fetch-orders-recipient'
+import { FetchOrdersRecipientController } from './controllers/order-controllers/fetch-orders-recipient.controller'
+import { DeleteOrderController } from './controllers/order-controllers/delete-order.controller'
+import { DeleteOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/delete-order'
 
 @Module({
   imports: [DatabaseModule, CryptografyModule],
@@ -30,9 +36,12 @@ import { EditAccountController } from './controllers/account-controllers/edit-ac
     RegisterRecipientController,
     CreateOrderController,
     FetchOrdersDeliverymanController,
+    FetchOrdersRecipientController,
     CreateAddressRecipientController,
     DeleteAccountController,
     EditAccountController,
+    GetOrderController,
+    DeleteOrderController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -41,9 +50,12 @@ import { EditAccountController } from './controllers/account-controllers/edit-ac
     RegisterRecipientUseCase,
     RegisterOrderUseCase,
     FetchOrdersDeliverymanUseCase,
+    FetchOrdersRecipientUseCase,
     AddAddressUseCase,
     DeleteAccountUseCase,
     EditAccountUseCase,
+    GetOrderUseCase,
+    DeleteOrderUseCase,
   ],
 })
 export class HttpModule {}

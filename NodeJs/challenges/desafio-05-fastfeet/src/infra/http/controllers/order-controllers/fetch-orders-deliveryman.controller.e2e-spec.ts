@@ -23,7 +23,7 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
     await app.init()
   })
 
-  it('[POST] /orders/deliveryman', async () => {
+  it('[Fetch] /orders/deliveryman', async () => {
     const deliveryman = await prisma.user.create({
       data: {
         name: 'Gabriel',
@@ -73,7 +73,7 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/orders/deliveryman')
+      .get(`/orders/deliveryman`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 

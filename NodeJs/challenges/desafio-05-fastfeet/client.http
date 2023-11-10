@@ -41,7 +41,6 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-
 # @name create_recipient_account
 POST {{baseURL}}/recipients
 Content-Type: application/json
@@ -75,16 +74,30 @@ Authorization: Bearer {{authToken}}
 POST {{baseURL}}/orders?recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
-
+// precisa add o id do address aqui!
 {
-  "addressId": "cdda7046-dac2-4122-bffd-7fde8341d276", // precisa add o id do address aqui!
+  "addressId": "873469c8-659e-49b6-aaf9-1f2864060092", 
   "pickupAvailableOrder": "2023-8-22"
 }
 
 ###
 
+# @name delete_order
+DELETE {{baseURL}}/orders?orderId=37d6f989-7387-473c-91e1-e996fd8ec388
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 # @name fetch_deliveryman_orders
 GET {{baseURL}}/orders/deliveryman
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_recipient_orders
+GET {{baseURL}}/orders/recipient?page=1&recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

@@ -30,8 +30,8 @@ const validationPipe = new ZodValidationPipe(updateAccountBodySchema)
 export class EditAccountController {
   constructor(private editAccount: EditAccountUseCase) {}
 
-  @HttpCode(200)
   @Patch()
+  @HttpCode(200)
   async handle(
     @Body(validationPipe) body: UpdateAccountBodySchema,
     @CurrentUser() user: UserPayload,

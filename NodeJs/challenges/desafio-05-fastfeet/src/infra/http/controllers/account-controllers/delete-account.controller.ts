@@ -22,16 +22,12 @@ export class DeleteAccountController {
   constructor(private deleteAccount: DeleteAccountUseCase) {}
 
   @Delete()
-  @HttpCode(200)
+  @HttpCode(204)
   async handle(
-    @Query('accountID', validationPipe) accountID: DeleteAccountQuerySchema,
-    // @CurrentUser() user: UserPayload,
+    @Query('accountId', validationPipe) accountId: DeleteAccountQuerySchema,
   ) {
-    // const currentUserID = user.sub
-    const queryAccountID = accountID
-
     const result = await this.deleteAccount.execute({
-      accountId: queryAccountID,
+      accountId,
     })
 
     if (result.isLeft()) {
