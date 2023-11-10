@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { AccountRepository } from '../repositories/account-repository'
+import { Injectable } from '@nestjs/common'
 
 export interface DeleteAccountUseCaseRequest {
   accountId: string
@@ -12,6 +13,7 @@ export type DeleteAccountUseCaseResponse = Either<
   null
 >
 
+@Injectable()
 export class DeleteAccountUseCase {
   constructor(private accountsRepository: AccountRepository) {}
 

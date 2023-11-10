@@ -3,7 +3,7 @@ import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 
 export interface FetchOrdersNearbyRequest {
-  accountId: string
+  deliverymanId: string
   accountLatitude: number
   accountLongitude: number
 }
@@ -19,12 +19,12 @@ export class FetchOrdersNearbyUseCase {
   constructor(private orderRepository: OrderRepository) {}
 
   async execute({
-    accountId,
+    deliverymanId,
     accountLatitude,
     accountLongitude,
   }: FetchOrdersNearbyRequest): Promise<FetchOrdersNearbyResponse> {
     const orders = await this.orderRepository.findManyNearby({
-      accountId,
+      deliverymanId,
       latitude: accountLatitude,
       longitude: accountLongitude,
     })

@@ -1,30 +1,45 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  Body,
+  Query,
+  BadRequestException,
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { RegisterOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/register-order'
 
 const createOrderBodySchema = z.object({
-  recipientId: z.string(),
+  // recipientId: z.string(),
   addressId: z.string(),
 })
 
-type CreateOrderBodySchema = z.infer<typeof createOrderBodySchema>
+const createOrderQuerySchema = z.string()
 
-const validationPipe = new ZodValidationPipe(createOrderBodySchema)
+type CreateOrderBodySchema = z.infer<typeof createOrderBodySchema>
+type CreateOrderQuerySchema = z.infer<typeof createOrderQuerySchema>
+
+const validationPipeBody = new ZodValidationPipe(createOrderBodySchema)
+const validationPipe = new ZodValidationPipe(createOrderQuerySchema)
 
 @Controller('/orders')
-@UseGuards(JwtAuthGuard)
 export class CreateOrderController {
   constructor(private createOrder: RegisterOrderUseCase) {}
 
   @Post()
-  async handle(@Body(validationPipe) body: CreateOrderBodySchema) {
-    const { recipientId, addressId } = body
+  async handle(
+    @Body(validationPipeBody) body: CreateOrderBodySchema,
+    @Query('recipientId', validationPipe) recipientId: CreateOrderQuerySchema,
+  ) {
+    const { addressId } = body
 
-    await this.createOrder.execute({
+    const result = await this.createOrder.execute({
       recipientId,
       addressId,
     })
+
+    if (result.isLeft()) {
+      return new BadRequestException()
+    }
   }
 }

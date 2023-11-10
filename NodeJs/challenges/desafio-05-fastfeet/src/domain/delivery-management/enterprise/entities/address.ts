@@ -5,7 +5,7 @@ export interface AddressProps {
   recipientId: UniqueEntityID
   city: string
   street: string
-  house_number: number
+  house_number: string
   latitude: number
   longitude: number
 }
@@ -39,7 +39,7 @@ export class Address extends Entity<AddressProps> {
     return this.props.house_number
   }
 
-  set house_number(houseNumber: number) {
+  set house_number(houseNumber: string) {
     this.props.house_number = houseNumber
   }
 

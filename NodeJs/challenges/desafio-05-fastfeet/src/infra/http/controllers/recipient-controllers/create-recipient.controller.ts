@@ -3,13 +3,13 @@ import {
   Post,
   HttpCode,
   Body,
-  UseGuards,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { RegisterRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/register-recipient'
+import { AccountAlreadyExists } from '@/domain/delivery-management/application/errors/account-already-exists'
 
 const registerRecipientBodySchema = z.object({
   name: z.string(),
@@ -21,13 +21,12 @@ type RegisterRecipientBodySchema = z.infer<typeof registerRecipientBodySchema>
 
 const validationPipe = new ZodValidationPipe(registerRecipientBodySchema)
 
-@Controller('/accounts/recipients')
+@Controller('/recipients')
 export class RegisterRecipientController {
   constructor(private registerRecipient: RegisterRecipientUseCase) {}
 
   @Post()
   @HttpCode(201)
-  @UseGuards(JwtAuthGuard)
   async handle(@Body(validationPipe) body: RegisterRecipientBodySchema) {
     const { name, email, cpf } = body
 
@@ -38,7 +37,14 @@ export class RegisterRecipientController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case AccountAlreadyExists:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException()
+      }
     }
 
     return { recipientId: result.value?.recipient.id } // test

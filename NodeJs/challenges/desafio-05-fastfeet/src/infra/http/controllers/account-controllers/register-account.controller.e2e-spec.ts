@@ -23,15 +23,15 @@ describe('Create account (E2E)', () => {
   it('[POST] /accounts', async () => {
     const response = await request(app.getHttpServer()).post('/accounts').send({
       name: 'Jhon Gabriel',
-      email: 'jhonGabriel@gmail.com',
-      cpf: '123456',
+      email: 'jhonADMGabriel@gmail.com',
+      cpf: '11111',
       password: '12345',
     })
 
     expect(response.statusCode).toBe(201)
     const userOnDatabase = await prisma.user.findUnique({
       where: {
-        email: 'jhonGabriel@gmail.com',
+        cpf: '11111',
       },
     })
 
@@ -41,8 +41,8 @@ describe('Create account (E2E)', () => {
   it('[POST] /accounts for deliveryman', async () => {
     const response = await request(app.getHttpServer()).post('/accounts').send({
       name: 'Jhon Gabriel',
-      email: 'jhonGabriel@gmail.com',
-      cpf: '123456',
+      email: 'jhonDeliverymanGabriel@gmail.com',
+      cpf: '2222',
       password: '12345',
       role: 'DELIVERYMAN',
     })
@@ -50,7 +50,7 @@ describe('Create account (E2E)', () => {
     expect(response.statusCode).toBe(201)
     const userOnDatabase = await prisma.user.findUnique({
       where: {
-        email: 'jhonGabriel@gmail.com',
+        cpf: '2222',
       },
     })
 

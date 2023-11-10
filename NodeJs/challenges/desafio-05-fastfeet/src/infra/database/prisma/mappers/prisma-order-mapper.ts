@@ -7,6 +7,9 @@ export class PrismaOrderMapper {
     return Order.create({
       recipientId: new UniqueEntityID(raw.recipientId),
       addressId: new UniqueEntityID(raw.addressId),
+      deliverymanId: raw.deliverymanId
+        ? new UniqueEntityID(raw.deliverymanId)
+        : undefined,
       delivered_at: raw.deliveredAt,
       pickup_available_order: raw.pickupAvailableOrder,
       pickup_at: raw.pickupAt,
@@ -21,6 +24,7 @@ export class PrismaOrderMapper {
       id: order.id.toString(),
       addressId: order.addressId.toString(),
       recipientId: order.recipientId.toString(),
+      deliverymanId: order.deliverymanId?.toString() ?? undefined,
       pickupAvailableOrder: order.pickup_available_order,
       pickupAt: order.pickup_at,
       deliveredAt: order.delivered_at,

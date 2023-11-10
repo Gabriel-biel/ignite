@@ -1,7 +1,8 @@
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Recipient } from '../../enterprise/entities/recipient'
 import { RecipientRepository } from '../repositories/recipient-respository'
 import { Injectable } from '@nestjs/common'
+import { AccountAlreadyExists } from '../errors/account-already-exists'
 
 export interface RegisterRecipientUseCaseRequest {
   name: string
@@ -10,7 +11,7 @@ export interface RegisterRecipientUseCaseRequest {
 }
 
 export type RegisterRecipientUseCaseResponse = Either<
-  null,
+  AccountAlreadyExists,
   { recipient: Recipient }
 >
 
@@ -22,6 +23,13 @@ export class RegisterRecipientUseCase {
     email,
     cpf,
   }: RegisterRecipientUseCaseRequest): Promise<RegisterRecipientUseCaseResponse> {
+    const rescipientAlreadyExists =
+      await this.recipientRepository.findByCpf(cpf)
+
+    if (rescipientAlreadyExists) {
+      return left(new AccountAlreadyExists(cpf))
+    }
+
     const recipient = Recipient.create({
       name,
       email,

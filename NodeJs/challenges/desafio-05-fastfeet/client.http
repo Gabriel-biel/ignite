@@ -27,8 +27,22 @@ Content-Type: application/json
 
 ###
 
+# @name get_account_profile
+GET {{baseURL}}/account/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+####
+
+# @name delete_account
+DELETE {{baseURL}}/account/profile?accountID={{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 # @name create_recipient_account
-POST {{baseURL}}/accounts/recipients
+POST {{baseURL}}/recipients
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -41,36 +55,49 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name create_address
-POST {{baseURL}}/addresses
+POST {{baseURL}}/recipients/addresses
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "city": "Lábrea",
-  "street": "Rua nova",
   "recipientId": "{{recipientId}}",
-  "house_number": "112233",
-  "latitude": "add latitude maps",
-  "longitude": "add longitude maps",
+  "city": "Labrea",
+  "street": "Rua palmares",
+  "houseNumber": "number-1",
+  "latitude": 7.255565,
+  "longitude": 64.789486
 }
 
 ###
 
 # @name create_order
-POST {{baseURL}}/orders
+POST {{baseURL}}/orders?recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
-
+// precisa add o id do address aqui!
 {
-  "recipientId": "5442c150-36b7-4b45-9571-0ec443f9d482",
-  "addressId": "precisa passar aqui o id do address",
+  "addressId": "873469c8-659e-49b6-aaf9-1f2864060092", 
   "pickupAvailableOrder": "2023-8-22"
 }
 
 ###
 
-# @name fetch_account_orders
-GET {{baseURL}}/orders/account
+# @name delete_order
+DELETE {{baseURL}}/orders?orderId=37d6f989-7387-473c-91e1-e996fd8ec388
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_deliveryman_orders
+GET {{baseURL}}/orders/deliveryman
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_recipient_orders
+GET {{baseURL}}/orders/recipient?page=1&recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

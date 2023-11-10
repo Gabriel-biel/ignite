@@ -3,12 +3,12 @@ import { InMemoryOrderRepository } from 'test/repositories/in-memory-order-repos
 import { MakeOrder } from 'test/factories/make-order'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
-import { FetchOrdersAccountUseCase } from './fetch-orders-deliveryman'
+import { FetchOrdersDeliverymanUseCase } from './fetch-orders-deliveryman'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
-let fetchOrdersAccount: FetchOrdersAccountUseCase
+let fetchOrdersDeliverymanUseCase: FetchOrdersDeliverymanUseCase
 
 describe('Fetch orders by account', () => {
   beforeEach(() => {
@@ -19,23 +19,25 @@ describe('Fetch orders by account', () => {
       inMemoryOrderAttachmentsRepository,
       inMemoryAddressRepository,
     )
-    fetchOrdersAccount = new FetchOrdersAccountUseCase(inMemoryOrderRepository)
+    fetchOrdersDeliverymanUseCase = new FetchOrdersDeliverymanUseCase(
+      inMemoryOrderRepository,
+    )
   })
 
   it('should be able to fetch a list orders by account', async () => {
     await inMemoryOrderRepository.create(
-      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
+      MakeOrder({ deliverymanId: new UniqueEntityID('account-id') }),
     )
     await inMemoryOrderRepository.create(
-      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
+      MakeOrder({ deliverymanId: new UniqueEntityID('account-id') }),
     )
     await inMemoryOrderRepository.create(
-      MakeOrder({ accountId: new UniqueEntityID('account-id') }),
+      MakeOrder({ deliverymanId: new UniqueEntityID('account-id') }),
     )
 
-    const result = await fetchOrdersAccount.execute({
+    const result = await fetchOrdersDeliverymanUseCase.execute({
       page: 1,
-      accountId: 'account-id',
+      deliverymanId: 'account-id',
     })
 
     expect(result.isRight()).toBeTruthy()

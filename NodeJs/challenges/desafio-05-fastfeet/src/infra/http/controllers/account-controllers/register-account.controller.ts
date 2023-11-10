@@ -3,7 +3,6 @@ import {
   Post,
   HttpCode,
   Body,
-  UsePipes,
   ConflictException,
   BadRequestException,
 } from '@nestjs/common'
@@ -11,6 +10,7 @@ import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { RegisterAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/register-account'
 import { AccountAlreadyExists } from '@/domain/delivery-management/application/errors/account-already-exists'
+import { Public } from '@/infra/auth/Public'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -22,14 +22,16 @@ const createAccountBodySchema = z.object({
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
+const validationPipe = new ZodValidationPipe(createAccountBodySchema)
+
 @Controller('/accounts')
+@Public()
 export class RegisterAccountController {
   constructor(private registerAccount: RegisterAccountUseCase) {}
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-  async handle(@Body() body: CreateAccountBodySchema) {
+  async handle(@Body(validationPipe) body: CreateAccountBodySchema) {
     const { name, email, cpf, password, role } = body
 
     const result = await this.registerAccount.execute({

@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('Fetch Orders Account (E2E)', () => {
+describe('Fetch Orders Delvieryman (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -23,24 +23,34 @@ describe('Fetch Orders Account (E2E)', () => {
     await app.init()
   })
 
-  it('[POST] /orders/account', async () => {
-    const adm = await prisma.user.create({
+  it('[Fetch] /orders/deliveryman', async () => {
+    const deliveryman = await prisma.user.create({
       data: {
         name: 'Gabriel',
-        email: 'gabriel97@gmail.com',
-        cpf: '12345',
-        password: '23456',
-        role: 'ADM',
+        email: 'gabrielDeliveryman@gmail.com',
+        cpf: '1111Deliveryman',
+        role: 'DELIVERYMAN',
       },
     })
-    const accessToken = jwt.sign({ sub: adm.id })
+    const accessToken = jwt.sign({ sub: deliveryman.id })
 
     const recipient = await prisma.user.create({
       data: {
         name: 'Gabriel',
         email: 'gabrielRecipient@gmail.com',
-        cpf: '1234567',
+        cpf: '2222Recipient',
         role: 'RECIPIENT',
+      },
+    })
+
+    const address = await prisma.address.create({
+      data: {
+        city: 'Lábrea',
+        houseNumber: '1756',
+        latitude: '1234',
+        longitude: '12345',
+        street: 'Rua Luiz falcão',
+        recipientId: deliveryman.id,
       },
     })
 
@@ -48,31 +58,29 @@ describe('Fetch Orders Account (E2E)', () => {
       data: [
         {
           recipientId: recipient.id,
-          pickupAvailableOrder: new Date(2023, 7, 22),
+          addressId: address.id,
+          deliverymanId: deliveryman.id,
         },
         {
           recipientId: recipient.id,
-          pickupAt: new Date(),
+          addressId: address.id,
         },
         {
           recipientId: recipient.id,
-          deliveredAt: new Date(),
+          addressId: address.id,
         },
       ],
     })
 
     const response = await request(app.getHttpServer())
-      .get('/orders/account')
+      .get(`/orders/deliveryman`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
+    expect(response.body.orders).toHaveLength(1)
     expect(response.body).toEqual({
-      orders: [
-        expect.objectContaining({
-          pickupAvailableOrder: '2023-08-22T04:00:00.000Z',
-        }),
-      ],
+      orders: [expect.objectContaining({ deliverymanId: expect.any(String) })],
     })
   })
 })

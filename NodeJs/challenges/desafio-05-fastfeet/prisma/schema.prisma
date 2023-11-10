@@ -26,7 +26,7 @@ model User {
   bestAddressId String?  @unique @map("best_address_id")
 
   addresses         Address[]
-  bestAddress       Address?  @relation("bestAddress", fields: [bestAddressId], references: [id])
+  bestAddress       Address?  @relation("bestAddress", fields: [bestAddressId], references: [id], onDelete: Cascade)
   deliverymanOrders Order[]   @relation("deliveryman")
   recipientOrders   Order[]   @relation("recipient")
 }
@@ -39,28 +39,28 @@ model Order {
   returnedAt           DateTime?     @map("returned_at")
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime?     @updatedAt @map("updated_at")
-  addressId            String        @unique @map("address_id")
+  addressId            String        @map("address_id")
   recipientId          String        @map("recipient_id")
   deliverymanId        String?
   attachments          Attachments[]
 
-  deliveryman User?   @relation("deliveryman", fields: [deliverymanId], references: [id])
-  recipient   User    @relation("recipient", fields: [recipientId], references: [id])
-  address     Address @relation(fields: [addressId], references: [id])
+  deliveryman User?   @relation("deliveryman", fields: [deliverymanId], references: [id], onDelete: Cascade)
+  recipient   User    @relation("recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
 
   @@map("orders")
 }
 
 model Address {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   city        String
   street      String
-  houseNumber String @map("house_number")
-  latitude    String
-  longitude   String
-  recipientId String @map("recipient_id")
+  houseNumber String  @map("house_number")
+  latitude    Decimal
+  longitude   Decimal
+  recipientId String  @map("recipient_id")
 
-  recipient   User    @relation(fields: [recipientId], references: [id])
+  recipient   User    @relation(fields: [recipientId], references: [id], onDelete: Cascade)
   bestAddress User?   @relation("bestAddress")
   orders      Order[]
 
@@ -73,7 +73,7 @@ model Attachments {
   link    String
   orderId String @map("order_id")
 
-  order Order @relation(fields: [orderId], references: [id])
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("attachments")
 }

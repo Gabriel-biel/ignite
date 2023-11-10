@@ -9,11 +9,15 @@ import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipie
 import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
 import { AccountRepository } from '@/domain/delivery-management/application/repositories/account-repository'
 import { OrderRepository } from '@/domain/delivery-management/application/repositories/order-repository'
+import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
 
 @Module({
   providers: [
     PrismaService,
-    PrismaAddressesRepository,
+    {
+      provide: AddressRepository,
+      useClass: PrismaAddressesRepository,
+    },
     {
       provide: AccountRepository,
       useClass: PrismaAccountRepository,
@@ -31,10 +35,10 @@ import { OrderRepository } from '@/domain/delivery-management/application/reposi
   ], // deixa o service disponível para esse module.
   exports: [
     PrismaService,
+    AddressRepository,
     AccountRepository,
     RecipientRepository,
     OrderRepository,
-    PrismaAddressesRepository,
     PrismaNotiicationsRepository,
     PrismaOrderAttachmentsRepository,
   ], // serve para deixar esse serviço disponível para os modules que o importam também

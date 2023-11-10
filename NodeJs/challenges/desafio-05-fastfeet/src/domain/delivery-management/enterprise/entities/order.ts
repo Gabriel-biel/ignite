@@ -102,6 +102,14 @@ export class Order extends AggregateRoot<OrderProps> {
     this.touch()
   }
 
+  get created_at() {
+    return this.props.created_at
+  }
+
+  get updated_at() {
+    return this.props.updated_at
+  }
+
   private touch() {
     this.props.updated_at = new Date()
   }

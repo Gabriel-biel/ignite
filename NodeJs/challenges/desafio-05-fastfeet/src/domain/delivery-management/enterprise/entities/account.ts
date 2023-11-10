@@ -51,7 +51,7 @@ export class Account extends Entity<AccountProps> {
     const account = new Account(
       {
         ...props,
-        role: props.role ?? 'ADM', // test
+        role: props.role ?? 'DELIVERYMAN', // test
       },
       id,
     )
