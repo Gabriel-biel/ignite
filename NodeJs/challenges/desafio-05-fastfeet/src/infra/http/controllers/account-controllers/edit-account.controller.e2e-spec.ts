@@ -1,45 +1,40 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { AccountFactory } from 'test/factories/make-account'
 
 describe('PATCH account e2e', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let accountFactory: AccountFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    prisma = moduleRef.get(PrismaService)
+    accountFactory = moduleRef.get(AccountFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   it('[PATCH] /account/profile', async () => {
-    const accountAdm = await prisma.user.create({
-      data: {
-        name: 'Jhon Gabriel',
-        email: 'jhonADMGabriel@gmail.com',
-        cpf: '11111',
-        password: '12345',
-      },
-    })
-    const admToken = jwt.sign({ sub: accountAdm.id })
+    const deliverymanAccount = await accountFactory.makePrismaAccount()
+    const deliverymanToken = jwt.sign({ sub: deliverymanAccount.id.toString() })
 
     const result = await request(app.getHttpServer())
       .get('/account/profile')
-      .set('Authorization', `Bearer ${admToken}`)
+      .set('Authorization', `Bearer ${deliverymanToken}`)
       .send({
-        name: 'Gabriel ADM',
-        email: 'gabrielADM@gmail.com',
+        name: 'Gabriel deliveryman',
+        email: 'gabrieldeliveryman@gmail.com',
         password: '2222',
       })
 

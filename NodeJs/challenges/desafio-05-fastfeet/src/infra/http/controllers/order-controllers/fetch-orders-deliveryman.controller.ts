@@ -6,16 +6,16 @@ import { z } from 'zod'
 import { FetchOrdersDeliverymanUseCase } from '@/domain/delivery-management/application/use-cases-order/fetch-orders-deliveryman'
 import { OrderPresenter } from '../../presenters/order-presenter'
 
-const pageQueryParamSchema = z
+const pageQuerySchema = z
   .string()
   .optional()
   .default('1')
   .transform(Number)
   .pipe(z.number().min(1))
 
-type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
+type PageQuerySchema = z.infer<typeof pageQuerySchema>
 
-const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
+const queryValidationPipe = new ZodValidationPipe(pageQuerySchema)
 
 @Controller('/orders/deliveryman')
 export class FetchOrdersDeliverymanController {
@@ -23,7 +23,7 @@ export class FetchOrdersDeliverymanController {
 
   @Get()
   async handle(
-    @Query('page', queryValidationPipe) page: PageQueryParamSchema,
+    @Query('page', queryValidationPipe) page: PageQuerySchema,
     @CurrentUser() user: UserPayload,
   ) {
     const deliverymanId = user.sub

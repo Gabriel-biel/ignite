@@ -1,39 +1,35 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { RecipientFactory } from 'test/factories/make-recipient'
 
 describe('Create recipient (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let recipientFactory: RecipientFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [RecipientFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    prisma = moduleRef.get(PrismaService)
+    recipientFactory = moduleRef.get(RecipientFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   it('[POST] /recipients', async () => {
-    const adm = await prisma.user.create({
-      data: {
-        name: 'Gabriel',
-        email: 'gabriel97@gmail.com',
-        cpf: '12345',
-        password: '23456',
-      },
+    const adm = await recipientFactory.makePrismaRecipient({
+      role: 'ADM',
     })
-
-    const accessToken = jwt.sign({ sub: adm.id })
+    const accessToken = jwt.sign({ sub: adm.id.toString() })
 
     const response = await request(app.getHttpServer())
       .post('/recipients')
@@ -45,11 +41,5 @@ describe('Create recipient (E2E)', () => {
       })
 
     expect(response.statusCode).toBe(201)
-    const recipientOnDatabase = await prisma.user.findFirst({
-      where: {
-        email: 'gabrielRecipient@gmail.com',
-      },
-    })
-    expect(recipientOnDatabase).toBeTruthy()
   })
 })

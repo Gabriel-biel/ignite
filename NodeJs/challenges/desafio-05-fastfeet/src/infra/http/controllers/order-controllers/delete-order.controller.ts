@@ -23,7 +23,7 @@ export class DeleteOrderController {
 
   @Delete()
   @HttpCode(204)
-  async handler(
+  async handle(
     @Query('orderId', validationPipe) orderId: DeleteOrderQuerySchema,
   ) {
     const result = await this.deleteOrder.execute({ orderId })

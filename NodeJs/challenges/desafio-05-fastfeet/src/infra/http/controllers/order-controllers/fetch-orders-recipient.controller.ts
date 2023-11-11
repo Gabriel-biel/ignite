@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { FetchOrdersRecipientUseCase } from '@/domain/delivery-management/application/use-cases-order/fetch-orders-recipient'
 import { OrderPresenter } from '../../presenters/order-presenter'
 
-const pageQueryParamSchema = z.object({
+const pageQuerySchema = z.object({
   page: z
     .string()
     .optional()
@@ -14,9 +14,9 @@ const pageQueryParamSchema = z.object({
   recipientId: z.string(),
 })
 
-type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
+type PageQuerySchema = z.infer<typeof pageQuerySchema>
 
-const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
+const queryValidationPipe = new ZodValidationPipe(pageQuerySchema)
 
 @Controller('/orders/recipient')
 export class FetchOrdersRecipientController {
@@ -25,7 +25,7 @@ export class FetchOrdersRecipientController {
   @Get()
   async handle(
     @Query(queryValidationPipe)
-    { page, recipientId }: PageQueryParamSchema,
+    { page, recipientId }: PageQuerySchema,
   ) {
     const result = await this.fetchOrdersByAccount.execute({
       page,

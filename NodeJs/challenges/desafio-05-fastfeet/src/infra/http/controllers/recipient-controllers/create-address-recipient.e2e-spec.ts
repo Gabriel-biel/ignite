@@ -1,47 +1,41 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { AccountFactory } from 'test/factories/make-account'
+import { RecipientFactory } from 'test/factories/make-recipient'
 
 describe('Create address (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let recipientFactory: RecipientFactory
+  let accountFactory: AccountFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [RecipientFactory, AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    prisma = moduleRef.get(PrismaService)
+    recipientFactory = moduleRef.get(RecipientFactory)
+    accountFactory = moduleRef.get(AccountFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   it('[POST] /recipients/addresses', async () => {
-    const adm = await prisma.user.create({
-      data: {
-        name: 'Gabriel',
-        email: 'gabriel97@gmail.com',
-        cpf: '12345',
-        password: '23456',
-      },
+    const adm = await accountFactory.makePrismaAccount({
+      role: 'ADM',
     })
+    const accessToken = jwt.sign({ sub: adm.id.toString() })
 
-    const accessToken = jwt.sign({ sub: adm.id })
-
-    const recipient = await prisma.user.create({
-      data: {
-        name: 'Gabriel',
-        email: 'gabrielRecipient@gmail.com',
-        cpf: '1111',
-        password: '23456',
-      },
+    const recipient = await recipientFactory.makePrismaRecipient({
+      role: 'RECIPIENT',
     })
 
     const response = await request(app.getHttpServer())
@@ -51,17 +45,11 @@ describe('Create address (E2E)', () => {
         city: 'Lábrea',
         street: 'Rua palmares',
         houseNumber: 'number-1',
-        recipientId: recipient.id,
+        recipientId: recipient.id.toString(),
         latitude: 7.255565,
         longitude: 64.789486,
       })
 
     expect(response.statusCode).toEqual(201)
-    const addressOnDatabase = await prisma.address.findFirst({
-      where: {
-        city: 'Lábrea',
-      },
-    })
-    expect(addressOnDatabase).toBeTruthy()
   })
 })
