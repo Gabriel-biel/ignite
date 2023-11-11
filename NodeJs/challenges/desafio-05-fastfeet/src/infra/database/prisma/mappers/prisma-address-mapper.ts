@@ -4,14 +4,17 @@ import { Prisma, Address as PrismaAddress } from '@prisma/client'
 
 export class PrismaAddressMapper {
   static toDomain(raw: PrismaAddress) {
-    return Address.create({
-      recipientId: new UniqueEntityID(raw.recipientId),
-      city: raw.city,
-      street: raw.street,
-      house_number: raw.houseNumber,
-      latitude: Number(raw.latitude),
-      longitude: Number(raw.longitude),
-    })
+    return Address.create(
+      {
+        recipientId: new UniqueEntityID(raw.recipientId),
+        city: raw.city,
+        street: raw.street,
+        house_number: raw.houseNumber,
+        latitude: Number(raw.latitude),
+        longitude: Number(raw.longitude),
+      },
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(address: Address): Prisma.AddressUncheckedCreateInput {

@@ -102,5 +102,12 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name get_order
+GET {{baseURL}}/orders/order/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 
 

@@ -34,7 +34,7 @@ describe('PickedUp order use case', () => {
 
     const result = await pickedUpOrderUseCase.execute({
       orderId: order.id.toString(),
-      accountId: account.id.toString(),
+      deliverymanId: account.id.toString(),
       pickupAt: new Date(2023, 7, 22),
     })
 

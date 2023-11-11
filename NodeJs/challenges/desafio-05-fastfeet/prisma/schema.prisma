@@ -44,7 +44,7 @@ model Order {
   deliverymanId        String?
   attachments          Attachments[]
 
-  deliveryman User?   @relation("deliveryman", fields: [deliverymanId], references: [id], onDelete: Cascade)
+  deliveryman User?   @relation("deliveryman", fields: [deliverymanId], references: [id])
   recipient   User    @relation("recipient", fields: [recipientId], references: [id], onDelete: Cascade)
   address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
 
