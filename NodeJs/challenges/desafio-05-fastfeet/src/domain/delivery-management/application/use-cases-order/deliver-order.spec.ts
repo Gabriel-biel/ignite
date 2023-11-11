@@ -43,7 +43,7 @@ describe('Deliver order use case', () => {
       orderId: order.id.toString(),
       recipientId: recipient.id.toString(),
       deliveredAt: new Date(2023, 7, 22),
-      attachmentsIds: ['1', '2'],
+      attachmentsIds: ['attachment-id-1', 'attachment-id-2'],
     })
 
     expect(result.isRight()).toBeTruthy()

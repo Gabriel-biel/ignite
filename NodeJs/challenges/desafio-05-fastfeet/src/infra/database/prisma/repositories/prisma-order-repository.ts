@@ -85,9 +85,10 @@ export class PrismaOrdersRepository implements OrderRepository {
   }
 
   async delete(order: Order) {
+    const data = PrismaOrderMapper.toPrisma(order)
     await this.prisma.order.delete({
       where: {
-        id: order.id.toString(),
+        id: data.id,
       },
     })
   }

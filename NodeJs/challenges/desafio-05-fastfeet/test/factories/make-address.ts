@@ -14,7 +14,7 @@ export function MakeAddress(
       city: faker.location.city(),
       street: faker.location.street(),
       recipientId: new UniqueEntityID(),
-      house_number: Number(faker.location.buildingNumber()),
+      house_number: faker.location.buildingNumber(),
       latitude: faker.location.latitude(),
       longitude: faker.location.longitude(),
       ...override,

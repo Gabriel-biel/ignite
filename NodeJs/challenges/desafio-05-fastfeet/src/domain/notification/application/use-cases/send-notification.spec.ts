@@ -14,7 +14,7 @@ describe('Send notification event test', () => {
 
   it('should be able to send a notification', async () => {
     const result = await sendNotificationUseCase.execute({
-      recipienId: '1',
+      recipientId: '1',
       content: 'fake',
       title: 'fake-title',
     })

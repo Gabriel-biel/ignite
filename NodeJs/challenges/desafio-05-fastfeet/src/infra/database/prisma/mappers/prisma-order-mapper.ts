@@ -4,19 +4,22 @@ import { Prisma, Order as PrismaOrder } from '@prisma/client'
 
 export class PrismaOrderMapper {
   static toDomain(raw: PrismaOrder): Order {
-    return Order.create({
-      recipientId: new UniqueEntityID(raw.recipientId),
-      addressId: new UniqueEntityID(raw.addressId),
-      deliverymanId: raw.deliverymanId
-        ? new UniqueEntityID(raw.deliverymanId)
-        : undefined,
-      delivered_at: raw.deliveredAt,
-      pickup_available_order: raw.pickupAvailableOrder,
-      pickup_at: raw.pickupAt,
-      returned_at: raw.returnedAt,
-      created_at: raw.createdAt,
-      updated_at: raw.updatedAt,
-    })
+    return Order.create(
+      {
+        recipientId: new UniqueEntityID(raw.recipientId),
+        addressId: new UniqueEntityID(raw.addressId),
+        deliverymanId: raw.deliverymanId
+          ? new UniqueEntityID(raw.deliverymanId)
+          : undefined,
+        delivered_at: raw.deliveredAt,
+        pickup_available_order: raw.pickupAvailableOrder,
+        pickup_at: raw.pickupAt,
+        returned_at: raw.returnedAt,
+        created_at: raw.createdAt,
+        updated_at: raw.updatedAt,
+      },
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(order: Order): Prisma.OrderUncheckedCreateInput {

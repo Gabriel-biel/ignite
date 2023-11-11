@@ -52,7 +52,6 @@ export class CreateAddressRecipientController {
         case AddressAlreadyExists:
           throw new AddressAlreadyExists()
         default:
-          console.log(error.message)
           throw new BadRequestException()
       }
     }
