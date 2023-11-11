@@ -76,7 +76,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "addressId": "58d774c0-835b-48cd-a502-6a923b01eeca", 
+  "addressId": "41bcc61f-fc72-4f97-8998-9627264c10a5" 
 }
 
 ###
