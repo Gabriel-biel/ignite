@@ -1,6 +1,6 @@
 import { OrderAttachment } from '../../enterprise/entities/order-attachment'
 
-export interface OrderAttachmentsRepository {
-  findManyByOrderId(orderId: string): Promise<OrderAttachment[]>
-  deleteByManyOrderId(orderId: string): Promise<void>
+export abstract class OrderAttachmentsRepository {
+  abstract findManyByOrderId(orderId: string): Promise<OrderAttachment[]>
+  abstract deleteByManyOrderId(orderId: string): Promise<void>
 }

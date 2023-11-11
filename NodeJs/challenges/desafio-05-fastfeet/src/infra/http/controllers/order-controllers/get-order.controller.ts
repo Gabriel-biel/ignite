@@ -29,6 +29,7 @@ export class GetOrderController {
 
   @Get()
   @HttpCode(200)
+  // fix-semantic: refactor this param for query
   async handle(@Param(validationPipe) params: GetOrderQuerySchema) {
     const { orderId, recipientId } = params
 
@@ -50,8 +51,6 @@ export class GetOrderController {
       }
     }
 
-    const { order } = result.value
-
-    return { order: OrderPresenter.toHTTP(order) }
+    return { order: OrderPresenter.toHTTP(result.value.order) }
   }
 }

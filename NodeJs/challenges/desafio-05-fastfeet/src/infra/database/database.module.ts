@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
-import { PrismaAddressesRepository } from './prisma/repositories/prisma-address-respository'
 import { PrismaAccountRepository } from './prisma/repositories/prisma-account-repository'
-import { PrismaNotiicationsRepository } from './prisma/repositories/prisma-notificiations-repository'
-import { PrismaOrderAttachmentsRepository } from './prisma/repositories/prisma-order-attachments-repository'
-import { PrismaOrdersRepository } from './prisma/repositories/prisma-order-repository'
 import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipient-repository'
-import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
+import { PrismaAddressesRepository } from './prisma/repositories/prisma-address-respository'
+import { PrismaOrdersRepository } from './prisma/repositories/prisma-order-repository'
+import { PrismaOrderAttachmentsRepository } from './prisma/repositories/prisma-order-attachments-repository'
+import { PrismaNotiicationsRepository } from './prisma/repositories/prisma-notificiations-repository'
 import { AccountRepository } from '@/domain/delivery-management/application/repositories/account-repository'
+import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
 import { OrderRepository } from '@/domain/delivery-management/application/repositories/order-repository'
 import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
+import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 
 @Module({
   providers: [
@@ -23,7 +24,10 @@ import { AddressRepository } from '@/domain/delivery-management/application/repo
       useClass: PrismaAccountRepository,
     },
     PrismaNotiicationsRepository,
-    PrismaOrderAttachmentsRepository,
+    {
+      provide: OrderAttachmentsRepository,
+      useClass: PrismaOrderAttachmentsRepository,
+    },
     {
       provide: OrderRepository,
       useClass: PrismaOrdersRepository,
@@ -39,8 +43,8 @@ import { AddressRepository } from '@/domain/delivery-management/application/repo
     AccountRepository,
     RecipientRepository,
     OrderRepository,
+    OrderAttachmentsRepository,
     PrismaNotiicationsRepository,
-    PrismaOrderAttachmentsRepository,
   ], // serve para deixar esse serviço disponível para os modules que o importam também
 })
 export class DatabaseModule {}

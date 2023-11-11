@@ -1,8 +1,8 @@
 import { AccountRepository } from '@/domain/delivery-management/application/repositories/account-repository'
 import { Account } from '@/domain/delivery-management/enterprise/entities/account'
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma.service'
 import { PrismaAccountMapper } from '../mappers/prisma-account-mapper'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaAccountRepository implements AccountRepository {
@@ -10,9 +10,7 @@ export class PrismaAccountRepository implements AccountRepository {
 
   async create(account: Account) {
     const data = PrismaAccountMapper.toPrisma(account)
-    await this.prisma.user.create({
-      data,
-    })
+    await this.prisma.user.create({ data })
   }
 
   async findById(accountId: string) {
@@ -44,10 +42,9 @@ export class PrismaAccountRepository implements AccountRepository {
   }
 
   async delete(account: Account) {
-    const data = PrismaAccountMapper.toPrisma(account)
     await this.prisma.user.delete({
       where: {
-        id: data.id,
+        id: account.id.toString(),
       },
     })
   }

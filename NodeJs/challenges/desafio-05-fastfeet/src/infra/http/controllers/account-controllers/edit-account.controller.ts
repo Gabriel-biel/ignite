@@ -59,8 +59,6 @@ export class EditAccountController {
       }
     }
 
-    const { account } = result.value
-
-    return { account: AccountPresenter.toHTTP(account) }
+    return { account: AccountPresenter.toHTTP(result.value.account) }
   }
 }

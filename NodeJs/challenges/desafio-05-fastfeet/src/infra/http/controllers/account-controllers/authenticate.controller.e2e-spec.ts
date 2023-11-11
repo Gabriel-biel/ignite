@@ -1,34 +1,32 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
+import { AccountFactory } from 'test/factories/make-account'
 
 describe('Authenticate (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let accountFactory: AccountFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    prisma = moduleRef.get(PrismaService)
+    accountFactory = moduleRef.get(AccountFactory)
 
     await app.init()
   })
 
   it('[POST] /sessions', async () => {
-    await prisma.user.create({
-      data: {
-        name: 'Gabriel',
-        cpf: '1234',
-        email: 'jhonGabriel@gmail.com',
-        password: await hash('12345', 8),
-      },
+    await accountFactory.makePrismaAccount({
+      cpf: '1234',
+      password: await hash('12345', 8),
     })
 
     const response = await request(app.getHttpServer()).post('/sessions').send({

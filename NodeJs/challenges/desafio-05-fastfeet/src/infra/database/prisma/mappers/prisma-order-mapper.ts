@@ -29,7 +29,7 @@ export class PrismaOrderMapper {
       pickupAt: order.pickup_at,
       deliveredAt: order.delivered_at,
       returnedAt: order.returned_at,
-      createdAt: new Date(),
+      createdAt: order.created_at ?? new Date(),
     }
   }
 }

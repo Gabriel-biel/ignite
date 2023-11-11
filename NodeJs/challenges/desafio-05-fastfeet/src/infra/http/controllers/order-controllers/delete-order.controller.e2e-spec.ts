@@ -63,7 +63,7 @@ describe('Delete order e2e', () => {
 
     const result = await request(app.getHttpServer())
       .delete('/orders')
-      .query({ orderId: order.id })
+      .query({ orderId: order.id.toString() })
       .set('Authorization', `Bearer ${admToken}`)
       .send()
 

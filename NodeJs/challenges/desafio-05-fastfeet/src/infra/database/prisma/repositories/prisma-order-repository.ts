@@ -43,7 +43,7 @@ export class PrismaOrdersRepository implements OrderRepository {
       skip: (page - 1) * 10,
     })
 
-    const orders = items.map((item) => PrismaOrderMapper.toDomain(item))
+    const orders = items.map(PrismaOrderMapper.toDomain)
 
     return orders
   }
@@ -62,7 +62,7 @@ export class PrismaOrdersRepository implements OrderRepository {
       skip: (page - 1) * ordersPerPage,
     })
 
-    const orders = items.map((item) => PrismaOrderMapper.toDomain(item))
+    const orders = items.map(PrismaOrderMapper.toDomain)
 
     return orders
   }
@@ -85,10 +85,9 @@ export class PrismaOrdersRepository implements OrderRepository {
   }
 
   async delete(order: Order) {
-    const item = PrismaOrderMapper.toPrisma(order)
     await this.prisma.order.delete({
       where: {
-        id: item.id,
+        id: order.id.toString(),
       },
     })
   }
