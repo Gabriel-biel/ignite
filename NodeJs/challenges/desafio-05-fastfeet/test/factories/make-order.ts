@@ -5,14 +5,14 @@ import {
 } from '@/domain/delivery-management/enterprise/entities/order'
 
 export function MakeOrder(
-  override: Partial<OrderProps> = {},
+  props: Partial<OrderProps> = {},
   id?: UniqueEntityID,
 ) {
   const order = Order.create(
     {
       addressId: new UniqueEntityID(),
       recipientId: new UniqueEntityID(),
-      ...override,
+      ...props,
     },
     id,
   )

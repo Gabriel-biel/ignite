@@ -9,9 +9,37 @@ Content-Type: application/json
 {
   "name": "Gabriel",
   "email": "gabriel@gmail.com",
-  "cpf": "1234567",
+  "cpf": "1",
   "password": "123456",
   "role": "ADM"
+}
+
+###
+
+# @name create_deliveryman_account
+POST {{baseURL}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Gabriel Deliveryman",
+  "email": "gabrielDelvieryman@gmail.com",
+  "cpf": "2",
+  "password": "123456",
+  "role": "DELIVERYMAN"
+}
+
+###
+
+# @name create_recipient_account
+POST {{baseURL}}/recipients
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Gabriel",
+  "email": "gabriel97@gmail.com",
+  "cpf": "3"
 }
 
 ###
@@ -21,7 +49,7 @@ POST {{baseURL}}/sessions
 Content-Type: application/json
 
 {
-  "cpf": "1234567",
+  "cpf": "2",
   "password": "123456"
 }
 
@@ -41,19 +69,6 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-# @name create_recipient_account
-POST {{baseURL}}/recipients
-Content-Type: application/json
-Authorization: Bearer {{authToken}}
-
-{
-  "name": "Gabriel",
-  "email": "gabriel97@gmail.com",
-  "cpf": "12345678"
-}
-
-###
-
 # @name create_address
 POST {{baseURL}}/recipients/addresses
 Content-Type: application/json
@@ -64,8 +79,8 @@ Authorization: Bearer {{authToken}}
   "city": "Labrea",
   "street": "Rua palmares",
   "houseNumber": "number-1",
-  "latitude": 7.255565,
-  "longitude": 64.789486
+  "latitude": -7.267809,
+  "longitude": -64.794920
 }
 
 ###
@@ -76,7 +91,42 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "addressId": "41bcc61f-fc72-4f97-8998-9627264c10a5" 
+  "addressId": "1ac429b6-cd0e-4ebc-a453-341d3aadc788" 
+}
+
+###
+
+# @name get_order
+GET {{baseURL}}/orders/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name order_available
+PUT {{baseURL}}/orders/available/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name order_picked_up
+PUT {{baseURL}}/orders/pickedUp/d1c21628-ec10-4867-b079-54aed514fd72/a943da79-8dd3-42aa-bb10-549df0f20e02
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name deliver_order
+PUT {{baseURL}}/orders/delivered/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "attachments": [
+    "id-one",
+    "id-two"
+  ]
 }
 
 ###
@@ -102,12 +152,20 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-# @name get_order
-GET {{baseURL}}/orders/order/{{recipientId}}
+# @name fetch_orders_nearby
+GET {{baseURL}}/orders/nearby
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+{
+  "latitude": -7.266294,
+  "longitude": -64.797787
+}
+
 ###
+
+
+
 
 
 

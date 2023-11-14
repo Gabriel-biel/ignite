@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('Fetch Orders Delvieryman (E2E)', () => {
+describe('Fetch Orders nearby deliveryman (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -23,7 +23,7 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
     await app.init()
   })
 
-  it('[Fetch] /orders/deliveryman', async () => {
+  it('[Fetch] /orders/nearby', async () => {
     const deliveryman = await prisma.user.create({
       data: {
         name: 'Gabriel',
@@ -42,15 +42,34 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
         role: 'RECIPIENT',
       },
     })
+    const recipient3km = await prisma.user.create({
+      data: {
+        name: 'Gabriel',
+        email: 'gabrielRecipient3km@gmail.com',
+        cpf: '3kmRecipient',
+        role: 'RECIPIENT',
+      },
+    })
 
     const address = await prisma.address.create({
       data: {
         city: 'Lábrea',
-        houseNumber: '1756',
-        latitude: '1234',
-        longitude: '12345',
-        street: 'Rua Luiz falcão',
+        houseNumber: '1578',
+        latitude: -7.268277,
+        longitude: -64.795224,
+        street: 'Rua Luiz',
         recipientId: recipient.id,
+      },
+    })
+
+    const address3km = await prisma.address.create({
+      data: {
+        city: 'Lábrea',
+        houseNumber: 'km3',
+        latitude: -7.285418,
+        longitude: -64.773119,
+        street: 'Rua aeroporto',
+        recipientId: recipient3km.id,
       },
     })
 
@@ -60,27 +79,33 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
           recipientId: recipient.id,
           addressId: address.id,
           deliverymanId: deliveryman.id,
+          pickupAvailableOrder: new Date(),
         },
         {
-          recipientId: recipient.id,
-          addressId: address.id,
-        },
-        {
-          recipientId: recipient.id,
-          addressId: address.id,
+          recipientId: recipient3km.id,
+          addressId: address3km.id,
+          deliverymanId: deliveryman.id,
+          pickupAvailableOrder: new Date(),
         },
       ],
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/orders/deliveryman`)
+      .get(`/orders/nearby`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send()
+      .send({
+        // address 3km
+        // latitude: -7.285418,
+        // longitude: -64.773119,
+        // address 300 mt
+        latitude: -7.270107382622646,
+        longitude: -64.79704665743586,
+      })
 
     expect(response.statusCode).toBe(200)
     expect(response.body.orders).toHaveLength(1)
     expect(response.body).toEqual({
-      orders: [expect.objectContaining({ deliverymanId: expect.any(String) })],
+      orders: [expect.objectContaining({ deliverymanId: deliveryman.id })],
     })
   })
 })

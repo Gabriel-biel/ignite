@@ -30,8 +30,10 @@ export class GetOrderController {
   @Get()
   @HttpCode(200)
   // fix-semantic: refactor this param for query
-  async handle(@Param(validationPipe) params: GetOrderQuerySchema) {
-    const { orderId, recipientId } = params
+  async handle(
+    @Param(validationPipe) { orderId, recipientId }: GetOrderQuerySchema,
+  ) {
+    // const { orderId, recipientId } = params
 
     const result = await this.getOrder.execute({
       orderId,

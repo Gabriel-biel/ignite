@@ -1,7 +1,6 @@
-import { DeliverOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/deliver-order'
+import { OrderAvailableUseCase } from '@/domain/delivery-management/application/use-cases-order/order-available'
 import {
   BadRequestException,
-  Body,
   Controller,
   HttpCode,
   NotFoundException,
@@ -19,32 +18,23 @@ const deliveryOrderParamsSchema = z.object({
   recipientId: z.string(),
 })
 
-const deliveryOrderBodySchema = z.string().array()
-
 type DeliveryOrderParamsSchema = z.infer<typeof deliveryOrderParamsSchema>
-type DeliveryOrderBodySchema = z.infer<typeof deliveryOrderBodySchema>
 
 const validationPipe = new ZodValidationPipe(deliveryOrderParamsSchema)
-const bodyValidationPipe = new ZodValidationPipe(deliveryOrderBodySchema)
 
-@Controller('/orders/delivered/:orderId/:recipientId')
-export class DeliverOrderController {
-  constructor(private deliverOrder: DeliverOrderUseCase) {}
+@Controller('/orders/available/:orderId/:recipientId')
+export class OrderAvailableController {
+  constructor(private orderAvailable: OrderAvailableUseCase) {}
 
   @Put()
   @HttpCode(200)
-  async handle(
-    @Param(validationPipe) params: DeliveryOrderParamsSchema,
-    @Body('attachments', bodyValidationPipe)
-    attachmentsIds: DeliveryOrderBodySchema,
-  ) {
+  async handle(@Param(validationPipe) params: DeliveryOrderParamsSchema) {
     const { orderId, recipientId } = params
 
-    const result = await this.deliverOrder.execute({
+    const result = await this.orderAvailable.execute({
       orderId,
       recipientId,
-      deliveredAt: new Date(),
-      attachmentsIds,
+      pickupAvailableOrder: new Date(),
     })
 
     if (result.isLeft()) {

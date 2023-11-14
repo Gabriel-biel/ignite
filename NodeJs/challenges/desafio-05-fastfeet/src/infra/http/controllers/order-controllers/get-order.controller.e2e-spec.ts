@@ -23,7 +23,7 @@ describe('Get order e2e', () => {
     await app.init()
   })
 
-  it('[GET] /orders', async () => {
+  it('[GET] /orders/:orderId/:recipientId', async () => {
     const accountAdm = await prisma.user.create({
       data: {
         name: 'Jhon Gabriel',
