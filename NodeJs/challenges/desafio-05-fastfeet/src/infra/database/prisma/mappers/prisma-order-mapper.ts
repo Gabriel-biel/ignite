@@ -27,7 +27,9 @@ export class PrismaOrderMapper {
       id: order.id.toString(),
       addressId: order.addressId.toString(),
       recipientId: order.recipientId.toString(),
-      deliverymanId: order.deliverymanId?.toString() ?? undefined,
+      deliverymanId: order.deliverymanId
+        ? order.deliverymanId.toString()
+        : undefined,
       pickupAvailableOrder: order.pickup_available_order,
       pickupAt: order.pickup_at,
       deliveredAt: order.delivered_at,

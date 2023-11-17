@@ -5,7 +5,7 @@ import {
   Get,
   HttpCode,
   NotFoundException,
-  Param,
+  Query,
   UnauthorizedException,
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -14,25 +14,28 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { OrderPresenter } from '../../presenters/order-presenter'
 
-const getOrderParamsSchema = z.object({
-  recipientId: z.string(),
-  orderId: z.string(),
-})
+const getOrderByIdQuerySchema = z.string()
+const getOrderByRecipientIdSchema = z.string()
 
-type GetOrderQuerySchema = z.infer<typeof getOrderParamsSchema>
+type GetOrderByIdQuerySchema = z.infer<typeof getOrderByIdQuerySchema>
+type GetOrderByRecipientIdSchema = z.infer<typeof getOrderByRecipientIdSchema>
 
-const validationPipe = new ZodValidationPipe(getOrderParamsSchema)
+const orderIdValidationPipe = new ZodValidationPipe(getOrderByIdQuerySchema)
+const recipientIdValidationPipe = new ZodValidationPipe(
+  getOrderByRecipientIdSchema,
+)
 
-@Controller('/orders/:orderId/:recipientId')
+@Controller('/orders')
 export class GetOrderController {
   constructor(private getOrder: GetOrderUseCase) {}
 
   @Get()
   @HttpCode(200)
-  // fix-semantic: refactor this param for query
-  async handle(@Param(validationPipe) params: GetOrderQuerySchema) {
-    const { orderId, recipientId } = params
-
+  async handle(
+    @Query('oderId', orderIdValidationPipe) orderId: GetOrderByIdQuerySchema,
+    @Query('recipientId', recipientIdValidationPipe)
+    recipientId: GetOrderByRecipientIdSchema,
+  ) {
     const result = await this.getOrder.execute({
       orderId,
       recipientId,

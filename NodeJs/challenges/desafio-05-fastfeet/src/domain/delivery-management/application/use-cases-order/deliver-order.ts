@@ -7,6 +7,7 @@ import { OrderAttachmentsRepository } from '../repositories/order-attachments-re
 import { OrderAttachmentList } from '../../enterprise/entities/order-attachment-list'
 import { OrderAttachment } from '../../enterprise/entities/order-attachment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 export interface DeliverOrderUseCaseRequest {
   orderId: string
@@ -22,6 +23,7 @@ export type DeliverOrderUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class DeliverOrderUseCase {
   constructor(
     private orderRepository: OrderRepository,
@@ -41,6 +43,10 @@ export class DeliverOrderUseCase {
     }
 
     if (order.recipientId.toString() !== recipientId) {
+      return left(new NotAllowedError())
+    }
+
+    if (order.delivered_at) {
       return left(new NotAllowedError())
     }
 

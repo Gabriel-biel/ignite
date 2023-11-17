@@ -68,12 +68,12 @@ model Address {
 }
 
 model Attachments {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
   title   String
   link    String
-  orderId String @map("order_id")
+  orderId String? @map("order_id")
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("attachments")
 }

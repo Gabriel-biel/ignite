@@ -94,4 +94,51 @@ describe('Fetch orders nearby', () => {
       }),
     )
   })
+
+  it('not should be able to list orders already delivered', async () => {
+    const account = MakeAccount()
+    const recipient = MakeRecipient()
+
+    const address = MakeAddress({
+      recipientId: recipient.id,
+      latitude: 7.268223,
+      longitude: 64.795283,
+    })
+
+    const farAddress = MakeAddress({
+      recipientId: new UniqueEntityID('recipient-id'),
+    })
+
+    await inMemoryAccountsRepository.create(account)
+    await inMemoryRecipientRepository.create(recipient)
+    await inMemoryAddressRepository.create(address)
+
+    await inMemoryOrderRepository.create(
+      MakeOrder({
+        recipientId: recipient.id,
+        addressId: address.id,
+        delivered_at: new Date(),
+        pickup_at: new Date(),
+        deliverymanId: account.id,
+      }),
+    )
+
+    await inMemoryOrderRepository.create(
+      MakeOrder({
+        recipientId: new UniqueEntityID('recipient-id'),
+        addressId: farAddress.id,
+      }),
+    )
+
+    const result = await fetchOrdersNearbyUseCase.execute({
+      deliverymanId: account.id.toString(),
+      accountLatitude: 7.266545,
+      accountLongitude: 64.793686,
+    })
+
+    expect(result.isRight()).toBeTruthy()
+    expect(result.value).toEqual({
+      orders: [],
+    })
+  })
 })

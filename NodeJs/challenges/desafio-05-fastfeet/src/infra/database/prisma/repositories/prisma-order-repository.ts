@@ -7,6 +7,7 @@ import { Order } from '@/domain/delivery-management/enterprise/entities/order'
 import { Injectable } from '@nestjs/common'
 import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
 import { PrismaService } from '../prisma.service'
+import { Address } from '@prisma/client'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrderRepository {
@@ -62,9 +63,7 @@ export class PrismaOrdersRepository implements OrderRepository {
       skip: (page - 1) * ordersPerPage,
     })
 
-    const orders = items.map(PrismaOrderMapper.toDomain)
-
-    return orders
+    return items.map(PrismaOrderMapper.toDomain)
   }
 
   async findManyNearby({
@@ -72,16 +71,23 @@ export class PrismaOrdersRepository implements OrderRepository {
     latitude,
     longitude,
   }: FindManyNearbyParams) {
-    const items = await this.prisma.$queryRaw<Order[]>`
-      SELECT * from orders
-      WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 1
-    `
+    const orders = await this.prisma.order.findMany({
+      where: {
+        deliverymanId,
+        deliveredAt: undefined,
+        returnedAt: undefined,
+      },
+    })
 
-    const orders = items.filter(
-      (item) => item.deliverymanId?.toString() === deliverymanId,
+    const addresses = await this.prisma.$queryRaw<Address[]>`
+        SELECT * from addresses
+        WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 1`
+
+    const ordersNearby = orders.filter((order) =>
+      addresses.some((address) => order.addressId === address.id),
     )
 
-    return orders
+    return ordersNearby.map(PrismaOrderMapper.toDomain)
   }
 
   async delete(order: Order) {

@@ -17,7 +17,7 @@ type DeleteAccountQuerySchema = z.infer<typeof deleteAccountQuerySchema>
 
 const validationPipe = new ZodValidationPipe(deleteAccountQuerySchema)
 
-@Controller('/account/profile')
+@Controller('/account/delete')
 export class DeleteAccountController {
   constructor(private deleteAccount: DeleteAccountUseCase) {}
 

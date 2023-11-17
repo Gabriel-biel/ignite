@@ -25,12 +25,12 @@ describe('Delete account e2e', () => {
     await app.init()
   })
 
-  it('[DELETE] /account/profile', async () => {
+  it('[DELETE] /account/delete', async () => {
     const deliverymanAccount = await accountFactory.makePrismaAccount()
     const deliverymanToken = jwt.sign({ sub: deliverymanAccount.id.toString() })
 
     const result = await request(app.getHttpServer())
-      .delete('/account/profile')
+      .delete('/account/delete')
       .query({ accountId: deliverymanAccount.id.toString() })
       .set('Authorization', `Bearer ${deliverymanToken}`)
       .send()

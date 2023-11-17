@@ -3,14 +3,16 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   HttpCode,
   NotFoundException,
   Param,
+  Put,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 const deliveryOrderParamsSchema = z.object({
   orderId: z.string(),
@@ -25,20 +27,22 @@ type DeliveryOrderBodySchema = z.infer<typeof deliveryOrderBodySchema>
 const validationPipe = new ZodValidationPipe(deliveryOrderParamsSchema)
 const bodyValidationPipe = new ZodValidationPipe(deliveryOrderBodySchema)
 
-@Controller('/orders/:orderId/:recipientId')
+@Controller('/orders/delivered/:orderId/:recipientId')
 export class DeliverOrderController {
   constructor(private deliverOrder: DeliverOrderUseCase) {}
 
-  @Delete()
-  @HttpCode(204)
+  @Put()
+  @HttpCode(200)
   async handle(
-    @Param(validationPipe) { orderId, recipientId }: DeliveryOrderParamsSchema,
+    @Param(validationPipe) params: DeliveryOrderParamsSchema,
     @Body('attachments', bodyValidationPipe)
     attachmentsIds: DeliveryOrderBodySchema,
   ) {
+    const { orderId, recipientId } = params
+
     const result = await this.deliverOrder.execute({
-      recipientId,
       orderId,
+      recipientId,
       deliveredAt: new Date(),
       attachmentsIds,
     })
@@ -49,6 +53,8 @@ export class DeliverOrderController {
       switch (error.constructor) {
         case ResourceNotFoundError:
           throw new NotFoundException()
+        case NotAllowedError:
+          throw new UnauthorizedException()
         default:
           throw new BadRequestException()
       }

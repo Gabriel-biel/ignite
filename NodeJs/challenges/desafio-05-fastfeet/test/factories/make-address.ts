@@ -4,6 +4,9 @@ import {
   Address,
   AddressProps,
 } from '@/domain/delivery-management/enterprise/entities/address'
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaAddressMapper } from '@/infra/database/prisma/mappers/prisma-address-mapper'
 
 export function MakeAddress(
   override: Partial<AddressProps> = {},
@@ -23,4 +26,19 @@ export function MakeAddress(
   )
 
   return address
+}
+
+@Injectable()
+export class AddressFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAddress(data: Partial<AddressProps> = {}): Promise<Address> {
+    const address = MakeAddress(data)
+
+    await this.prisma.address.create({
+      data: PrismaAddressMapper.toPrisma(address),
+    })
+
+    return address
+  }
 }

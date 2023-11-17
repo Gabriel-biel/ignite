@@ -1,6 +1,7 @@
 import { Either, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
+import { Injectable } from '@nestjs/common'
 
 export interface FetchOrdersNearbyRequest {
   deliverymanId: string
@@ -15,6 +16,7 @@ export type FetchOrdersNearbyResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchOrdersNearbyUseCase {
   constructor(private orderRepository: OrderRepository) {}
 
@@ -23,11 +25,13 @@ export class FetchOrdersNearbyUseCase {
     accountLatitude,
     accountLongitude,
   }: FetchOrdersNearbyRequest): Promise<FetchOrdersNearbyResponse> {
-    const orders = await this.orderRepository.findManyNearby({
+    const allOrders = await this.orderRepository.findManyNearby({
       deliverymanId,
       latitude: accountLatitude,
       longitude: accountLongitude,
     })
+
+    const orders = allOrders.filter((order) => !order.delivered_at)
 
     return right({ orders })
   }

@@ -26,7 +26,7 @@ type UpdateAccountBodySchema = z.infer<typeof updateAccountBodySchema>
 
 const validationPipe = new ZodValidationPipe(updateAccountBodySchema)
 
-@Controller('/account/profile')
+@Controller('/account/edit')
 export class EditAccountController {
   constructor(private editAccount: EditAccountUseCase) {}
 

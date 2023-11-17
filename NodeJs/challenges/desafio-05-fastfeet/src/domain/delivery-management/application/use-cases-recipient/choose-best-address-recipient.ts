@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Recipient } from '../../enterprise/entities/recipient'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { AddressRepository } from '../repositories/address-repository'
+import { Injectable } from '@nestjs/common'
 
 export interface ChooseBestAddressRecipientUseCaseRequest {
   recipientId: string
@@ -17,6 +18,7 @@ export type ChooseBestAddressRecipientUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ChooseBestAddressRecipientUseCase {
   constructor(
     private recipientRepository: RecipientRepository,
