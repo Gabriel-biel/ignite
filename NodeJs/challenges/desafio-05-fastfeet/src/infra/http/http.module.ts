@@ -3,7 +3,7 @@ import { DatabaseModule } from '../database/database.module'
 import { CryptografyModule } from '../cryptography/cryptografy.module'
 import { RegisterAccountController } from './controllers/account-controllers/register-account.controller'
 import { AuthenticateController } from './controllers/account-controllers/authenticate.controller'
-import { RegisterRecipientController } from './controllers/recipient-controllers/create-recipient.controller'
+import { RegisterRecipientController } from './controllers/recipient-controllers/register-recipient.controller'
 import { CreateAddressRecipientController } from './controllers/recipient-controllers/create-address-recipient'
 import { GetAccountController } from './controllers/account-controllers/get-account.controller'
 import { CreateOrderController } from './controllers/order-controllers/create-order.controller'
@@ -44,9 +44,14 @@ import { EditRecipientUseCase } from '@/domain/delivery-management/application/u
 import { EditRecipientController } from './controllers/recipient-controllers/edit-recipient.controller'
 import { ChooseBestAddressController } from './controllers/recipient-controllers/choose-best-address.controller'
 import { ChooseBestAddressRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/choose-best-address-recipient'
+import { ChooseRecipientNameController } from './controllers/recipient-controllers/choose-recipient-name.controller'
+import { ChooseNameRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/choose-name-recipient'
+import { UploadAttachmentsController } from './controllers/order-controllers/upload-attachments.controller'
+import { UploadAndCreateAttachmentUseCase } from '@/domain/delivery-management/application/use-cases-order/upload-and-create-attachments'
+import { StorageModule } from '../storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptografyModule],
+  imports: [DatabaseModule, CryptografyModule, StorageModule],
   controllers: [
     RegisterAccountController,
     AuthenticateController,
@@ -57,6 +62,7 @@ import { ChooseBestAddressRecipientUseCase } from '@/domain/delivery-management/
     GetRecipientController,
     EditRecipientController,
     ChooseBestAddressController,
+    ChooseRecipientNameController,
     DeleteRecipientController,
     CreateAddressRecipientController,
     CreateOrderController,
@@ -69,6 +75,7 @@ import { ChooseBestAddressRecipientUseCase } from '@/domain/delivery-management/
     OrderReturnedController,
     DeliverOrderController,
     DeleteOrderController,
+    UploadAttachmentsController,
   ],
   providers: [
     RegisterAccountUseCase,
@@ -80,6 +87,7 @@ import { ChooseBestAddressRecipientUseCase } from '@/domain/delivery-management/
     GetRecipientUseCase,
     EditRecipientUseCase,
     ChooseBestAddressRecipientUseCase,
+    ChooseNameRecipientUseCase,
     DeleteRecipientUseCase,
     AddAddressUseCase,
     RegisterOrderUseCase,
@@ -92,6 +100,7 @@ import { ChooseBestAddressRecipientUseCase } from '@/domain/delivery-management/
     OrderReturnUseCase,
     DeliverOrderUseCase,
     DeleteOrderUseCase,
+    UploadAndCreateAttachmentUseCase,
   ],
 })
 export class HttpModule {}

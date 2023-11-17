@@ -19,7 +19,7 @@ type RecipientParamsSchema = z.infer<typeof recipientParamsSchema>
 
 const validationPipe = new ZodValidationPipe(recipientParamsSchema)
 
-@Controller('/recipient/profile/:recipientId')
+@Controller('/recipient/delete/:recipientId')
 export class DeleteRecipientController {
   constructor(private deleteRecipient: DeleteRecipientUseCase) {}
 

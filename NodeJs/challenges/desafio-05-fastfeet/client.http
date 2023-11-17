@@ -1,6 +1,6 @@
 @baseURL= http://localhost:3333
 @authToken= {{authenticate.response.body.access_token}}
-@recipientId= {{create_recipient_account.response.body.recipientId.value}}
+@recipientId= {{register_recipient_account.response.body.recipientId.value}}
 
 # @name create_account
 POST {{baseURL}}/accounts
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-# @name create_deliveryman_account
+# @name register_deliveryman_account
 POST {{baseURL}}/accounts
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -31,7 +31,7 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-# @name create_recipient_account
+# @name register_recipient_account
 POST {{baseURL}}/recipients
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -61,6 +61,18 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ####
+
+# @name edit_account
+PUT {{baseURL}}/account/edit
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "gabriel Delvier",
+  "email": "edit email account"
+}
+
+###
 
 # @name delete_account
 DELETE {{baseURL}}/account/profile?accountID={{recipientId}}

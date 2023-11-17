@@ -5,44 +5,40 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { AccountFactory } from 'test/factories/make-account'
-import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('Delete recipient (E2E)', () => {
+describe('Upload attachments e2e', () => {
   let app: INestApplication
   let accountFactory: AccountFactory
-  let recipientFactory: RecipientFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [RecipientFactory, AccountFactory],
+      providers: [AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
     accountFactory = moduleRef.get(AccountFactory)
-    recipientFactory = moduleRef.get(RecipientFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
-  it('[DELETE] /recipient/delete/:recipientId', async () => {
-    const adm = await accountFactory.makePrismaAccount({
-      role: 'ADM',
+  it('[POST] /attachments', async () => {
+    const deliveryman = await accountFactory.makePrismaAccount({
+      role: 'DELIVERYMAN',
     })
-    const accessToken = jwt.sign({ sub: adm.id.toString() })
+    const accessToken = jwt.sign({ sub: deliveryman.id.toString() })
 
-    const recipient = await recipientFactory.makePrismaRecipient({
-      role: 'RECIPIENT',
-    })
-
-    const response = await request(app.getHttpServer())
-      .delete(`/recipient/delete/${recipient.id.toString()}`)
+    const result = await request(app.getHttpServer())
+      .post(`/attachments`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send()
+      .attach('file', './test/e2e/sample-upload.jpeg')
 
-    expect(response.statusCode).toBe(200)
+    expect(result.statusCode).toBe(201)
+    expect(result.statusCode).toEqual({
+      attachmentId: expect.any(String),
+    })
   })
 })

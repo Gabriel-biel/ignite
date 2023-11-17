@@ -17,7 +17,7 @@ type DeleteOrderQuerySchema = z.infer<typeof deleteOrderQuerySchema>
 
 const validationPipe = new ZodValidationPipe(deleteOrderQuerySchema)
 
-@Controller('/orders')
+@Controller('/orders/delete')
 export class DeleteOrderController {
   constructor(private deleteOrder: DeleteOrderUseCase) {}
 

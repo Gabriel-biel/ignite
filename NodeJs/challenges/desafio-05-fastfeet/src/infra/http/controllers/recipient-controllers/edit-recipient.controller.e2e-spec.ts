@@ -7,7 +7,7 @@ import request from 'supertest'
 import { AccountFactory } from 'test/factories/make-account'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('Create recipient (E2E)', () => {
+describe('Edit recipient (E2E)', () => {
   let app: INestApplication
   let accountFactory: AccountFactory
   let recipientFactory: RecipientFactory
@@ -28,7 +28,7 @@ describe('Create recipient (E2E)', () => {
     await app.init()
   })
 
-  it('[PUT] /recipient/profile/:recipientId', async () => {
+  it('[PUT] /recipient/edit/:recipientId', async () => {
     const adm = await accountFactory.makePrismaAccount({
       role: 'ADM',
     })
@@ -39,7 +39,7 @@ describe('Create recipient (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/recipient/profile/${recipient.id.toString()}`)
+      .put(`/recipient/edit/${recipient.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'Gabriel',

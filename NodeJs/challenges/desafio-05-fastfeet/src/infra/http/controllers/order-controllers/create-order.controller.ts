@@ -10,7 +10,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { RegisterOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/register-order'
 
 const createOrderBodySchema = z.object({
-  // recipientId: z.string(),
+  recipientId: z.string(),
   addressId: z.string(),
 })
 
@@ -28,11 +28,9 @@ export class CreateOrderController {
 
   @Post()
   async handle(
-    @Body(validationPipeBody) body: CreateOrderBodySchema,
+    @Body(validationPipeBody) { addressId }: CreateOrderBodySchema,
     @Query('recipientId', validationPipe) recipientId: CreateOrderQuerySchema,
   ) {
-    const { addressId } = body
-
     const result = await this.createOrder.execute({
       recipientId,
       addressId,

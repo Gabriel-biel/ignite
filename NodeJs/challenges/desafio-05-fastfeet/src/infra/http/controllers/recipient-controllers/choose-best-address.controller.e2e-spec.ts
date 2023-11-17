@@ -49,7 +49,7 @@ describe('Choose best address recipient (E2E)', () => {
       .put(`/recipient/profile/bestAddress/${recipient.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        addressId: address.id,
+        addressId: address.id.toString(),
       })
 
     expect(response.statusCode).toBe(200)

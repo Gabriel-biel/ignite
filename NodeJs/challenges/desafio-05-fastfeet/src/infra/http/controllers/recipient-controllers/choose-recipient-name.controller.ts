@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { z } from 'zod'
-import { EditRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/edit-recipient'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { RecipientPresenter } from '../../presenters/recipient-presenter'
+import { ChooseNameRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/choose-name-recipient'
 
 const recipientParamsSchema = z.object({
   recipientId: z.string(),
@@ -19,7 +19,6 @@ const recipientParamsSchema = z.object({
 
 const recipientBodySchema = z.object({
   name: z.string(),
-  email: z.string(),
 })
 
 type RecipientParamsSchema = z.infer<typeof recipientParamsSchema>
@@ -28,20 +27,19 @@ type RecipientBodySchema = z.infer<typeof recipientBodySchema>
 const validationPipe = new ZodValidationPipe(recipientParamsSchema)
 const bodyValidationPipe = new ZodValidationPipe(recipientBodySchema)
 
-@Controller('/recipient/edit/:recipientId')
-export class EditRecipientController {
-  constructor(private editRecipient: EditRecipientUseCase) {}
+@Controller('/recipient/profile/newName/:recipientId')
+export class ChooseRecipientNameController {
+  constructor(private chooseNameRecipient: ChooseNameRecipientUseCase) {}
 
   @Put()
   @HttpCode(200)
   async handle(
     @Param(validationPipe) { recipientId }: RecipientParamsSchema,
-    @Body(bodyValidationPipe) { name, email }: RecipientBodySchema,
+    @Body(bodyValidationPipe) { name }: RecipientBodySchema,
   ) {
-    const result = await this.editRecipient.execute({
+    const result = await this.chooseNameRecipient.execute({
       recipientId,
       name,
-      email,
     })
 
     if (result.isLeft()) {

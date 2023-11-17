@@ -7,7 +7,7 @@ import request from 'supertest'
 import { AccountFactory } from 'test/factories/make-account'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('Create recipient (E2E)', () => {
+describe('Get recipient (E2E)', () => {
   let app: INestApplication
   let accountFactory: AccountFactory
   let recipientFactory: RecipientFactory

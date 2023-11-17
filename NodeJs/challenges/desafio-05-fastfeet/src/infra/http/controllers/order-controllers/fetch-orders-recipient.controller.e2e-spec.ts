@@ -1,109 +1,83 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { AccountFactory } from 'test/factories/make-account'
+import { AddressFactory } from 'test/factories/make-address'
+import { OrderFactory } from 'test/factories/make-order'
+import { RecipientFactory } from 'test/factories/make-recipient'
 
 describe('Fetch Orders Recipients (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let accountFactory: AccountFactory
+  let recipientFactory: RecipientFactory
+  let addressFactory: AddressFactory
+  let orderFactory: OrderFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [
+        AccountFactory,
+        RecipientFactory,
+        AddressFactory,
+        OrderFactory,
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    prisma = moduleRef.get(PrismaService)
+    accountFactory = moduleRef.get(AccountFactory)
+    recipientFactory = moduleRef.get(RecipientFactory)
+    addressFactory = moduleRef.get(AddressFactory)
+    orderFactory = moduleRef.get(OrderFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   it('[POST] /orders/recipient', async () => {
-    const userAdm = await prisma.user.create({
-      data: {
-        name: 'Gabriel Lima',
-        email: 'gabsAdm@gmail.com',
-        cpf: '333333',
-        role: 'ADM',
-        password: '12345',
-      },
+    const userAdm = await accountFactory.makePrismaAccount({
+      role: 'ADM',
     })
-    const accessToken = jwt.sign({ sub: userAdm.id })
+    const accessToken = jwt.sign({ sub: userAdm.id.toString() })
 
-    await prisma.user.createMany({
-      data: [
-        {
-          id: 'id-recipient-testing-1',
-          name: 'Gabriel',
-          email: 'gabrielRecipient1@gmail.com',
-          cpf: '1111Recipient1',
-          role: 'RECIPIENT',
-        },
-        {
-          id: 'id-recipient-testing-2',
-          name: 'Gabriel Andrade',
-          email: 'gabrielRecipient2@gmail.com',
-          cpf: '1111Recipient2',
-          role: 'RECIPIENT',
-        },
-      ],
+    const user = await recipientFactory.makePrismaRecipient({
+      role: 'RECIPIENT',
+    })
+    const user2 = await recipientFactory.makePrismaRecipient({
+      role: 'RECIPIENT',
     })
 
-    await prisma.address.createMany({
-      data: [
-        {
-          id: 'id-address-testing-1',
-          city: 'Lábrea',
-          houseNumber: '1756',
-          latitude: 11111,
-          longitude: 22222,
-          street: 'Rua Luiz falcão',
-          recipientId: 'id-recipient-testing-1',
-        },
-        {
-          id: 'id-address-testing-2',
-          city: 'Lábrea',
-          houseNumber: '1756',
-          latitude: 33333,
-          longitude: 444444,
-          street: 'Rua Luiz',
-          recipientId: 'id-recipient-testing-2',
-        },
-      ],
+    const address = await addressFactory.makePrismaAddress({
+      recipientId: user.id,
+    })
+    const address2 = await addressFactory.makePrismaAddress({
+      recipientId: user2.id,
     })
 
-    await prisma.order.createMany({
-      data: [
-        {
-          recipientId: 'id-recipient-testing-1',
-          addressId: 'id-address-testing-1',
-        },
-        {
-          recipientId: 'id-recipient-testing-2',
-          addressId: 'id-address-testing-2',
-        },
-        {
-          recipientId: 'id-recipient-testing-2',
-          addressId: 'id-address-testing-2',
-        },
-      ],
+    await orderFactory.makePrismaOrder({
+      addressId: address.id,
+      recipientId: user.id,
+    })
+    await orderFactory.makePrismaOrder({
+      addressId: address2.id,
+      recipientId: user2.id,
     })
 
     const response = await request(app.getHttpServer())
       .get(`/orders/recipient`)
-      .query({ page: 1, recipientId: 'id-recipient-testing-1' })
+      .query({ page: 1, recipientId: user.id.toString() })
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
     expect(response.body.orders).toHaveLength(1)
     expect(response.body).toEqual({
-      orders: [expect.objectContaining({ recipientId: expect.any(String) })],
+      orders: [expect.objectContaining({ recipientId: user.id.toString() })],
     })
   })
 })
