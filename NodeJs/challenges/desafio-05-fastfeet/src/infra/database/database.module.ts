@@ -51,7 +51,7 @@ import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attach
     OrderRepository,
     OrderAttachmentsRepository,
     PrismaNotiicationsRepository,
-    PrismaAttachmentsRepository,
+    AttachmentsRepository,
   ], // serve para deixar esse serviço disponível para os modules que o importam também
 })
 export class DatabaseModule {}
