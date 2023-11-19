@@ -8,14 +8,22 @@ import { Injectable } from '@nestjs/common'
 import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
 import { PrismaService } from '../prisma.service'
 import { Address } from '@prisma/client'
+import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrderRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private orderAttachments: OrderAttachmentsRepository,
+  ) {}
 
   async create(order: Order) {
     const data = PrismaOrderMapper.toPrisma(order)
     await this.prisma.order.create({ data })
+
+    if (order.attachments) {
+      await this.orderAttachments.createMany(order.attachments.getItems())
+    }
   }
 
   async findById(orderId: string): Promise<Order | null> {
@@ -101,6 +109,20 @@ export class PrismaOrdersRepository implements OrderRepository {
 
   async save(order: Order) {
     const data = PrismaOrderMapper.toPrisma(order)
+
+    if (order.attachments) {
+      await Promise.all([
+        this.prisma.order.update({
+          where: {
+            id: data.id,
+          },
+          data,
+        }),
+        this.orderAttachments.createMany(order.attachments.getNewItems()),
+        this.orderAttachments.deleteMany(order.attachments.getRemovedItems()),
+      ])
+    }
+
     await this.prisma.order.update({
       where: {
         id: data.id,

@@ -55,7 +55,7 @@ describe('Deliver order use case', () => {
     )
   })
 
-  it('not should be able to re deliver a order', async () => {
+  it('not should be able to re deliver a order if the order has already been delivered', async () => {
     const recipient = MakeRecipient(
       {},
       new UniqueEntityID('recipient-id-for-test'),
@@ -77,5 +77,38 @@ describe('Deliver order use case', () => {
 
     expect(result.isLeft()).toBeTruthy()
     expect(inMemoryOrderRepository.items).toHaveLength(1)
+  })
+
+  it('shoud persist attachments when deliver a order', async () => {
+    const recipient = MakeRecipient(
+      {},
+      new UniqueEntityID('recipient-id-for-test'),
+    )
+    const order = MakeOrder({
+      recipientId: recipient.id,
+    })
+
+    await inMemoryRecipientRepository.create(recipient)
+    await inMemoryOrderRepository.create(order)
+
+    const result = await deliverOrderUseCase.execute({
+      orderId: order.id.toString(),
+      recipientId: recipient.id.toString(),
+      deliveredAt: new Date(),
+      attachmentsIds: ['attachment-id-1', 'attachment-id-2'],
+    })
+
+    expect(result.isRight()).toBeTruthy()
+    expect(inMemoryOrderAttachmentsRepository.items).toHaveLength(2)
+    expect(inMemoryOrderAttachmentsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: new UniqueEntityID('attachment-id-1'),
+        }),
+        expect.objectContaining({
+          attachmentId: new UniqueEntityID('attachment-id-2'),
+        }),
+      ]),
+    )
   })
 })

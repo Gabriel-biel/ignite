@@ -19,7 +19,7 @@ const deliveryOrderParamsSchema = z.object({
   recipientId: z.string(),
 })
 
-const deliveryOrderBodySchema = z.string().array()
+const deliveryOrderBodySchema = z.array(z.string().uuid())
 
 type DeliveryOrderParamsSchema = z.infer<typeof deliveryOrderParamsSchema>
 type DeliveryOrderBodySchema = z.infer<typeof deliveryOrderBodySchema>
@@ -32,7 +32,7 @@ export class DeliverOrderController {
   constructor(private deliverOrder: DeliverOrderUseCase) {}
 
   @Put()
-  @HttpCode(200)
+  @HttpCode(201)
   async handle(
     @Param(validationPipe) params: DeliveryOrderParamsSchema,
     @Body('attachments', bodyValidationPipe)

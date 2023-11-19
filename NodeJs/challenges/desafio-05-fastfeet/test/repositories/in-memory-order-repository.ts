@@ -101,6 +101,16 @@ export class InMemoryOrderRepository implements OrderRepository {
   async save(order: Order) {
     const item = this.items.findIndex((item) => item.id === order.id)
 
+    if (order.attachments) {
+      await this.orderAttachmentsRepository.createMany(
+        order.attachments.getNewItems(),
+      )
+
+      await this.orderAttachmentsRepository.deleteMany(
+        order.attachments.getRemovedItems(),
+      )
+    }
+
     this.items[item] = order
 
     DomainEvents.dispatchEventsForAggregate(order.id)
