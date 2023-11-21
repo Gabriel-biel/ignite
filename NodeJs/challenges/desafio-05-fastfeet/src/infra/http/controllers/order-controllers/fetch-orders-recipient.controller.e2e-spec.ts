@@ -46,9 +46,11 @@ describe('Fetch Orders Recipients (E2E)', () => {
     const accessToken = jwt.sign({ sub: userAdm.id.toString() })
 
     const user = await recipientFactory.makePrismaRecipient({
+      name: 'Gabriel',
       role: 'RECIPIENT',
     })
     const user2 = await recipientFactory.makePrismaRecipient({
+      name: 'mpvinnie',
       role: 'RECIPIENT',
     })
 
@@ -70,14 +72,19 @@ describe('Fetch Orders Recipients (E2E)', () => {
 
     const response = await request(app.getHttpServer())
       .get(`/orders/recipient`)
-      .query({ page: 1, recipientId: user.id.toString() })
+      .query({ page: 1, recipientId: user2.id.toString() })
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
     expect(response.body.orders).toHaveLength(1)
     expect(response.body).toEqual({
-      orders: [expect.objectContaining({ recipientId: user.id.toString() })],
+      orders: expect.arrayContaining([
+        expect.objectContaining({
+          recipientId: user2.id.toString(),
+          recipientName: 'mpvinnie',
+        }),
+      ]),
     })
   })
 })

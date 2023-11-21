@@ -9,6 +9,8 @@ import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
 import { PrismaService } from '../prisma.service'
 import { Address } from '@prisma/client'
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
+import { PrismaOrderWithRecipientMapper } from '../mappers/prisma-order-with-recipient-mapper'
+import { PrismaOrderDetailsMapper } from '../mappers/prisma-order-details-mapper'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrderRepository {
@@ -38,6 +40,25 @@ export class PrismaOrdersRepository implements OrderRepository {
     }
 
     return PrismaOrderMapper.toDomain(order)
+  }
+
+  async findByDetailsByOrderId(orderId: string) {
+    const orderWithRecipient = await this.prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        recipient: true,
+        address: true,
+        attachments: true,
+      },
+    })
+
+    if (!orderWithRecipient) {
+      return null
+    }
+
+    return PrismaOrderDetailsMapper.toDomain(orderWithRecipient)
   }
 
   async findManyByOrdersRecipient(
@@ -96,6 +117,50 @@ export class PrismaOrdersRepository implements OrderRepository {
     )
 
     return ordersNearby.map(PrismaOrderMapper.toDomain)
+  }
+
+  async findManyOrdersWithRecipientByDeliverymanId(
+    { page }: PaginationParams,
+    deliverymanId: string,
+  ) {
+    const orders = await this.prisma.order.findMany({
+      where: {
+        deliverymanId,
+      },
+      include: {
+        recipient: true,
+        address: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (page - 1) * 10,
+    })
+
+    return orders.map((order) => PrismaOrderWithRecipientMapper.toDomain(order))
+  }
+
+  async findManyOrdesWithRecipientByRecipientId(
+    { page }: PaginationParams,
+    recipientId: string,
+  ) {
+    const orders = await this.prisma.order.findMany({
+      where: {
+        recipientId,
+      },
+      include: {
+        recipient: true,
+        address: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (page - 1) * 10,
+    })
+
+    return orders.map((order) => PrismaOrderWithRecipientMapper.toDomain(order))
   }
 
   async delete(order: Order) {

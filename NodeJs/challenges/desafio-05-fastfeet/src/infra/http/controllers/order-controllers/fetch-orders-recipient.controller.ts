@@ -2,7 +2,7 @@ import { Controller, Get, Query, BadRequestException } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { FetchOrdersRecipientUseCase } from '@/domain/delivery-management/application/use-cases-order/fetch-orders-recipient'
-import { OrderPresenter } from '../../presenters/order-presenter'
+import { OrderWithRecipientPresenter } from '../../presenters/order-with-recipient-presenter'
 
 const pageQuerySchema = z.object({
   page: z
@@ -36,10 +36,10 @@ export class FetchOrdersRecipientController {
       throw new BadRequestException()
     }
 
-    const orders = result.value.order
+    const orders = result.value.orders
 
     return {
-      orders: orders.map(OrderPresenter.toHTTP),
+      orders: orders.map(OrderWithRecipientPresenter.toHTTP),
     }
   }
 }

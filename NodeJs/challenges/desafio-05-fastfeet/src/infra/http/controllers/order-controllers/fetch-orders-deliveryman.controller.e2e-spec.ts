@@ -46,6 +46,7 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
     const accessToken = jwt.sign({ sub: deliveryman.id.toString() })
 
     const recipient = await recipientFactory.makePrismaRecipient({
+      name: 'Gabriel',
       role: 'RECIPIENT',
     })
 
@@ -75,7 +76,11 @@ describe('Fetch Orders Delvieryman (E2E)', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body.orders).toHaveLength(1)
     expect(response.body).toEqual({
-      orders: [expect.objectContaining({ deliverymanId: expect.any(String) })],
+      orders: expect.arrayContaining([
+        expect.objectContaining({
+          recipientName: 'Gabriel',
+        }),
+      ]),
     })
   })
 })
