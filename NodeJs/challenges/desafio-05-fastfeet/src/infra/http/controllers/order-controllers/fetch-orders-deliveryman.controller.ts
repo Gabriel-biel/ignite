@@ -4,7 +4,7 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { FetchOrdersDeliverymanUseCase } from '@/domain/delivery-management/application/use-cases-order/fetch-orders-deliveryman'
-import { OrderPresenter } from '../../presenters/order-presenter'
+import { OrderWithRecipientPresenter } from '../../presenters/order-with-recipient-presenter'
 
 const pageQuerySchema = z
   .string()
@@ -37,10 +37,10 @@ export class FetchOrdersDeliverymanController {
       throw new BadRequestException()
     }
 
-    const orders = result.value.order
+    const orders = result.value.orders
 
     return {
-      orders: orders.map(OrderPresenter.toHTTP),
+      orders: orders.map(OrderWithRecipientPresenter.toHTTP),
     }
   }
 }

@@ -31,13 +31,13 @@ export class PrismaAddressesRepository implements AddressRepository {
   }
 
   async findByRecipientId(recipientId: string) {
-    const items = await this.prisma.address.findMany({
+    const adresses = await this.prisma.address.findMany({
       where: {
         recipientId,
       },
     })
 
-    const addresses = items.map((item) => PrismaAddressMapper.toDomain(item))
-    return addresses
+    // const addresses = items.map((item) => PrismaAddressMapper.toDomain(item))
+    return adresses.map((item) => PrismaAddressMapper.toDomain(item))
   }
 }

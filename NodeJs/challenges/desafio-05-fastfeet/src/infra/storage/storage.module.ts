@@ -1,11 +1,11 @@
 import { Uploader } from '@/domain/delivery-management/application/storage/uploder'
 import { Module } from '@nestjs/common'
-import { R2Storage } from './r2-storage'
 import { EnvModule } from '../env/env.module'
+import { DiskStorage } from './disk-storage'
 
 @Module({
   imports: [EnvModule],
-  providers: [{ provide: Uploader, useClass: R2Storage }],
+  providers: [{ provide: Uploader, useClass: DiskStorage }],
   exports: [Uploader],
 })
 export class StorageModule {}

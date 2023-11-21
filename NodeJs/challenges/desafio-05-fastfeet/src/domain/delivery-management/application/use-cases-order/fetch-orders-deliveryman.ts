@@ -1,7 +1,7 @@
 import { Either, right } from '@/core/either'
-import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 import { Injectable } from '@nestjs/common'
+import { OrderWithRecipient } from '../../enterprise/entities/value-objects/order-with-recipient'
 
 export interface FetchOrdersDeliverymanUseCaseRequest {
   page: number
@@ -11,7 +11,7 @@ export interface FetchOrdersDeliverymanUseCaseRequest {
 export type FetchOrdersDeliverymanUseCaseResponse = Either<
   null,
   {
-    order: Order[]
+    orders: OrderWithRecipient[]
   }
 >
 
@@ -23,11 +23,12 @@ export class FetchOrdersDeliverymanUseCase {
     page,
     deliverymanId,
   }: FetchOrdersDeliverymanUseCaseRequest): Promise<FetchOrdersDeliverymanUseCaseResponse> {
-    const order = await this.orderRepository.findManyByOrdersDeliveryman(
-      { page },
-      deliverymanId,
-    )
+    const orders =
+      await this.orderRepository.findManyOrdersWithRecipientByDeliverymanId(
+        { page },
+        deliverymanId,
+      )
 
-    return right({ order })
+    return right({ orders })
   }
 }
