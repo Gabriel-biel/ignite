@@ -9,23 +9,28 @@ import { MakeRecipient } from 'test/factories/make-recipient'
 import { InMemoryAccountsRepository } from 'test/repositories/in-memory-account-repository'
 import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 import { MakeAddress } from 'test/factories/make-address'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryAccountsRepository: InMemoryAccountsRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let fetchOrdersNearbyUseCase: FetchOrdersNearbyUseCase
 
 describe('Fetch orders nearby', () => {
   beforeEach(() => {
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryAccountsRepository = new InMemoryAccountsRepository()
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryAddressRepository = new InMemoryAddressRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryRecipientRepository,
       inMemoryAddressRepository,
     )
     fetchOrdersNearbyUseCase = new FetchOrdersNearbyUseCase(

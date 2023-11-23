@@ -9,7 +9,7 @@ export class PrismaAccountMapper {
         name: raw.name,
         email: raw.email,
         cpf: raw.cpf,
-        password: raw.password!, // test
+        password: raw.password ?? undefined, // test
         role: raw.role,
       },
       new UniqueEntityID(raw.id),
@@ -22,7 +22,7 @@ export class PrismaAccountMapper {
       name: account.name,
       email: account.email,
       cpf: account.cpf,
-      password: account.password,
+      password: account.password ?? undefined,
       role: account.role,
     }
   }

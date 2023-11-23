@@ -14,6 +14,7 @@ import { OrderAvailableController } from './controllers/order-controllers/order-
 import { OrderReturnedController } from './controllers/order-controllers/order-return.controller'
 import { EditAccountController } from './controllers/account-controllers/edit-account.controller'
 import { DeleteOrderController } from './controllers/order-controllers/delete-order.controller'
+import { ReadNotificationUseCase } from '@/domain/notification/application/use-cases/read-notification'
 import { DeleteAccountController } from './controllers/account-controllers/delete-account.controller'
 
 import { RegisterAccountUseCase } from '@/domain/delivery-management/application/use-cases-account/register-account'
@@ -48,6 +49,7 @@ import { ChooseRecipientNameController } from './controllers/recipient-controlle
 import { ChooseNameRecipientUseCase } from '@/domain/delivery-management/application/use-cases-recipient/choose-name-recipient'
 import { UploadAttachmentsController } from './controllers/order-controllers/upload-attachments.controller'
 import { UploadAndCreateAttachmentUseCase } from '@/domain/delivery-management/application/use-cases-order/upload-and-create-attachments'
+import { ReadNotificationController } from './controllers/recipient-controllers/read-notification.controller'
 import { StorageModule } from '../storage/storage.module'
 
 @Module({
@@ -75,6 +77,7 @@ import { StorageModule } from '../storage/storage.module'
     OrderReturnedController,
     DeliverOrderController,
     DeleteOrderController,
+    ReadNotificationController,
     UploadAttachmentsController,
   ],
   providers: [
@@ -100,6 +103,7 @@ import { StorageModule } from '../storage/storage.module'
     OrderReturnUseCase,
     DeliverOrderUseCase,
     DeleteOrderUseCase,
+    ReadNotificationUseCase,
     UploadAndCreateAttachmentUseCase,
   ],
 })

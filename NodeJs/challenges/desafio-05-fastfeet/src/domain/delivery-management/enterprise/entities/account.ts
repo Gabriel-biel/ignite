@@ -6,8 +6,8 @@ export interface AccountProps {
   name: string
   email: string
   cpf: string
-  password: string
-  role: 'ADM' | 'RECIPIENT' | 'DELIVERYMAN' // test
+  password?: string
+  role: 'ADM' | 'RECIPIENT' | 'DELIVERYMAN' // to-fix
 }
 
 export class Account extends Entity<AccountProps> {
@@ -35,12 +35,12 @@ export class Account extends Entity<AccountProps> {
     return this.props.password
   }
 
-  set password(password: string) {
+  set password(password: string | undefined) {
     this.props.password = password
   }
 
   get role() {
-    return this.props.role // test
+    return this.props.role // to-fix
   }
 
   set role(role: 'ADM' | 'DELIVERYMAN' | 'RECIPIENT') {
@@ -51,7 +51,7 @@ export class Account extends Entity<AccountProps> {
     const account = new Account(
       {
         ...props,
-        role: props.role ?? 'DELIVERYMAN', // test
+        role: props.role ?? 'DELIVERYMAN', // to-fix
       },
       id,
     )

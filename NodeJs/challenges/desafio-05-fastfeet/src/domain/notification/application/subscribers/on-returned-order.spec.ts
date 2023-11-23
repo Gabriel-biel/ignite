@@ -14,8 +14,10 @@ import { OnReturnedOrder } from './on-returned-order'
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
@@ -34,6 +36,8 @@ describe('On returned order', () => {
     inMemoryAddressRepository = new InMemoryAddressRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryRecipientRepository,
       inMemoryAddressRepository,
     )
     inMemoryRecipientRepository = new InMemoryRecipientRepository()

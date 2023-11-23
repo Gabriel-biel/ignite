@@ -11,11 +11,14 @@ import { Address } from '@prisma/client'
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 import { PrismaOrderWithRecipientMapper } from '../mappers/prisma-order-with-recipient-mapper'
 import { PrismaOrderDetailsMapper } from '../mappers/prisma-order-details-mapper'
+import { DomainEvents } from '@/core/events/domain-events'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrderRepository {
   constructor(
     private prisma: PrismaService,
+    private cacheRepository: CacheRepository,
     private orderAttachments: OrderAttachmentsRepository,
   ) {}
 
@@ -43,6 +46,13 @@ export class PrismaOrdersRepository implements OrderRepository {
   }
 
   async findByDetailsByOrderId(orderId: string) {
+    const cacheHit = await this.cacheRepository.get(`order:${orderId}:details`)
+    if (cacheHit) {
+      const cachedData = JSON.parse(cacheHit)
+
+      return cachedData // to-fix return one mapper
+    }
+
     const orderWithRecipient = await this.prisma.order.findUnique({
       where: {
         id: orderId,
@@ -58,7 +68,15 @@ export class PrismaOrdersRepository implements OrderRepository {
       return null
     }
 
-    return PrismaOrderDetailsMapper.toDomain(orderWithRecipient)
+    const questionDetails =
+      PrismaOrderDetailsMapper.toDomain(orderWithRecipient)
+
+    await this.cacheRepository.set(
+      `order:${orderId}:details`,
+      JSON.stringify(questionDetails),
+    )
+
+    return questionDetails
   }
 
   async findManyByOrdersRecipient(
@@ -185,6 +203,8 @@ export class PrismaOrdersRepository implements OrderRepository {
         }),
         this.orderAttachments.createMany(order.attachments.getNewItems()),
         this.orderAttachments.deleteMany(order.attachments.getRemovedItems()),
+
+        this.cacheRepository.delete(`order:${data.id}:details`),
       ])
     }
 
@@ -194,5 +214,7 @@ export class PrismaOrdersRepository implements OrderRepository {
       },
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 }

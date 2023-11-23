@@ -8,13 +8,17 @@ import { AccountFactory } from 'test/factories/make-account'
 import { AddressFactory } from 'test/factories/make-address'
 import { OrderFactory } from 'test/factories/make-order'
 import { RecipientFactory } from 'test/factories/make-recipient'
+import { waitFor } from 'test/utils/wait-for'
+import { PrismaService } from '../database/prisma/prisma.service'
+import { DomainEvents } from '@/core/events/domain-events'
 
-describe('Order picked up e2e', () => {
+describe('On pickup available order (E2E)', () => {
   let app: INestApplication
   let accountFactory: AccountFactory
   let recipientFactory: RecipientFactory
-  let addressFactory: AddressFactory
   let orderFactory: OrderFactory
+  let addressFactory: AddressFactory
+  let prisma: PrismaService
   let jwt: JwtService
 
   beforeAll(async () => {
@@ -22,9 +26,10 @@ describe('Order picked up e2e', () => {
       imports: [AppModule, DatabaseModule],
       providers: [
         AccountFactory,
-        RecipientFactory,
         AddressFactory,
+        RecipientFactory,
         OrderFactory,
+        PrismaService,
       ],
     }).compile()
 
@@ -34,16 +39,19 @@ describe('Order picked up e2e', () => {
     recipientFactory = moduleRef.get(RecipientFactory)
     addressFactory = moduleRef.get(AddressFactory)
     orderFactory = moduleRef.get(OrderFactory)
+    prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
+
+    DomainEvents.shouldRun = true
 
     await app.init()
   })
 
-  it('[PUT] /orders/pickedUp/:orderID/:deliverymanID', async () => {
+  it('should send notification when order is pickedup', async () => {
     const deliveryman = await accountFactory.makePrismaAccount({
       role: 'DELIVERYMAN',
     })
-    const admToken = jwt.sign({ sub: deliveryman.id.toString() })
+    const accessToken = jwt.sign({ sub: deliveryman.id.toString() })
 
     const recipient = await recipientFactory.makePrismaRecipient({
       role: 'RECIPIENT',
@@ -54,15 +62,27 @@ describe('Order picked up e2e', () => {
     })
 
     const order = await orderFactory.makePrismaOrder({
-      addressId: address.id,
       recipientId: recipient.id,
+      addressId: address.id,
+      deliverymanId: deliveryman.id,
     })
 
-    const result = await request(app.getHttpServer())
-      .put(`/orders/pickedUp/${order.id.toString()}/${deliveryman.id}`)
-      .set('Authorization', `Bearer ${admToken}`)
+    const response = await request(app.getHttpServer())
+      .put(
+        `/orders/available/${order.id.toString()}/${recipient.id.toString()}`,
+      )
+      .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(result.statusCode).toBe(201)
+    await waitFor(async () => {
+      expect(response.statusCode).toBe(200)
+      const notificationOnDatabase = await prisma.notification.findFirst({
+        where: {
+          recipientId: recipient.id.toString(),
+        },
+      })
+
+      expect(notificationOnDatabase).not.toBeNull()
+    })
   })
 })

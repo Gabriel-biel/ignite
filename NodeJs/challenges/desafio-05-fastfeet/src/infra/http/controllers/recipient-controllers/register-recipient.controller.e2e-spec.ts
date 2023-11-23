@@ -4,29 +4,29 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { RecipientFactory } from 'test/factories/make-recipient'
+import { AccountFactory } from 'test/factories/make-account'
 
 describe('Create recipient (E2E)', () => {
   let app: INestApplication
-  let recipientFactory: RecipientFactory
+  let accountFactory: AccountFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [RecipientFactory],
+      providers: [AccountFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    recipientFactory = moduleRef.get(RecipientFactory)
+    accountFactory = moduleRef.get(AccountFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
   it('[POST] /recipients', async () => {
-    const adm = await recipientFactory.makePrismaRecipient({
+    const adm = await accountFactory.makePrismaAccount({
       role: 'ADM',
     })
     const accessToken = jwt.sign({ sub: adm.id.toString() })

@@ -27,7 +27,7 @@ export class OrderPickedUpController {
   constructor(private orderPickedup: PickedUpOrderUseCase) {}
 
   @Put()
-  @HttpCode(200)
+  @HttpCode(201)
   async handle(@Param(validationPipe) params: OrderPickedupParamsSchema) {
     const { orderId, deliverymanId } = params
 

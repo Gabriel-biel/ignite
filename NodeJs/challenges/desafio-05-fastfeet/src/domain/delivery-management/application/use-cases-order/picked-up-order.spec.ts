@@ -5,10 +5,14 @@ import { InMemoryOrderAttachmentsRepository } from 'test/repositories/in-memory-
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
 import { MakeAccount } from 'test/factories/make-account'
 import { InMemoryAccountsRepository } from 'test/repositories/in-memory-account-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 
 let inMemoryAccountRepository: InMemoryAccountsRepository
+let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryAddressesRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let pickedUpOrderUseCase: PickedUpOrderUseCase
 
@@ -17,9 +21,12 @@ describe('PickedUp order use case', () => {
     inMemoryAccountRepository = new InMemoryAccountsRepository()
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryAddressesRepository = new InMemoryAddressRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryRecipientRepository,
       inMemoryAddressesRepository,
     )
     pickedUpOrderUseCase = new PickedUpOrderUseCase(inMemoryOrderRepository)
