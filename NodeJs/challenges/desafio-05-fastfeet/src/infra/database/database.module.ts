@@ -15,7 +15,7 @@ import { AddressRepository } from '@/domain/delivery-management/application/repo
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 import { AttachmentsRepository } from '@/domain/delivery-management/application/repositories/attachments-repository'
 import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
-import { CacheModule } from '../cache/redis/cache.module'
+import { CacheModule } from '../cache/cache.module'
 
 @Module({
   imports: [CacheModule],
