@@ -6,21 +6,26 @@ import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipie
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
 import { OrderAvailableUseCase } from './order-available'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryAddressesRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let orderAvailableUseCase: OrderAvailableUseCase
 
 describe('OrderAvailableUseCase order use case', () => {
   beforeEach(() => {
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
+    inMemoryAddressesRepository = new InMemoryAddressRepository()
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
-    inMemoryAddressesRepository = new InMemoryAddressRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryRecipientRepository,
       inMemoryAddressesRepository,
     )
     orderAvailableUseCase = new OrderAvailableUseCase(inMemoryOrderRepository)

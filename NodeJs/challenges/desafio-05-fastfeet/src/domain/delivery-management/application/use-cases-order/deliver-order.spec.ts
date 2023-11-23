@@ -6,9 +6,11 @@ import { MakeRecipient } from 'test/factories/make-recipient'
 import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryAddressesRepository: InMemoryAddressRepository
+let inMemoryAttachmentReposiory: InMemoryAttachmentsRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let deliverOrderUseCase: DeliverOrderUseCase
@@ -18,9 +20,12 @@ describe('Deliver order use case', () => {
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
+    inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryAddressesRepository = new InMemoryAddressRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentReposiory,
+      inMemoryRecipientRepository,
       inMemoryAddressesRepository,
     )
     deliverOrderUseCase = new DeliverOrderUseCase(

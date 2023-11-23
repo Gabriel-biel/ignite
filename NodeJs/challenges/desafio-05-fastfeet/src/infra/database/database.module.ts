@@ -5,16 +5,20 @@ import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipie
 import { PrismaAddressesRepository } from './prisma/repositories/prisma-address-respository'
 import { PrismaOrdersRepository } from './prisma/repositories/prisma-order-repository'
 import { PrismaOrderAttachmentsRepository } from './prisma/repositories/prisma-order-attachments-repository'
-import { PrismaNotiicationsRepository } from './prisma/repositories/prisma-notificiations-repository'
+import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attachments-repository'
+import { PrismaNotificationsRepository } from './prisma/repositories/prisma-notifications-repository'
+
 import { AccountRepository } from '@/domain/delivery-management/application/repositories/account-repository'
 import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
 import { OrderRepository } from '@/domain/delivery-management/application/repositories/order-repository'
 import { AddressRepository } from '@/domain/delivery-management/application/repositories/address-repository'
 import { OrderAttachmentsRepository } from '@/domain/delivery-management/application/repositories/order-attachments-repository'
 import { AttachmentsRepository } from '@/domain/delivery-management/application/repositories/attachments-repository'
-import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attachments-repository'
+import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
+import { CacheModule } from '../cache/redis/cache.module'
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
     {
@@ -25,7 +29,10 @@ import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attach
       provide: AccountRepository,
       useClass: PrismaAccountRepository,
     },
-    PrismaNotiicationsRepository,
+    {
+      provide: NotificationsRepository,
+      useClass: PrismaNotificationsRepository,
+    },
     {
       provide: OrderAttachmentsRepository,
       useClass: PrismaOrderAttachmentsRepository,
@@ -50,8 +57,8 @@ import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attach
     RecipientRepository,
     OrderRepository,
     OrderAttachmentsRepository,
-    PrismaNotiicationsRepository,
     AttachmentsRepository,
+    NotificationsRepository,
   ], // serve para deixar esse serviço disponível para os modules que o importam também
 })
 export class DatabaseModule {}

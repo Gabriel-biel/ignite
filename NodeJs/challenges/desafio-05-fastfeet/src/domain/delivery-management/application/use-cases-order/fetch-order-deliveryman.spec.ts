@@ -7,9 +7,11 @@ import { FetchOrdersDeliverymanUseCase } from './fetch-orders-deliveryman'
 import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
 import { MakeRecipient } from 'test/factories/make-recipient'
 import { MakeAddress } from 'test/factories/make-address'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryOrderAttachmentsRepository: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentReposiory: InMemoryAttachmentsRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryOrderRepository: InMemoryOrderRepository
 let fetchOrdersDeliverymanUseCase: FetchOrdersDeliverymanUseCase
@@ -18,10 +20,12 @@ describe('Fetch orders by account', () => {
   beforeEach(() => {
     inMemoryOrderAttachmentsRepository =
       new InMemoryOrderAttachmentsRepository()
+    inMemoryAttachmentReposiory = new InMemoryAttachmentsRepository()
     inMemoryAddressRepository = new InMemoryAddressRepository()
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachmentsRepository,
+      inMemoryAttachmentReposiory,
       inMemoryRecipientRepository,
       inMemoryAddressRepository,
     )

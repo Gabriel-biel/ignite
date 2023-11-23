@@ -14,10 +14,12 @@ import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-not
 import { SpyInstance } from 'vitest'
 import { waitFor } from 'test/utils/wait-for'
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryOrderRepository: InMemoryOrderRepository
 let inMemoryAddressRepository: InMemoryAddressRepository
 let inMemoryOrderAttachments: InMemoryOrderAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let inMemoryRecipientRepository: InMemoryRecipientRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
@@ -30,11 +32,14 @@ let sendNotificationExecuteSpy: SpyInstance<
 describe('on pickup order', () => {
   beforeEach(() => {
     inMemoryOrderAttachments = new InMemoryOrderAttachmentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryAddressRepository = new InMemoryAddressRepository()
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     inMemoryRecipientRepository = new InMemoryRecipientRepository()
     inMemoryOrderRepository = new InMemoryOrderRepository(
       inMemoryOrderAttachments,
+      inMemoryAttachmentsRepository,
+      inMemoryRecipientRepository,
       inMemoryAddressRepository,
     )
     sendNotificationUseCase = new SendNotificationUseCase(

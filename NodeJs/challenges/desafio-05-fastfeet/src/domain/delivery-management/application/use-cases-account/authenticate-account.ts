@@ -35,6 +35,10 @@ export class AuthenticateAccountUseCase {
       return left(new WrongCredentialsError())
     }
 
+    if (!account.password) {
+      return left(new WrongCredentialsError())
+    }
+
     const hashedPassword = await this.hashCompare.compare(
       password,
       account.password,

@@ -26,9 +26,10 @@ model User {
   bestAddressId String?  @unique @map("best_address_id")
 
   addresses         Address[]
-  bestAddress       Address?  @relation("bestAddress", fields: [bestAddressId], references: [id], onDelete: Cascade)
-  deliverymanOrders Order[]   @relation("deliveryman")
-  recipientOrders   Order[]   @relation("recipient")
+  bestAddress       Address?       @relation("bestAddress", fields: [bestAddressId], references: [id], onDelete: Cascade)
+  deliverymanOrders Order[]        @relation("deliveryman")
+  recipientOrders   Order[]        @relation("recipient")
+  notifications     Notification[]
 }
 
 model Order {
@@ -76,4 +77,17 @@ model Attachments {
   order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("attachments")
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  readAt      DateTime? @map("read_at")
+  recipientId String    @map("recipient_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  recipient User @relation(fields: [recipientId], references: [id])
+
+  @@map("notifications")
 }

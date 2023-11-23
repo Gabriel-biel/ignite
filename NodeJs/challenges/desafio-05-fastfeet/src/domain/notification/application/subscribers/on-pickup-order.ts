@@ -3,7 +3,9 @@ import { EventHandler } from '@/core/events/event-handler'
 import { RecipientRepository } from '@/domain/delivery-management/application/repositories/recipient-respository'
 import { PickupOrderEvent } from '@/domain/delivery-management/enterprise/events/pickup-order-event'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnPickupOrder implements EventHandler {
   constructor(
     private recipientRepository: RecipientRepository,

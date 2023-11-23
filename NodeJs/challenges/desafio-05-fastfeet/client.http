@@ -176,6 +176,15 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name read_Notification
+PATCH {{baseURL}}/notifications/:notificationId/read/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{}
+
+###
+
 
 
 
