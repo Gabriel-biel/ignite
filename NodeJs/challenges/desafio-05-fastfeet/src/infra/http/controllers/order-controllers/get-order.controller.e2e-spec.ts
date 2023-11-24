@@ -39,7 +39,7 @@ describe('Get order e2e', () => {
     await app.init()
   })
 
-  it('[GET] /orders/orderId="id"/recipientId="id"', async () => {
+  it('[GET] /orders?orderId="id"?recipientId="id"', async () => {
     const adm = await accountFactory.makePrismaAccount({
       role: 'ADM',
     })
@@ -61,7 +61,7 @@ describe('Get order e2e', () => {
     const result = await request(app.getHttpServer())
       .get(`/orders`)
       .query({
-        oderId: order.id.toString(),
+        orderId: order.id.toString(),
         recipientId: recipient.id.toString(),
       })
       .set('Authorization', `Bearer ${admToken}`)

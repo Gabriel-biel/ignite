@@ -10,7 +10,6 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { RegisterOrderUseCase } from '@/domain/delivery-management/application/use-cases-order/register-order'
 
 const createOrderBodySchema = z.object({
-  recipientId: z.string(),
   addressId: z.string(),
 })
 

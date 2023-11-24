@@ -103,34 +103,34 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "addressId": "1ac429b6-cd0e-4ebc-a453-341d3aadc788" 
+  "addressId": "10bc07fd-a846-4134-84ad-2fec596198f9" 
 }
 
 ###
 
 # @name get_order
-GET {{baseURL}}/orders/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+GET {{baseURL}}/orders?orderId=65370aa2-ec98-4982-b9ce-00b097613643&recipientId={{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name order_available
-PUT {{baseURL}}/orders/available/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+PUT {{baseURL}}/orders/available/65370aa2-ec98-4982-b9ce-00b097613643/{{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name order_picked_up
-PUT {{baseURL}}/orders/pickedUp/d1c21628-ec10-4867-b079-54aed514fd72/a943da79-8dd3-42aa-bb10-549df0f20e02
+PUT {{baseURL}}/orders/pickedUp/65370aa2-ec98-4982-b9ce-00b097613643/6f1b703f-cee1-4fdd-bc1a-e932a05b02f2
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name deliver_order
-PUT {{baseURL}}/orders/delivered/d1c21628-ec10-4867-b079-54aed514fd72/{{recipientId}}
+PUT {{baseURL}}/orders/delivered/65370aa2-ec98-4982-b9ce-00b097613643/{{recipientId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -144,7 +144,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name delete_order
-DELETE {{baseURL}}/orders?orderId=8ff648c9-89c0-4ffb-8ce4-41b1f22fbe39
+DELETE {{baseURL}}/orders?orderId=65370aa2-ec98-4982-b9ce-00b097613643
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

@@ -32,7 +32,7 @@ export class GetOrderController {
   @Get()
   @HttpCode(200)
   async handle(
-    @Query('oderId', orderIdValidationPipe) orderId: GetOrderByIdQuerySchema,
+    @Query('orderId', orderIdValidationPipe) orderId: GetOrderByIdQuerySchema,
     @Query('recipientId', recipientIdValidationPipe)
     recipientId: GetOrderByRecipientIdSchema,
   ) {
