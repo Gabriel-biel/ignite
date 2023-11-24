@@ -37,6 +37,7 @@ lerna-debug.log*
 
 # Env
 .env
+keys-rsa-256.txt
 
 # Docker 
 data

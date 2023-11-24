@@ -17,15 +17,19 @@ enum UserRole {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  name     String
-  email    String
-  cpf      String   @unique
-  password String?
-  role     UserRole @default(DELIVERYMAN)
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  cpf           String   @unique
+  password      String?
+  role          UserRole @default(DELIVERYMAN)
+  bestAddressId String?  @unique @map("best_address_id")
 
-  orders    Order[]
-  addresses Address[]
+  addresses         Address[]
+  bestAddress       Address?       @relation("bestAddress", fields: [bestAddressId], references: [id], onDelete: Cascade)
+  deliverymanOrders Order[]        @relation("deliveryman")
+  recipientOrders   Order[]        @relation("recipient")
+  notifications     Notification[]
 }
 
 model Order {
@@ -36,35 +40,54 @@ model Order {
   returnedAt           DateTime?     @map("returned_at")
   createdAt            DateTime      @default(now()) @map("created_at")
   updatedAt            DateTime?     @updatedAt @map("updated_at")
+  addressId            String        @map("address_id")
   recipientId          String        @map("recipient_id")
+  deliverymanId        String?
   attachments          Attachments[]
 
-  recipient User @relation(fields: [recipientId], references: [id])
+  deliveryman User?   @relation("deliveryman", fields: [deliverymanId], references: [id])
+  recipient   User    @relation("recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
 
   @@map("orders")
 }
 
 model Address {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   city        String
   street      String
-  houseNumber String @map("house_number")
-  latitude    String
-  longitude   String
-  recipientId String @map("recipient_id")
+  houseNumber String  @map("house_number")
+  latitude    Decimal
+  longitude   Decimal
+  recipientId String  @map("recipient_id")
 
-  recipient User @relation(fields: [recipientId], references: [id])
+  recipient   User    @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  bestAddress User?   @relation("bestAddress")
+  orders      Order[]
 
   @@map("addresses")
 }
 
 model Attachments {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
   title   String
   link    String
-  orderId String @map("order_id")
+  orderId String? @map("order_id")
 
-  order Order @relation(fields: [orderId], references: [id])
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("attachments")
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  readAt      DateTime? @map("read_at")
+  recipientId String    @map("recipient_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  recipient User @relation(fields: [recipientId], references: [id])
+
+  @@map("notifications")
 }

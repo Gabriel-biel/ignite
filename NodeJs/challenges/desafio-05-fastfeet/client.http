@@ -1,0 +1,192 @@
+@baseURL= http://localhost:3333
+@authToken= {{authenticate.response.body.access_token}}
+@recipientId= {{register_recipient_account.response.body.recipientId.value}}
+
+# @name create_account
+POST {{baseURL}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Gabriel",
+  "email": "gabriel@gmail.com",
+  "cpf": "1",
+  "password": "123456",
+  "role": "ADM"
+}
+
+###
+
+# @name register_deliveryman_account
+POST {{baseURL}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Gabriel Deliveryman",
+  "email": "gabrielDelvieryman@gmail.com",
+  "cpf": "2",
+  "password": "123456",
+  "role": "DELIVERYMAN"
+}
+
+###
+
+# @name register_recipient_account
+POST {{baseURL}}/recipients
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Gabriel",
+  "email": "gabriel97@gmail.com",
+  "cpf": "3"
+}
+
+###
+
+# @name authenticate
+POST {{baseURL}}/sessions
+Content-Type: application/json
+
+{
+  "cpf": "2",
+  "password": "123456"
+}
+
+###
+
+# @name get_account_profile
+GET {{baseURL}}/account/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+####
+
+# @name edit_account
+PUT {{baseURL}}/account/edit
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "gabriel Delvier",
+  "email": "edit email account"
+}
+
+###
+
+# @name delete_account
+DELETE {{baseURL}}/account/profile?accountID={{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_address
+POST {{baseURL}}/recipients/addresses
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "recipientId": "{{recipientId}}",
+  "city": "Labrea",
+  "street": "Rua palmares",
+  "houseNumber": "number-1",
+  "latitude": -7.267809,
+  "longitude": -64.794920
+}
+
+###
+
+# @name create_order
+POST {{baseURL}}/orders?recipientId={{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "addressId": "10bc07fd-a846-4134-84ad-2fec596198f9" 
+}
+
+###
+
+# @name get_order
+GET {{baseURL}}/orders?orderId=65370aa2-ec98-4982-b9ce-00b097613643&recipientId={{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name order_available
+PUT {{baseURL}}/orders/available/65370aa2-ec98-4982-b9ce-00b097613643/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name order_picked_up
+PUT {{baseURL}}/orders/pickedUp/65370aa2-ec98-4982-b9ce-00b097613643/6f1b703f-cee1-4fdd-bc1a-e932a05b02f2
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name deliver_order
+PUT {{baseURL}}/orders/delivered/65370aa2-ec98-4982-b9ce-00b097613643/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "attachments": [
+    "id-one",
+    "id-two"
+  ]
+}
+
+###
+
+# @name delete_order
+DELETE {{baseURL}}/orders?orderId=65370aa2-ec98-4982-b9ce-00b097613643
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_deliveryman_orders
+GET {{baseURL}}/orders/deliveryman
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_recipient_orders
+GET {{baseURL}}/orders/recipient?page=1&recipientId={{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_orders_nearby
+GET {{baseURL}}/orders/nearby
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "latitude": -7.266294,
+  "longitude": -64.797787
+}
+
+###
+
+# @name read_Notification
+PATCH {{baseURL}}/notifications/:notificationId/read/{{recipientId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{}
+
+###
+
+
+
+
+
+
