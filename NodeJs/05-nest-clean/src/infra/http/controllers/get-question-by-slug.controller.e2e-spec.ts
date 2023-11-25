@@ -7,7 +7,7 @@ import request from 'supertest'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Fetch Recent questions (E2E)', () => {
+describe('Get question by slug (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
@@ -26,33 +26,22 @@ describe('Fetch Recent questions (E2E)', () => {
 
     await app.init()
   })
-  test('[GET] /questions', async () => {
+  test('[GET] /questions/:slug', async () => {
     const user = await studentFactory.makePrismaStudent()
-
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    await Promise.all([
-      questionFactory.makePrismaQuestion({
-        authorId: user.id,
-        title: 'question-01',
-      }),
-      questionFactory.makePrismaQuestion({
-        authorId: user.id,
-        title: 'question-02',
-      }),
-    ])
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
 
-    const response = await request(app.getHttpServer())
-      .get('/questions')
+    const result = await request(app.getHttpServer())
+      .get(`/questions/${question.slug.value}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({ title: 'question-01' }),
-        expect.objectContaining({ title: 'question-02' }),
-      ],
+    expect(result.statusCode).toBe(200)
+    expect(result.body).toEqual({
+      question: expect.objectContaining({ slug: question.slug.value }),
     })
   })
 })
