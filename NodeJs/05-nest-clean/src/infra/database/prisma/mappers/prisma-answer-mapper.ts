@@ -8,19 +8,19 @@ export class PrismaAnswerMapper {
       {
         content: raw.content,
         questionId: new UniqueEntityID(raw.questionId),
-        authorId: new UniqueEntityID(raw.id),
+        authorId: new UniqueEntityID(raw.authorId),
         created_at: raw.createdAt,
       },
       new UniqueEntityID(raw.id),
     )
   }
 
-  static toPrisma(Answer: Answer): Prisma.AnswerUncheckedCreateInput {
+  static toPrisma(answer: Answer): Prisma.AnswerUncheckedCreateInput {
     return {
-      id: Answer.id.toString(),
-      authorId: Answer.authorId.toString(),
-      questionId: Answer.questionId.toString(),
-      content: Answer.content,
+      id: answer.id.toString(),
+      authorId: answer.authorId.toString(),
+      questionId: answer.questionId.toString(),
+      content: answer.content,
     }
   }
 }

@@ -13,23 +13,23 @@ import { RegisterStudentUseCase } from '@/domain/forum/aplication/use-cases/regi
 import { StudentAlreadyExistsError } from '@/domain/forum/aplication/use-cases/errors/student-already-exists-error'
 import { Public } from '@/infra/auth/public'
 
-const createAccountBodySchema = z.object({
+const registerStudentBodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),
 })
 
-type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
+type RegisterStudentBodySchema = z.infer<typeof registerStudentBodySchema>
 
-@Controller('/accounts')
-export class CreateAccountController {
+@Controller('/accounts/student')
+export class RegisterStudentController {
   constructor(private registerStudent: RegisterStudentUseCase) {}
 
   @Post()
   @HttpCode(201)
   @Public()
-  @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-  async handle(@Body() body: CreateAccountBodySchema) {
+  @UsePipes(new ZodValidationPipe(registerStudentBodySchema))
+  async handle(@Body() body: RegisterStudentBodySchema) {
     const { name, email, password } = body
 
     const result = await this.registerStudent.execute({

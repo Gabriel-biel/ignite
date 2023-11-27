@@ -18,6 +18,8 @@ const createQuestionBodySchema = z.object({
 
 type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
 
+const validationPipe = new ZodValidationPipe(createQuestionBodySchema)
+
 @Controller('/questions')
 export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionUseCase) {}
@@ -25,7 +27,7 @@ export class CreateQuestionController {
   @Post()
   @HttpCode(201)
   async handle(
-    @Body(new ZodValidationPipe(createQuestionBodySchema))
+    @Body(validationPipe)
     body: CreateQuestionBodySchema,
     @CurrentUser()
     user: UserPayload,

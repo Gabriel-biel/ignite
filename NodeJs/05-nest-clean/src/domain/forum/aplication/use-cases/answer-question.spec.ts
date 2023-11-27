@@ -2,12 +2,13 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { AnswerQuestionUseCase } from './answer-question'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { MakeQuestion } from 'test/factories/make-question'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: AnswerQuestionUseCase // system under test
 
-describe('Create Answer', () => {
+describe('Answer question', () => {
   beforeEach(() => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
@@ -16,10 +17,11 @@ describe('Create Answer', () => {
     )
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
   })
-  it('should be able to create an answer', async () => {
+  it('should be able to answer question', async () => {
+    const question = MakeQuestion()
     const result = await sut.execute({
       instructorId: '1',
-      questionId: '1',
+      questionId: question.id.toString(),
       content: 'Conteúdo da resposta',
       attachmentsIds: ['1', '2'],
     })

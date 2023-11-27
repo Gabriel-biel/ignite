@@ -4,7 +4,7 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('Create Account (E2E)', () => {
+describe('Register student (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   beforeAll(async () => {
@@ -17,12 +17,14 @@ describe('Create Account (E2E)', () => {
 
     await app.init()
   })
-  test('[POST] /account', async () => {
-    const response = await request(app.getHttpServer()).post('/accounts').send({
-      name: 'Gabriel Lima',
-      email: 'gabriel_gla98@gmail.com',
-      password: '123456',
-    })
+  test('[POST] /account/student', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/accounts/student')
+      .send({
+        name: 'Gabriel Lima',
+        email: 'gabriel_gla98@gmail.com',
+        password: '123456',
+      })
 
     expect(response.statusCode).toBe(201)
     const userOnDatabase = await prisma.user.findUnique({
