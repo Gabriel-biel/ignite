@@ -20,7 +20,7 @@ describe('Answer question', () => {
   it('should be able to answer question', async () => {
     const question = MakeQuestion()
     const result = await sut.execute({
-      instructorId: '1',
+      authorId: '1',
       questionId: question.id.toString(),
       content: 'Conteúdo da resposta',
       attachmentsIds: ['1', '2'],

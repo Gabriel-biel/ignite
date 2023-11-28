@@ -8,7 +8,7 @@ import request from 'supertest'
 import { InstructorFactory } from 'test/factories/make-instructor'
 import { QuestionFactory } from 'test/factories/make-question'
 
-describe('Answer question (E2E)', () => {
+describe('Comment on question (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let questionFactory: QuestionFactory
@@ -29,7 +29,7 @@ describe('Answer question (E2E)', () => {
 
     await app.init()
   })
-  test('[PUT] /questions/:questionId/answers', async () => {
+  test('[PUT] /questions/:questionId/comments', async () => {
     const user = await instructorFactory.makePrismaInstructor()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
@@ -40,19 +40,19 @@ describe('Answer question (E2E)', () => {
     const questionId = question.id.toString()
 
     const response = await request(app.getHttpServer())
-      .post(`/questions/${questionId}/answers`)
+      .post(`/questions/${questionId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        content: 'this is a answer for question',
+        content: 'new comment',
       })
 
     expect(response.statusCode).toBe(201)
-    const questionOnDatabase = await prisma.question.findFirst({
+    const commentOnDatabase = await prisma.comment.findFirst({
       where: {
-        id: questionId,
+        content: 'new comment',
       },
     })
 
-    expect(questionOnDatabase).toBeTruthy()
+    expect(commentOnDatabase).toBeTruthy()
   })
 })
