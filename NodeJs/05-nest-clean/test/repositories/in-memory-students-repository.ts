@@ -1,5 +1,5 @@
 import { DomainEvents } from '@/core/events/domain-events'
-import { StudentRepository } from '@/domain/forum/aplication/repositories/student-repository'
+import { StudentRepository } from '@/domain/forum/application/repositories/student-repository'
 import { Student } from '@/domain/forum/enterprise/entities/student'
 
 export class InMemoryStudentsRepository implements StudentRepository {

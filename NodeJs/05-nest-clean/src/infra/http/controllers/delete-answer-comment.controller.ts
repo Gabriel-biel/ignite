@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt-strategy'
-import { DeleteAnswerCommentUseCase } from '@/domain/forum/aplication/use-cases/delete-answer-commet'
+import { DeleteAnswerCommentUseCase } from '@/domain/forum/application/use-cases/delete-answer-commet'
 
 @Controller('/answers/comments/:id')
 export class DeleteAnswerCommentController {

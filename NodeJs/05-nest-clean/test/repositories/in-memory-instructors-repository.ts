@@ -1,5 +1,5 @@
 import { DomainEvents } from '@/core/events/domain-events'
-import { InstructorRepository } from '@/domain/forum/aplication/repositories/instructor-repository'
+import { InstructorRepository } from '@/domain/forum/application/repositories/instructor-repository'
 import { Instructor } from '@/domain/forum/enterprise/entities/instructor'
 
 export class InMemoryInstructorsRepository implements InstructorRepository {

@@ -9,7 +9,7 @@ import {
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { QuestionsPresenter } from '../presenters/question-presenter'
-import { GetQuestionBySlugUseCase } from '@/domain/forum/aplication/use-cases/get-question-by-slug'
+import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 const getQuestionParamSchema = z.object({

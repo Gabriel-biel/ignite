@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt-strategy'
-import { DeleteQuestionUseCase } from '@/domain/forum/aplication/use-cases/delete-question'
+import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question'
 
 @Controller('/questions/:id')
 export class DeleteQuestionController {

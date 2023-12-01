@@ -28,8 +28,8 @@ export class CommentOnQuestionUseCase {
 
   async execute({
     authorId,
-    content,
     questionId,
+    content,
   }: CommentOnQuestionRequest): Promise<CommentOnQuestionResponse> {
     const question = this.questionsRepository.findById(questionId)
 

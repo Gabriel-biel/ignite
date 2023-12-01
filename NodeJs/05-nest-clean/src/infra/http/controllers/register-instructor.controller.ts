@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { RegisterInstructorUseCase } from '@/domain/forum/aplication/use-cases/register-instructor'
-import { InstructorAlreadyExistsError } from '@/domain/forum/aplication/use-cases/errors/instructor-already-exists-error'
+import { RegisterInstructorUseCase } from '@/domain/forum/application/use-cases/register-instructor'
+import { InstructorAlreadyExistsError } from '@/domain/forum/application/use-cases/errors/instructor-already-exists-error'
 import { Public } from '@/infra/auth/public'
 
 const registerInstructorBodySchema = z.object({

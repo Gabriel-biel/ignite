@@ -1,9 +1,9 @@
-import { Encrypter } from '@/domain/forum/aplication/cryptography/encypter'
+import { Encrypter } from '@/domain/forum/application/cryptography/encypter'
 import { Module } from '@nestjs/common'
 import { JwtEncrypter } from './jwt-encrypter'
-import { HashCompare } from '@/domain/forum/aplication/cryptography/hash-compare'
+import { HashCompare } from '@/domain/forum/application/cryptography/hash-compare'
 import { BcryptHasher } from './bcrypt-hash'
-import { HashGenerator } from '@/domain/forum/aplication/cryptography/hash-generator'
+import { HashGenerator } from '@/domain/forum/application/cryptography/hash-generator'
 
 @Module({
   providers: [

@@ -8,15 +8,17 @@ import { PrismaQuestionAttachmentsRepository } from './prisma/repositories/prism
 import { PrismaAnswerCommentsRepository } from './prisma/repositories/prisma-answers-comments-repository'
 import { PrismaAnswerAttachmentsRepository } from './prisma/repositories/prisma-answers-attachments-respository'
 
-import { StudentRepository } from '@/domain/forum/aplication/repositories/student-repository'
-import { QuestionsRepository } from '@/domain/forum/aplication/repositories/questions-repository'
-import { AnswersRepository } from '@/domain/forum/aplication/repositories/answers-repository'
-import { QuestionCommentsRepository } from '@/domain/forum/aplication/repositories/question-comments-repository'
-import { AnswerCommentsRepository } from '@/domain/forum/aplication/repositories/answer-comments-repository'
-import { AnswerAttachmentsRepository } from '@/domain/forum/aplication/repositories/answer-attachments-repository'
-import { QuestionAttachmentsRepository } from '@/domain/forum/aplication/repositories/question-attachments-repository'
-import { InstructorRepository } from '@/domain/forum/aplication/repositories/instructor-repository'
+import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
+import { StudentRepository } from '@/domain/forum/application/repositories/student-repository'
+import { InstructorRepository } from '@/domain/forum/application/repositories/instructor-repository'
+import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
+import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
+import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
 import { PrismaInstructorRepository } from './prisma/repositories/prisma-instructor-repository'
+import { AttachmentsRepository } from '@/domain/forum/application/repositories/attachments-repository'
+import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attachments-repository'
 
 @Module({
   providers: [
@@ -53,6 +55,10 @@ import { PrismaInstructorRepository } from './prisma/repositories/prisma-instruc
       provide: AnswerAttachmentsRepository,
       useClass: PrismaAnswerAttachmentsRepository,
     },
+    {
+      provide: AttachmentsRepository,
+      useClass: PrismaAttachmentsRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -64,6 +70,7 @@ import { PrismaInstructorRepository } from './prisma/repositories/prisma-instruc
     AnswersRepository,
     AnswerCommentsRepository,
     AnswerAttachmentsRepository,
+    AttachmentsRepository,
   ],
 })
 export class DatabaseModule {}

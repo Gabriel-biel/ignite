@@ -46,7 +46,7 @@ describe('Comment on answer (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post(`/questions/${answer.id.toString()}/comments`)
+      .post(`/answers/${answer.id.toString()}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'new comment on answer',
