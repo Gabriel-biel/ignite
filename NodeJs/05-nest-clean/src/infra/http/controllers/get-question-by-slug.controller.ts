@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
-import { QuestionsPresenter } from '../presenters/question-presenter'
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { QuestionsDetailsPresenter } from '../presenters/question-details-presenter'
 
 const getQuestionParamSchema = z.object({
   slug: z.string(),
@@ -42,6 +42,6 @@ export class GetQuestionBySlugController {
       }
     }
 
-    return { question: QuestionsPresenter.toHttp(result.value.question) }
+    return { question: QuestionsDetailsPresenter.toHttp(result.value.question) }
   }
 }

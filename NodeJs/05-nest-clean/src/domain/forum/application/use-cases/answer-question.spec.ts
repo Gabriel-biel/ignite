@@ -3,17 +3,21 @@ import { AnswerQuestionUseCase } from './answer-question'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { MakeQuestion } from 'test/factories/make-question'
+import { InMemoryInstructorsRepository } from 'test/repositories/in-memory-instructors-repository'
 
+let inMemoryInstructorRepository: InMemoryInstructorsRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: AnswerQuestionUseCase // system under test
 
 describe('Answer question', () => {
   beforeEach(() => {
+    inMemoryInstructorRepository = new InMemoryInstructorsRepository()
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentsRepository,
+      inMemoryInstructorRepository,
     )
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
   })

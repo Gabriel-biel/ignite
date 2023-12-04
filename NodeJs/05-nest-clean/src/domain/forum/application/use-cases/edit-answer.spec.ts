@@ -6,17 +6,21 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { MakeAnswerAttachments } from 'test/factories/make-answer-attachment'
+import { InMemoryInstructorsRepository } from 'test/repositories/in-memory-instructors-repository'
 
+let inMemoryInstructorRepository: InMemoryInstructorsRepository
 let inMemoryAnswersAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: EditAnswerUseCase
 
 describe('Edit answer use case', () => {
   beforeEach(() => {
+    inMemoryInstructorRepository = new InMemoryInstructorsRepository()
     inMemoryAnswersAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswersAttachmentsRepository,
+      inMemoryInstructorRepository,
     )
     sut = new EditAnswerUseCase(
       inMemoryAnswersAttachmentsRepository,

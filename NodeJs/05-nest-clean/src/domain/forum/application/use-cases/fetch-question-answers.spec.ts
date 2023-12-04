@@ -3,44 +3,82 @@ import { FetchQuestionAnswersUseCase } from './fetch-question-answers'
 import { MakeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryInstructorsRepository } from 'test/repositories/in-memory-instructors-repository'
+import { MakeInstructor } from 'test/factories/make-instructor'
 
 let inMemoryAnswerAttachments: InMemoryAnswerAttachmentsRepository
+let inMemoryInstructorsRepository: InMemoryInstructorsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: FetchQuestionAnswersUseCase
 
 describe('Fetch questions answers use case', () => {
   beforeEach(() => {
     inMemoryAnswerAttachments = new InMemoryAnswerAttachmentsRepository()
+    inMemoryInstructorsRepository = new InMemoryInstructorsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachments,
+      inMemoryInstructorsRepository,
     )
     sut = new FetchQuestionAnswersUseCase(inMemoryAnswersRepository)
   })
   it('should be able to fetch questions answers', async () => {
-    await inMemoryAnswersRepository.create(
-      MakeAnswer({
-        questionId: new UniqueEntityID('question-1'),
-      }),
-    )
-    await inMemoryAnswersRepository.create(
-      MakeAnswer({
-        questionId: new UniqueEntityID('question-1'),
-      }),
-    )
-    await inMemoryAnswersRepository.create(
-      MakeAnswer({
-        questionId: new UniqueEntityID('question-1'),
-      }),
-    )
+    const user = MakeInstructor({
+      name: 'Instructor Jhon Doe',
+    })
+    inMemoryInstructorsRepository.items.push(user)
+
+    const answer1 = MakeAnswer({
+      questionId: new UniqueEntityID('question-1'),
+      authorId: user.id,
+    })
+    const answer2 = MakeAnswer({
+      questionId: new UniqueEntityID('question-1'),
+      authorId: user.id,
+    })
+    const answer3 = MakeAnswer({
+      questionId: new UniqueEntityID('question-1'),
+      authorId: user.id,
+    })
+
+    await inMemoryAnswersRepository.create(answer1)
+    await inMemoryAnswersRepository.create(answer2)
+    await inMemoryAnswersRepository.create(answer3)
 
     const result = await sut.execute({ questionId: 'question-1', page: 1 })
 
     expect(result.value?.answers).toHaveLength(3)
+    expect(result.value?.answers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          answerId: answer1.id,
+          authorId: answer1.authorId,
+          authorName: 'Instructor Jhon Doe',
+        }),
+        expect.objectContaining({
+          answerId: answer1.id,
+          authorId: answer1.authorId,
+          authorName: 'Instructor Jhon Doe',
+        }),
+        expect.objectContaining({
+          answerId: answer1.id,
+          authorId: answer1.authorId,
+          authorName: 'Instructor Jhon Doe',
+        }),
+      ]),
+    )
   })
   it('should be able to fetch pagineted questions answers', async () => {
+    const user = MakeInstructor({
+      name: 'Instructor Jhon Doe',
+    })
+    inMemoryInstructorsRepository.items.push(user)
+
     for (let i = 1; i <= 22; i++) {
       await inMemoryAnswersRepository.create(
-        MakeAnswer({ questionId: new UniqueEntityID('question-1') }),
+        MakeAnswer({
+          questionId: new UniqueEntityID('question-1'),
+          authorId: user.id,
+        }),
       )
     }
 
