@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { Slug } from '@/domain/forum/enterprise/entities/Value-objects/Slug'
 import {
   Question,
   QuestionProps,
@@ -10,20 +9,20 @@ import { Injectable } from '@nestjs/common'
 import { PrismaQuestionMapper } from '@/infra/database/prisma/mappers/prisma-question-mapper'
 
 export function MakeQuestion(
-  override: Partial<QuestionProps> = {},
+  props: Partial<QuestionProps> = {},
   id?: UniqueEntityID,
 ) {
-  const NewQuestion = Question.create(
+  const question = Question.create(
     {
       authorId: new UniqueEntityID(),
       title: faker.lorem.sentence(),
       content: faker.lorem.text(),
-      ...override,
+      ...props,
     },
     id,
   )
 
-  return NewQuestion
+  return question
 }
 
 @Injectable()
