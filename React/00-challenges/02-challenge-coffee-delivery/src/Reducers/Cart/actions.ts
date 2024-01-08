@@ -2,7 +2,7 @@ import { Coffee } from './reducer'
 
 export enum ActionTypes {
   ADD_NEW_COFFEE = 'ADD_NEW_COFFEE',
-  REMOVE_COFFEE = 'REMOVE_COFEE',
+  REMOVE_COFFEE = 'REMOVE_COFFEE',
 }
 
 export function addNewCoffeToCartAction(AddCoffee: Coffee) {

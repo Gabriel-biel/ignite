@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CoffeeCard } from '../../components/CoffeeCard'
-import { Coffee } from '../../Reducers/Coffee/reducer'
+import { Coffee } from '../../Reducers/Cart/reducer'
 import { api } from '../../services/api'
 import { Intro } from './Intro/Index'
 import { HomeContainer, CoffeeList } from './styles'

@@ -36,16 +36,18 @@ export function CoffeeReducer(state: CoffeeState, action: any) {
       })
     }
 
-    // case ActionTypes.REMOVE_COFFEE: {
-    //   const currentCafeIndex = state.cafes.findIndex((cafe) => {
-    //     return cafe.id === action.payload.RemoveCoffee.id
-    //   })
+    case ActionTypes.REMOVE_COFFEE: {
+      const currentCafeIndex = state.cafes.findIndex((cafe) => {
+        return cafe.id === action.payload.RemoveCoffee.id
+      })
 
-    //   if (currentCafeIndex < 0) {
-    //     return state
-    //   }
-    //   return produce(state, (draft) => {})
-    // }
+      if (currentCafeIndex < 0) {
+        return state
+      }
+      return produce(state, (draft) => {
+        draft.cafes[currentCafeIndex].quantity = action.payload.RemoveCoffee
+      })
+    }
 
     default:
       return state

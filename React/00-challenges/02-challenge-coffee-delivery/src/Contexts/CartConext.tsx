@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useReducer } from 'react'
-import { addNewCoffeToCartAction } from '../Reducers/Coffee/actions'
-import { Coffee, CoffeeReducer } from '../Reducers/Coffee/reducer'
+import { addNewCoffeToCartAction } from '../Reducers/Cart/actions'
+import { Coffee, CoffeeReducer } from '../Reducers/Cart/reducer'
 
 interface CartItem extends Coffee {
   quantity: number
@@ -12,14 +12,14 @@ interface CartContextType {
   cartQuantity: number
 }
 
-interface CoffeeProviderProps {
+interface CartContextProviderProps {
   children: ReactNode
 }
 
 export const CartContext = createContext({} as CartContextType)
 
-export function CartContextProvider({ children }: CoffeeProviderProps) {
-  const [CoffeeState, dispatch] = useReducer(
+export function CartContextProvider({ children }: CartContextProviderProps) {
+  const [CartState, dispatch] = useReducer(
     CoffeeReducer,
     {
       cafes: [],
@@ -41,7 +41,7 @@ export function CartContextProvider({ children }: CoffeeProviderProps) {
     },
   )
 
-  const { cafes, coffeesInCart } = CoffeeState
+  const { cafes, coffeesInCart } = CartState
   const cartQuantity = coffeesInCart.length
 
   console.log(cafes)

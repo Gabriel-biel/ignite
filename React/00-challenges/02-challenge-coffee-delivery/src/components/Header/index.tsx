@@ -18,7 +18,7 @@ export function Header() {
         </NavLink>
         <NavLink to="/checkout" title="shoppingCart">
           <ShoppingCart size={22} weight="fill" />
-          {cartQuantity >= 1 && <span>{cartQuantity}</span>}
+          {cartQuantity > 0 && <span>{cartQuantity}</span>}
         </NavLink>
       </nav>
     </HeaderContainer>
