@@ -1,23 +1,30 @@
 import styled from 'styled-components'
 
-export const HomeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const HomeContainer = styled.div``
+export const CoffeeContainer = styled.main`
+  padding: 2rem 0;
 
   h2 {
     font-family: 'Baloo 2';
     font-size: 2rem;
-    line-height: 130%;
-    font-weight: 800;
-    padding-bottom: 3.375rem;
+    color: ${(props) => props.theme['--base-SubTitle']};
+    margin-bottom: 3.5rem;
   }
 `
 
 export const CoffeeList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 2rem;
-  list-style: none;
+  column-gap: 2rem;
+  row-gap: 2.5rem;
 
-  color: ${(props) => props.theme['base-SubTitle']};
+  @media (max-width: 1180px) {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 0.5rem;
+    row-gap: 1.5rem;
+  }
+
+  @media (max-width: 860px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `

@@ -1,37 +1,20 @@
-import { useEffect, useState } from 'react'
-import { CoffeeCard } from '../../components/CoffeeCard'
-import { Coffee } from '../../Reducers/Cart/reducer'
-import { api } from '../../services/api'
-import { Intro } from './Intro/Index'
-import { HomeContainer, CoffeeList } from './styles'
+import { coffees } from '../../server/coffee'
+import { CoffeeCard } from './components/CoffeeCard'
+import { Intro } from './components/intro'
+import { CoffeeContainer, CoffeeList, HomeContainer } from './styles'
 
 export function Home() {
-  const [coffees, setCafes] = useState<Coffee[]>([])
-
-  useEffect(() => {
-    async function loadCafes() {
-      const response = await api.get<Coffee[]>('/cafes')
-      setCafes(response.data)
-    }
-
-    loadCafes()
-  }, [])
-
   return (
     <HomeContainer>
       <Intro />
-      <h2>Nossos cafés</h2>
-      <CoffeeList>
-        {coffees.map((cafe) => {
-          return (
-            <CoffeeCard
-              key={cafe.id}
-              coffee={cafe}
-              typeCardCoffeeCatalog={true}
-            />
-          )
-        })}
-      </CoffeeList>
+      <CoffeeContainer>
+        <h2>Nossos Cafés</h2>
+        <CoffeeList>
+          {coffees.map((coffee) => (
+            <CoffeeCard key={coffee.id} coffee={coffee} />
+          ))}
+        </CoffeeList>
+      </CoffeeContainer>
     </HomeContainer>
   )
 }

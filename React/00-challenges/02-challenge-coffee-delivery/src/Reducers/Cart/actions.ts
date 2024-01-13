@@ -1,23 +1,44 @@
-import { Coffee } from './reducer'
+import { Coffee } from '../../server/coffee'
 
-export enum ActionTypes {
-  ADD_NEW_COFFEE = 'ADD_NEW_COFFEE',
-  REMOVE_COFFEE = 'REMOVE_COFFEE',
+export enum CartActionTypes {
+  ADD_COFFEE_TO_CART = 'ADD_COFFEE_TO_CART',
+  REMOVE_COFFEE_FROM_CART = 'REMOVE_COFFEE_FROM_CART',
+  INCREASE_AMOUNT_ADDED_COFFEE = 'INCREASE_AMOUNT_ADDED_COFFEE',
+  DECREASE_AMOUNT_ADDED_COFFEE = 'DECREASE_AMOUNT_ADDED_COFFEE',
 }
 
-export function addNewCoffeToCartAction(AddCoffee: Coffee) {
+export function addCoffeeToCartAction(coffee: Coffee, amount: number) {
   return {
-    type: ActionTypes.ADD_NEW_COFFEE,
+    type: CartActionTypes.ADD_COFFEE_TO_CART,
     payload: {
-      AddCoffee,
+      coffee,
+      amount,
     },
   }
 }
-export function removeCoffeeToCartAction(RemoveCoffee: Coffee) {
+
+export function removeCoffeeFromCartAction(coffeeId: string) {
   return {
-    type: ActionTypes.REMOVE_COFFEE,
+    type: CartActionTypes.REMOVE_COFFEE_FROM_CART,
     payload: {
-      RemoveCoffee,
+      coffeeId,
+    },
+  }
+}
+
+export function increaseAmountAddedCoffeeAction(coffeeId: string) {
+  return {
+    type: CartActionTypes.INCREASE_AMOUNT_ADDED_COFFEE,
+    payload: {
+      coffeeId,
+    },
+  }
+}
+export function decreaseAmountAddedCoffeeAction(coffeeId: string) {
+  return {
+    type: CartActionTypes.DECREASE_AMOUNT_ADDED_COFFEE,
+    payload: {
+      coffeeId,
     },
   }
 }

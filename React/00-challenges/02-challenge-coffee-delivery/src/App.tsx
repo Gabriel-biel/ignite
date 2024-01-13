@@ -1,9 +1,9 @@
-import { ThemeProvider } from 'styled-components'
-import { defaultTheme } from './styles/theme/default'
-import { GlobalStyle } from './styles/global'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
-import { CartContextProvider } from './Contexts/CartConext'
+import { defaultTheme } from './styles/theme/default'
+import { ThemeProvider } from 'styled-components'
+import { GlobalStyle } from './styles/global'
+import { CartContextProvider } from './hooks/CartContext'
 
 export function App() {
   return (

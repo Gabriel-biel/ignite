@@ -1,151 +1,191 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface PaymentMethodProps {
+  selected: boolean
+}
 
 export const CheckoutContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-`
-export const AddressContainer = styled.div`
-  width: 40rem;
-
-  h1 {
-    margin-top: 2.5rem;
-    font-family: 'Baloo 2';
-    font-weight: 700;
-    font-size: 1.125rem;
-  }
-
-  > div {
-    border-radius: 6px;
-    margin-top: 1rem;
-    padding: 2.5rem;
-    background: ${(props) => props.theme['base-Card']};
-  }
-`
-
-export const Input = styled.input`
   display: flex;
   width: 100%;
-  height: 2.625rem;
-  padding: 0.75rem;
-  background: ${(props) => props.theme['base-Input']};
+  padding: 2.5rem 0;
+  gap: 2rem;
 
-  border: 1px solid ${(props) => props.theme['base-Button']};
-  border-radius: 4px;
-
-  &:focus {
-    outline: 1px solid ${(props) => props.theme['yellow-800']};
-  }
-
-  ::placeholder {
-    display: flex;
-    font-size: 87.5%;
-    justify-content: space-between;
-    color: ${(props) => props.theme['base-Label']};
+  @media (max-width: 1366px) {
+    padding: 1rem 0;
+    gap: 1rem;
   }
 `
 
-export const FormAddrees = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
-
-  input {
-    width: 12.5rem;
-  }
-
-  input + input {
-    width: 100%;
-  }
-
-  div {
-    display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
-
-    .cidade {
-      width: 17.25rem;
-    }
-    .uf {
-      width: 3.75rem;
-    }
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`
-
-export const PaymentMethod = styled.div`
-  width: 40rem;
-  background: ${(props) => props.theme['base-Card']};
-
-  div + div {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 2rem;
-  }
-`
-
-export const CoffesSelectedCheckout = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  h1 {
-    margin-top: 2.5rem;
+export const ClientInfosContainer = styled.div`
+  strong {
     font-family: 'Baloo 2';
-    font-weight: 700;
     font-size: 1.125rem;
+    color: ${(props) => props.theme['--base-subtitle']};
+    display: block;
+    margin-bottom: 1rem;
+  }
+`
+
+export const FormContainer = styled.form``
+
+export const AddressContainerForm = styled.div`
+  width: 100%;
+  padding: 2.5rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+
+  background: ${(props) => props.theme['--base-Card']};
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+
+    svg {
+      color: ${(props) => props.theme['--yellow-800']};
+    }
+
+    div {
+      span {
+        color: ${(props) => props.theme['--base-Subtitle']};
+        line-height: 1.3;
+        display: block;
+
+        &:last-child {
+          font-size: 0.875rem;
+          color: ${(props) => props.theme['--base-Text']};
+        }
+      }
+    }
+  }
+`
+export const AddressInputs = styled.div`
+  display: grid;
+  grid-template-areas:
+    'cep . .'
+    'street street street'
+    'number complement complement'
+    'district city uf';
+  grid-template-columns: 1fr 1fr 3.75rem;
+  row-gap: 1rem;
+  column-gap: 0.75rem;
+
+  @media (max-width: 1366px) {
+    gap: 0.5rem;
   }
 
-  > div {
+  @media (max-width: 1088px) {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
-    padding: 2.5rem;
-    background: ${(props) => props.theme['base-Card']};
-    border-radius: 6px 44px;
+    gap: 1rem;
+  }
+`
+
+export const PaymentMethodContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  padding: 2.5rem;
+  background: ${(props) => props.theme['--base-Card']};
+  border-radius: 6px;
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    svg {
+      color: ${(props) => props.theme['--purple-500']};
+    }
+
+    div {
+      span {
+        color: ${(props) => props.theme['--base-Subtitle']};
+        line-height: 1.3;
+        display: block;
+
+        &:last-child {
+          font-size: 0.875rem;
+          color: ${(props) => props.theme['--base-text']};
+        }
+      }
+    }
+  }
+
+  & > div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
     gap: 0.75rem;
   }
-
-  hr {
-    margin: 24px 0;
-    border: 1px solid ${(props) => props.theme['base-Button']};
-  }
-
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  strong {
-    font-size: 1.25rem;
-    color: ${(props) => props.theme['base-SubTitle']};
-    font-weight: 700;
-  }
 `
 
-const baseMethodPayment = styled.button`
+export const PaymentMethod = styled.button<PaymentMethodProps>`
   display: flex;
-  width: 100%;
   align-items: center;
-  background: ${(props) => props.theme['base-Button']};
-  border: none;
-  border-radius: 6px;
+  justify-content: flex-start;
   padding: 1rem;
   gap: 0.75rem;
-  font-size: 75%;
-  line-height: 160%;
+  border-radius: 6px;
+  font-size: 0.75rem;
+
+  @media (max-width: 1088px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+  }
+
+  background: ${(props) => props.theme['--base-Button']};
+  border: 1px solid ${(props) => props.theme['--base-Button']};
 
   svg {
-    color: ${(props) => props.theme['purple-800']};
+    color: ${(props) => props.theme['--purple-500']};
+  }
+
+  transition:
+    background-color,
+    border-color 0.2s;
+
+  &:hover {
+    background: ${(props) => props.theme['--base-Hover']};
+    border: 1px solid ${(props) => props.theme['--base-Hover']};
+  }
+
+  ${(props) =>
+    props.selected &&
+    css`
+      background: ${(props) => props.theme['--purple-300']};
+      border: 1px solid ${(props) => props.theme['--purple-500']};
+
+      &:hover {
+        background: ${(props) => props.theme['--purple-300']};
+        border: 1px solid ${(props) => props.theme['--purple-500']};
+      }
+    `}
+`
+
+export const SelectedCoffeeList = styled.div`
+  strong {
+    font-family: 'Baloo 2';
+    font-size: 1.125rem;
+    color: ${(props) => props.theme['--base-subtitle']};
+    display: flex;
+    margin-bottom: 1rem;
   }
 `
 
-export const CardCreditMethod = styled(baseMethodPayment)``
-export const CardDebitMethod = styled(baseMethodPayment)``
-export const MoneyMethod = styled(baseMethodPayment)``
+export const CartContainer = styled.div`
+  padding: 0.5rem 2.5rem 2.5rem;
+  background: ${(props) => props.theme['--base-Card']};
+  border-radius: 6px 44px 6px 44px;
+
+  & > span {
+    display: block;
+    margin-top: 1rem;
+    color: ${(props) => props.theme['--base-Label']};
+  }
+`

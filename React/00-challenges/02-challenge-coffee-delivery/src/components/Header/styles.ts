@@ -1,57 +1,63 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 2rem 0;
 
-  nav {
+  div {
     display: flex;
-    gap: 0.75rem;
-    width: 12rem;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+`
 
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+export const LocationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 0.5rem;
+  border-radius: 6px;
 
-      width: 100%;
-      height: 2.375rem;
-      border-radius: 0.375rem;
+  background: ${(props) => props.theme['--purple-300']};
 
-      background: ${(props) => props.theme['purple-300']};
-      color: ${(props) => props.theme['purple-800']};
-      text-decoration: none;
+  svg {
+    fill: ${(props) => props.theme['--purple-500']};
+  }
 
-      gap: 0.25rem;
-      font-size: 87.5%;
-    }
+  span {
+    color: ${(props) => props.theme['--purple-800']};
+  }
+`
 
-    a + a {
-      max-width: 2.375rem;
-      background: ${(props) => props.theme['yellow-300']};
-      color: ${(props) => props.theme['yellow-800']};
+export const CartLink = styled(NavLink)`
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: ${(props) => props.theme['--yellow-300']};
+  position: relative;
 
-      span {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+  display: flex;
+  color: ${(props) => props.theme['--yellow-800']};
 
-        position: absolute;
-        margin-left: 2rem;
-        margin-bottom: 2rem;
+  span {
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        width: 1.25rem;
-        height: 1.25rem;
+    background: ${(props) => props.theme['--yellow-800']};
+    color: ${(props) => props.theme['--white']};
+    font-weight: bold;
+    font-size: 0.75rem;
 
-        border-radius: 50%;
-
-        background: ${(props) => props.theme['yellow-800']};
-        color: ${(props) => props.theme.white};
-      }
-    }
+    top: calc(-50% / 2);
+    right: calc(-50% / 2);
   }
 `

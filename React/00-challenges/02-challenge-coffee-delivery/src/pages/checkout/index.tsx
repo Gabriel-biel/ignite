@@ -1,124 +1,108 @@
+import { CreditCard, CurrencyDollar, MapPinLine, Money } from 'phosphor-react'
 import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from 'phosphor-react'
-import { useContext } from 'react'
-import { useTheme } from 'styled-components'
-import { CoffeeCard } from '../../components/CoffeeCard'
-import { CartContext } from '../../Contexts/CartConext'
-import { formatPrice } from '../../util/format'
-
-import { Title } from './components/Title'
-import {
-  AddressContainer,
+  AddressContainerForm,
+  AddressInputs,
+  CartContainer,
   CheckoutContainer,
-  CoffesSelectedCheckout,
-  FormAddrees,
+  ClientInfosContainer,
+  FormContainer,
   PaymentMethod,
-  CardDebitMethod,
-  CardCreditMethod,
-  MoneyMethod,
-  Input,
+  PaymentMethodContainer,
+  SelectedCoffeeList,
 } from './styles'
+import { Input } from './components/input'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../hooks/CartContext'
+import { CoffeeCartCard } from './components/CoffeeCartCard'
+
+type PaymentMethods = 'CREDIT_CARD' | 'DEBIT_CARD' | 'MONEY'
 
 export function Checkout() {
-  const colors = useTheme()
-  const { cafes } = useContext(CartContext)
+  const [paymentMethod, setPaymentMethod] =
+    useState<PaymentMethods>('CREDIT_CARD')
+
+  const { addedCoffees } = useContext(CartContext)
 
   return (
     <CheckoutContainer>
-      <AddressContainer>
-        <h1>Complete seu pedido</h1>
-        <div>
-          <Title
-            icon={
-              <MapPinLine
-                size={22}
-                color={colors['yellow-800']}
-                weight="regular"
-              />
-            }
-            title="Endereço de Entrega"
-            description="Informe o endereço onde deseja receber o pedido"
-          />
-          <FormAddrees>
-            <Input type="number" placeholder="Cep" />
-            <Input type="text" placeholder="Rua" />
+      <ClientInfosContainer>
+        <strong>Complete seu pedido</strong>
+        <FormContainer>
+          <AddressContainerForm>
+            <header>
+              <MapPinLine size={22} />
+              <div>
+                <span>Endereço de entrega</span>
+                <span>Informe o endereço onde deseja receber seu pedido</span>
+              </div>
+            </header>
+            <AddressInputs>
+              <Input placeholder="CEP" area="cep" mask="99999-999" />
+              <Input placeholder="Rua" area="street" />
+              <Input placeholder="Número" area="number" type="number" min={1} />
+              <Input placeholder="Complemento" area="complement" optional />
+              <Input placeholder="Bairro" area="district" />
+              <Input placeholder="Cidade" area="city" />
+              <Input placeholder="UF" area="uf" />
+            </AddressInputs>
+          </AddressContainerForm>
+          <PaymentMethodContainer>
+            <header>
+              <CurrencyDollar size={22} />
+              <div>
+                <span>Pagamento</span>
+                <span>
+                  O pagamento é feito na entrega. Escolha a forma que deseja
+                  pagar
+                </span>
+              </div>
+            </header>
             <div>
-              <Input type="number" placeholder="Número" />
-              <Input
-                className="complemento"
-                type="text"
-                placeholder="Complemento"
-              />
+              <PaymentMethod
+                type="button"
+                selected={paymentMethod === 'CREDIT_CARD'}
+                onClick={() => setPaymentMethod('CREDIT_CARD')}
+              >
+                <CreditCard size={16} />
+                CARTÃO DE CRÉDITO
+              </PaymentMethod>
+              <PaymentMethod
+                type="button"
+                selected={paymentMethod === 'DEBIT_CARD'}
+                onClick={() => setPaymentMethod('DEBIT_CARD')}
+              >
+                <CreditCard size={16} />
+                CARTÃO DE DÉBITO
+              </PaymentMethod>
+              <PaymentMethod
+                type="button"
+                selected={paymentMethod === 'MONEY'}
+                onClick={() => setPaymentMethod('MONEY')}
+              >
+                <Money size={16} />
+                DINHEIRO
+              </PaymentMethod>
             </div>
-            <div>
-              <Input type="text" placeholder="Bairro" />
-              <Input className="cidade" type="text" placeholder="Cidade" />
-              <Input className="uf" type="text" placeholder="UF" />
-            </div>
-          </FormAddrees>
-        </div>
-        <PaymentMethod>
-          <Title
-            icon={
-              <CurrencyDollar
-                size={22}
-                color={colors['purple-800']}
-                weight={'regular'}
-              />
-            }
-            title="Pagamento"
-            description="O pagamento é feito na entrega. Escolha a forma que deseja pagar"
-          />
-          <div>
-            <CardCreditMethod>
-              <CreditCard size={16} weight="regular" />
-              <p>CARTÃO DE CRÉDITO</p>
-            </CardCreditMethod>
-            <CardDebitMethod>
-              <Bank size={16} weight="regular" />
-              <p>CARTÃO DE DEBITO</p>
-            </CardDebitMethod>
-            <MoneyMethod>
-              <Money size={16} weight="regular" />
-              <p>DINHEIRO</p>
-            </MoneyMethod>
-          </div>
-        </PaymentMethod>
-      </AddressContainer>
-      <CoffesSelectedCheckout>
-        <h1>Cafés Selecionados</h1>
-        <div>
-          {cafes.map((cafe) => {
-            return (
-              <>
-                <CoffeeCard
-                  key={cafe.id}
-                  coffee={cafe}
-                  typeCardCoffeeCatalog={false}
+          </PaymentMethodContainer>
+        </FormContainer>
+      </ClientInfosContainer>
+      <SelectedCoffeeList>
+        <strong>Cafés Selecionados</strong>
+        <CartContainer>
+          {addedCoffees.length > 0 ? (
+            <>
+              {addedCoffees.map((addedCoffee) => (
+                <CoffeeCartCard
+                  key={addedCoffee.coffee.id}
+                  addedCoffee={addedCoffee}
                 />
-                <hr />
-                <span>
-                  <p>Total de intens</p>
-                  <p>{formatPrice(cafe.price * cafe.quantity)}</p>
-                </span>
-                <span>
-                  <p>Entrega</p>
-                  <p>0.00</p>
-                </span>
-                <span>
-                  <strong>Total</strong>
-                  <strong>{formatPrice(cafe.price * cafe.quantity)}</strong>
-                </span>
-              </>
-            )
-          })}
-        </div>
-      </CoffesSelectedCheckout>
+              ))}
+            </>
+          ) : (
+            <span>Nenhum café selecionado</span>
+          )}
+        </CartContainer>
+      </SelectedCoffeeList>
     </CheckoutContainer>
   )
 }
